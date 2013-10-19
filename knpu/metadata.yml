@@ -1,0 +1,20 @@
+title:  Mastering OAuth in PHP
+price:  0
+length: ~
+summary: |
+    OAuth: that mystical beast that you kind of understand and occasionally
+    wrestle to integrate with some social media site. In this course, we'll
+    dive deep into OAuth by building an app that authenticates with an OAuth
+    server and show you all the details going on behind the scenes. You can
+    take this and add OAuth authentication to any site you want.
+    
+    To sweeten the deal, we'll also show you how to make *your* website an
+    OAuth server. That's both cool, and (if nothing else) a pretty cool way
+    to truly master OAuth.
+illustration: rest.png
+priority: 0
+tags:
+    - { name: php }
+is_upcoming: 1
+
+chapters: []
