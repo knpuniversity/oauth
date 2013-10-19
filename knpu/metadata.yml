@@ -11,7 +11,7 @@ summary: |
     To sweeten the deal, we'll also show you how to make *your* website an
     OAuth server. That's both cool, and (if nothing else) a pretty cool way
     to truly master OAuth.
-illustration: rest.png
+illustration: oauth.png
 priority: 0
 tags:
     - { name: php }
