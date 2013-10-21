@@ -1,0 +1,19 @@
+{% extends "client/base.twig" %}
+
+{% block content %}
+    <h3>OAuth2.0 Demo Application</h3>
+    <p>
+        Welcome to the OAuth2.0 Demo Application!  This is an application that demos some of the basic OAuth2.0 Workflows.
+    </p>
+
+    <div class="simpleTabs">
+        <ul class="simpleTabsNavigation">
+            <li><a href="#authcode">Authorization Code</a></li>
+            <li><a href="#implicit">Implicit</a></li>
+            <li><a href="#usercred">User Credentials</a></li>
+        </ul>
+        <div class="simpleTabsContent">{% include 'client/grant_types/_authorization_code.twig' %}</div>
+        <div class="simpleTabsContent">{% include 'client/grant_types/_implicit.twig' %}</div>
+        <div class="simpleTabsContent">{% include 'client/grant_types/_user_credentials.twig' %}</div>
+    </div>
+{% endblock %}
