@@ -1,0 +1,11 @@
+{
+  "client_id": "demoapp",
+  "client_secret": "demopass",
+  "authorize_route": "http://knp-oauth-server/authorize",
+  "resource_route": "http://knp-oauth-server/resource",
+  "token_route": "http://knp-oauth-server/token",
+  "resource_method": "GET",
+  "resource_params": {},
+  "user_credentials": ["demouser", "testpass"],
+  "http_options": { "exceptions": false }
+}
