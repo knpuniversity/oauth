@@ -25,13 +25,11 @@ class RequestResource
         // make the resource request with the token in the AUTHORIZATION header
         $headers =  array('Authorization' => sprintf('Bearer %s', $token));
 
-        // determine the resource endpoint to call based on our config (do this somewhere else?)
-        $apiRoute = $config['resource_route'];
-        $endpoint = 0 === strpos($apiRoute, 'http') ? $apiRoute : $urlgen->generate($apiRoute, $config['resource_params'], true);
-
         // make the resource request via http and decode the json response
-        $response = $http->get($endpoint, $headers, $config['http_options'])->send();
+        $endpoint = $config['resource_url'];
+        $response = $http->post($endpoint, $headers, $config['http_options'])->send();
         $json = json_decode((string) $response->getBody(), true);
+        var_dump((string)$response->getBody());exit;
 
         $resource_uri = sprintf('%s%saccess_token=%s', $endpoint, false === strpos($endpoint, '?') ? '?' : '&', $token);
 

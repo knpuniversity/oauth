@@ -14,6 +14,17 @@ class Homepage
 
     public function homepage(Application $app)
     {
-        return $app['twig']->render('index.twig', array('session_id' => $app['session']->getId()));
+        $client_id      = urlencode($app['parameters']['client_id']);
+        $authorize_url  = $app['parameters']['authorize_url'];
+        $scope          = $app['parameters']['scope'];
+        $redirect_uri   = $app['parameters']['redirect_uri'];
+
+        return $app['twig']->render('index.twig', [
+            'client_id'     => $client_id,
+            'authorize_url' => $authorize_url,
+            'scope'         => $scope,
+            'redirect_uri'  => $redirect_uri,
+            'session_id'    => $app['session']->getId()
+        ]);
     }
 }

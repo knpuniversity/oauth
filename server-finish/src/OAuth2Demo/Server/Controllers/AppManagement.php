@@ -19,7 +19,7 @@ class AppManagement
      */
     public function index(Application $app)
     {
-        return $app['twig']->render('app\management.twig');
+        return $app['twig']->render('app\manage.twig');
     }
 
     /**

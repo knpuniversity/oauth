@@ -14,9 +14,10 @@ class ReceiveAuthorizationCode
 
     public function receiveAuthorizationCode(Application $app)
     {
-        $request = $app['request']; // the request object
-        $session = $app['session']; // the session (or user) object
-        $twig    = $app['twig'];    // used to render twig templates
+        $request   = $app['request']; // the request object
+        $session   = $app['session']; // the session (or user) object
+        $twig      = $app['twig'];    // used to render twig templates
+        $token_url = $app['parameters']['token_url'];
 
         // the user denied the authorization request
         if (!$code = $request->get('code')) {
@@ -28,6 +29,6 @@ class ReceiveAuthorizationCode
             return $twig->render('failed_authorization.twig', array('response' => array('error_description' => 'Your session has expired.  Please try again.')));
         }
 
-        return $twig->render('show_authorization_code.twig', array('code' => $code));
+        return $twig->render('show_authorization_code.twig', array('code' => $code, 'token_url' => $token_url));
     }
 }

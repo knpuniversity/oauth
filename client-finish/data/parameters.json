@@ -1,11 +1,13 @@
 {
-  "client_id": "demoapp",
-  "client_secret": "demopass",
-  "authorize_route": "http://knp-oauth-server/authorize",
-  "resource_route": "http://knp-oauth-server/resource",
-  "token_route": "http://knp-oauth-server/token",
-  "resource_method": "GET",
+  "client_id": "Hal's Housing Help",
+  "client_secret": "35e92b968647a7d3de5317c7cb4d80b0",
+  "redirect_uri": "http://knp-oauth-client/receive_authcode",
+  "scope": "door-unlock",
+
+  "authorize_url": "http://knp-oauth-server/authorize",
+  "resource_url": "http://knp-oauth-server/api/door-unlock",
+  "token_url": "http://knp-oauth-server/token",
+  "resource_method": "POST",
   "resource_params": {},
-  "user_credentials": ["demouser", "testpass"],
   "http_options": { "exceptions": false }
 }

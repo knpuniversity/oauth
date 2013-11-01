@@ -23,5 +23,10 @@
         </p>
         <pre class="alert-info"><code><a target="_blank" href="{{ url('authorize', {client_id: client.client_id, response_type: 'code'}, true) }}">{{ url('authorize', {client_id: client.client_id, response_type: 'code'}, true) }}</a></code></pre>
     </div>
+    <div class="row">
+        <p>
+            Then, you can <a href="{{ path('code') }}">exchange your authorization code</a> for an access token!
+        </p>
+    </div>
 </div>
 {% endblock %}

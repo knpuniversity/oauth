@@ -32,7 +32,6 @@ class Client implements ControllerProviderInterface
         Controllers\ReceiveAuthorizationCode::addRoutes($routing);
         Controllers\RequestToken::addRoutes($routing);
         Controllers\RequestResource::addRoutes($routing);
-        Controllers\ReceiveImplicitToken::addRoutes($routing);
 
         return $routing;
     }
