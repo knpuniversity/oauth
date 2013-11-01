@@ -19,7 +19,7 @@ class AppManagement
      */
     public function index(Application $app)
     {
-        return $app['twig']->render('app\management.twig');
+        return $app['twig']->render('app\manage.twig');
     }
 
     /**
@@ -28,7 +28,7 @@ class AppManagement
     public function add(Application $app)
     {
         if (!$name = $app['request']->request->get('name')) {
-            return $app['twig']->render('app_management.twig', ['error' => '"name" is required']);
+            return $app['twig']->render('app\manage.twig', ['error' => '"name" is required']);
         }
 
         $secret = substr(md5(microtime()), 0, 32);

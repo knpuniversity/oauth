@@ -8,6 +8,8 @@ use OAuth2\HttpFoundationBridge\Response as BridgeResponse;
 use OAuth2\Server as OAuth2Server;
 use OAuth2\GrantType\AuthorizationCode;
 use OAuth2\GrantType\UserCredentials;
+use OAuth2\Storage\Memory;
+use OAuth2\Scope;
 use OAuth2Demo\Server\Storage\Pdo;
 
 class Server implements ControllerProviderInterface
@@ -33,6 +35,13 @@ class Server implements ControllerProviderInterface
 
         // instantiate the oauth server
         $server = new OAuth2Server($storage, array('enforce_state' => false, 'allow_implicit' => true), $grantTypes);
+
+        // add scopes
+        $memory = new Memory(array(
+          'supported_scopes' => ['door-unlock', 'toiletseat-down', 'ac-on'],
+        ));
+
+        $server->setScopeUtil(new Scope($memory));
 
         // add the server to the silex "container" so we can use it in our controllers (see src/OAuth2Demo/Server/Controllers/.*)
         $app['oauth_server'] = $server;

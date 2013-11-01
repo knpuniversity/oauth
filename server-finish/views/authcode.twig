@@ -1,0 +1,51 @@
+{% extends "base.twig" %}
+
+{% block header %}<h1>Do you have an Authorization Code?</h1>{% endblock %}
+
+{% block content %}
+<div class="bs-docs-section" role="main">
+    <div class="row">
+        <h3>
+            An Authorization Code allows you to obtain an Access Token! Enter it below.
+        </h3>
+    </div>
+    <div class="row">
+      <form class="bs-example form-horizontal" action="{{ path('grant') }}" method="post">
+        <fieldset>
+          <div class="form-group">
+            <label for="code" class="col-lg-2 control-label">Authorization Code</label>
+            <div class="col-lg-10">
+              <input type="text" class="form-control" name="code" placeholder="Enter your Authorization Code here">
+              <span class="help-block">Don't have an authorization code?  Go to your <a href="{{ path('home') }}">application</a> to obtain the URL</span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="client_id" class="col-lg-2 control-label">Client ID</label>
+            <div class="col-lg-10">
+              <input type="text" class="form-control" name="client_id" placeholder="Enter your Application Name">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="client_secret" class="col-lg-2 control-label">Client Secret</label>
+            <div class="col-lg-10">
+              <input type="text" class="form-control" name="client_secret" placeholder="Enter your Secret">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="redirect_uri" class="col-lg-2 control-label">Redirect URI (optional)</label>
+            <div class="col-lg-10">
+              <input type="text" class="form-control" name="redirect_uri" placeholder="Required only if a Redirect URI was provided in the authorize request">
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-lg-10 col-lg-offset-2">
+              <a class="btn btn-default" href="{{ path('home') }}">Back</a>
+              <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+          </div>
+          <input type="hidden" name="grant_type" value="authorization_code" />
+        </fieldset>
+      </form>
+    </div>
+<div>
+{% endblock %}

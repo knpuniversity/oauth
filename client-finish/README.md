@@ -20,6 +20,21 @@ it out on your own!):
 4) Setup a virtualhost that points to the web/ directory and a hosts entry
    for your fake domain
 
+```
+#
+# Knp OAuth Client
+#
+<VirtualHost *:80>
+    ServerName knp-oauth-client
+
+    DocumentRoot "/Library/WebServer/knpuniversity/oauth/client-finish/web"
+    <Directory "/Library/WebServer/knpuniversity/oauth/client-finish/web">
+        AllowOverride All
+        Allow from All
+    </Directory>
+</VirtualHost>
+```
+
 5) Pop it open in your browser!
 
 

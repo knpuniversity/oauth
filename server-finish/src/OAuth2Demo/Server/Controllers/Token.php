@@ -10,6 +10,7 @@ class Token
     static public function addRoutes($routing)
     {
         $routing->post('/token', array(new self(), 'token'))->bind('grant');
+        $routing->get('/token', array(new self(), 'authcode'))->bind('authcode');
     }
 
     /**
@@ -27,5 +28,14 @@ class Token
 
         // let the oauth2-server-php library do all the work!
         return $server->handleTokenRequest($app['request'], $response);
+    }
+
+    /**
+     * Provide a form in the browser for the user to submit an authorization code.
+     * If the request is valid, an access token will be returned
+     */
+    public function authcode(Application $app)
+    {
+        return $app['twig']->render('authcode.twig');
     }
 }

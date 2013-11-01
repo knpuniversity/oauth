@@ -1,12 +1,10 @@
 client-start/composer.phar
-client-start/composer.lock
 client-start/vendor
 client-finish/composer.phar
-client-finish/composer.lock
 client-finish/vendor
+server-start/data/oauth.sqlite
 server-start/composer.phar
-server-start/composer.lock
 server-start/vendor
+server-finish/data/oauth.sqlite
 server-finish/composer.phar
-server-finish/composer.lock
 server-finish/vendor

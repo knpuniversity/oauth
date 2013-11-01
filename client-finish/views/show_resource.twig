@@ -2,18 +2,10 @@
 
 {% block content %}
     <h3>Resource Request Complete!</h3>
-    {% if response.friends is defined %}
+    {% if response.success is defined and response.success %}
         <p>
-            You have successfully called the APIs with your Access Token.  Here are your friends:
+            You have successfully called the APIs with your Access Token. Here is the response:
         </p>
-
-        <ul>
-            {% for friend in response.friends %}
-                <li>{{ friend }}</li>
-            {% endfor %}
-        </ul>
-
-        <p>Here is the full JSON response: </p>
 
         <pre>{{ response|json_stringify }}</pre>
     {% else %}
