@@ -36,9 +36,12 @@ class Authorize
             $error = $response->getParameter('error_description');
         }
 
+        $scope = $server->getAuthorizeController()->getScope();
+
         // dispaly the "do you want to authorize?" form
         return $app['twig']->render('authorize.twig', [
             'client_id' => $app['request']->query->get('client_id'),
+            'scope'     => $scope,
             'error'     => $error,
         ]);
     }
