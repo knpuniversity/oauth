@@ -17,6 +17,8 @@ class Home
      */
     public function home(Application $app)
     {
-        return $app['twig']->render('home.twig');
+        $clients = $app['storage']->getAllClientDetails();
+
+        return $app['twig']->render('home.twig', ['clients' => $clients]);
     }
 }
