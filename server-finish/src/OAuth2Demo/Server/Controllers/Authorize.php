@@ -9,8 +9,8 @@ class Authorize
     // Connects the routes in Silex
     static public function addRoutes($routing)
     {
-        $routing->get('/authorize', array(new self(), 'authorize'))->bind('authorize');
-        $routing->get('/authorize/submit', array(new self(), 'authorizeSubmit'))->bind('authorize_submit');
+        $routing->get('/authorize', [new self(), 'authorize'])->bind('authorize');
+        $routing->get('/authorize/submit', [new self(), 'authorizeSubmit'])->bind('authorize_submit');
     }
 
     /**
@@ -25,13 +25,22 @@ class Authorize
          // get the oauth response (configured in src/OAuth2Demo/Server/Server.php)
         $response = $app['oauth_response'];
 
-        // validate the authorize request.  if it is invalid, redirect back to the client with the errors in tow
+        // validate the authorize request.
+        $error = null;
         if (!$server->validateAuthorizeRequest($app['request'], $response)) {
-            return $server->getResponse();
+            // if this is an error with the client, do not redirect the user back there, as it may be malicious
+            // otherwise, redirect back to the client with the errors in tow
+            if (!in_array($response->getParameter('error'), ['redirect_uri_mismatch', 'invalid_uri', 'invalid_client'])) {
+                return $response;
+            }
+            $error = $response->getParameter('error_description');
         }
 
         // dispaly the "do you want to authorize?" form
-        return $app['twig']->render('authorize.twig', array('client_id' => $app['request']->query->get('client_id')));
+        return $app['twig']->render('authorize.twig', [
+            'client_id' => $app['request']->query->get('client_id'),
+            'error'     => $error,
+        ]);
     }
 
     /**

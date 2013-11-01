@@ -1,21 +1,33 @@
 {% extends "base.twig" %}
 
+{% block header %}<h1>Authorize "{{client_id}}"</h1>{% endblock %}
+
 {% block content %}
 <div class="bs-docs-section" role="main">
-    <div class="row">
-        <h3>
-            Well hello there,
-        </h3>
+    {% if error %}
+        <div class="row">
+          <div class="col-lg-12">
+              <div class="alert alert-dismissable alert-danger">
+                <p>{{ error }}</p>
+                <a class="" href="{{ path('home') }}">Back</a>
+              </div>
+          </div>
 
-        <p>Click the button below to complete the authorize request and grant an <code>Authoriation Code</code> to {{client_id}}.</p>
-    </div>
-    <div class="row">
-        <a href="{{ path('authorize_submit') ~ '?' ~ app.request.queryString ~ '&authorize=1'}}" type="submit" class="btn btn-default">
-            Yes, I Authorize This Request
-        </a>
-        <a href="{{ path('authorize_submit') ~ '?' ~ app.request.queryString ~ '&authorize=0'}}" class="btn btn-primary btn-sm">
-            get me out of here!
-        </a>
-    </div>
+      </div>
+    {% else %}
+        <div class="row">
+            <h3>Well hello there,</h3>
+
+            <p>Click the button below to complete the authorize request and grant an <code>Authoriation Code</code> to {{client_id}}.</p>
+        </div>
+        <div class="row">
+            <a href="{{ path('authorize_submit') ~ '?' ~ app.request.queryString ~ '&authorize=1'}}" type="submit" class="btn btn-default">
+                Yes, I Authorize This Request
+            </a>
+            <a href="{{ path('authorize_submit') ~ '?' ~ app.request.queryString ~ '&authorize=0'}}" class="btn btn-primary btn-sm">
+                get me out of here!
+            </a>
+        </div>
+    {% endif %}
 <div>
 {% endblock %}
