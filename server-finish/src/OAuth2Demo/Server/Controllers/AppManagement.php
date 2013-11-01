@@ -9,7 +9,7 @@ class AppManagement
     // Connects the routes in Silex
     static public function addRoutes($routing)
     {
-        $routing->get('/application', [new self(), 'index'])->bind('app_management');
+        $routing->get('/application', [new self(), 'create'])->bind('app_create');
         $routing->post('/application', [new self(), 'add'])->bind('app_add');
         $routing->get('/application/{name}', [new self(), 'show'])->bind('app_show');
     }
@@ -17,9 +17,9 @@ class AppManagement
     /**
      * Create a client application
      */
-    public function index(Application $app)
+    public function create(Application $app)
     {
-        return $app['twig']->render('app\manage.twig');
+        return $app['twig']->render('app\create.twig');
     }
 
     /**
@@ -28,7 +28,7 @@ class AppManagement
     public function add(Application $app)
     {
         if (!$name = $app['request']->request->get('name')) {
-            return $app['twig']->render('app\manage.twig', ['error' => '"name" is required']);
+            return $app['twig']->render('app\new.twig', ['error' => '"name" is required']);
         }
 
         $secret = substr(md5(microtime()), 0, 32);
