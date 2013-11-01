@@ -4,7 +4,7 @@
     <h3>Authorization Code Retrieved!</h3>
     <p>We have been given an <strong>Authorization Code</strong> from the OAuth2.0 Server:</p>
     <pre><code>  Authorization Code: {{ code }}  </code></pre>
-
+{#
     <p>
         The <strong>House</strong> website has provided a way to exchange this for a token:
     </p>
@@ -12,11 +12,7 @@
     <p>
         <a class="button" target="_blank" href="{{ app.parameters.token_url }}">Exchange Access Token</a>
     </p>
-
-    <p>
-        Once this is done, use the token to <a href="{{ app.parameters.resource_url }}">Unlock the House's Door!</a>
-    </p>
-
+ #}
     <p>
         You can exchange the Authorization Code for an <strong>Access Token</strong> through the APIs:
     </p>

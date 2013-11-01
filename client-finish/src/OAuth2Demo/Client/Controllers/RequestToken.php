@@ -18,19 +18,22 @@ class RequestToken
         $urlgen = $app['url_generator']; // generates URLs based on our routing
         $http   = $app['http_client'];   // simple class used to make http requests
 
-        $code = $app['request']->get('code');
+        $code          = $app['request']->get('code');
+        $client_id     = $config['client_id'];
+        $client_secret = $config['client_secret'];
+        $redirect_uri  = $urlgen->generate('authorize_redirect', array(), true);
 
         // exchange authorization code for access token
-        $query = [
+        $params = [
             'grant_type'    => 'authorization_code',
             'code'          => $code,
-            'client_id'     => $config['client_id'],
-            'client_secret' => $config['client_secret'],
-            'redirect_uri'  => $urlgen->generate('authorize_redirect', array(), true),
+            'client_id'     => $client_id,
+            'client_secret' => $client_secret,
+            'redirect_uri'  => $redirect_uri
         ];
 
         // make the token request via http and decode the json response
-        $response = $http->post($config['token_url'], null, $query, $config['http_options'])->send();
+        $response = $http->post($config['token_url'], null, $params, $config['http_options'])->send();
         $json = json_decode((string) $response->getBody(), true);
 
         // if it is succesful, display the token in our app
