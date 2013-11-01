@@ -10,23 +10,22 @@
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width">
 
-        <link rel="stylesheet" href="{{ app.request.basePath }}/css/lockdin.css">
-        <link rel="stylesheet" href="{{ app.request.basePath }}/css/shared.css">
+        <link rel="stylesheet" href="{{ app.request.basePath }}/css/bootstrap.min.css">
     </head>
     <body>
         <!--[if lt IE 7]>
             <p class="chromeframe">You are using an outdated browser. <a href="http://browsehappy.com/">Upgrade your browser today</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to better experience this site.</p>
         <![endif]-->
 
-        {% include 'server/_header.html' %}
+        {% include '_header.html' %}
 
-        <div id="container">
-            <article class="home" role="main">
-                <div id="content" role="main">
-                  {% block content %}
-                  {% endblock %}
-                </div>
-            </article>
+        <div class="container">
+            <div class="page-header">
+                {% block header %}<h1>Your House</h1>{% endblock %}
+            </div>
+
+            {% block content %}
+            {% endblock %}
         </div>
     </body>
 </html>

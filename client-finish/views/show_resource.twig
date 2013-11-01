@@ -1,4 +1,4 @@
-{% extends "client/base.twig" %}
+{% extends "base.twig" %}
 
 {% block content %}
     <h3>Resource Request Complete!</h3>
@@ -18,7 +18,7 @@
         <pre>{{ response|json_stringify }}</pre>
     {% else %}
         <h4>Response:</h4>
-        {% include 'client/_error.twig' %}
+        {% include '_error.twig' %}
     {% endif %}
 
     <pre><code>  The API call can be seen at <a href="{{ resource_uri }}" target="_blank">{{resource_uri}}</a></code></pre>

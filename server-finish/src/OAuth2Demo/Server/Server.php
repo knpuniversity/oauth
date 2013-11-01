@@ -6,9 +6,9 @@ use Silex\Application;
 use Silex\ControllerProviderInterface;
 use OAuth2\HttpFoundationBridge\Response as BridgeResponse;
 use OAuth2\Server as OAuth2Server;
-use OAuth2\Storage\Pdo;
 use OAuth2\GrantType\AuthorizationCode;
 use OAuth2\GrantType\UserCredentials;
+use OAuth2Demo\Server\Storage\Pdo;
 
 class Server implements ControllerProviderInterface
 {
@@ -32,10 +32,11 @@ class Server implements ControllerProviderInterface
         );
 
         // instantiate the oauth server
-        $server = new OAuth2Server($storage, array('enforce_state' => true, 'allow_implicit' => true), $grantTypes);
+        $server = new OAuth2Server($storage, array('enforce_state' => false, 'allow_implicit' => true), $grantTypes);
 
         // add the server to the silex "container" so we can use it in our controllers (see src/OAuth2Demo/Server/Controllers/.*)
         $app['oauth_server'] = $server;
+        $app['storage'] = $storage;
 
         /**
          * add HttpFoundataionBridge Response to the container, which returns a silex-compatible response object
@@ -56,6 +57,10 @@ class Server implements ControllerProviderInterface
         $routing = $app['controllers_factory'];
 
         /* Set corresponding endpoints on the controller classes */
+        Controllers\Home::addRoutes($routing);
+        Controllers\AppManagement::addRoutes($routing);
+
+        // For the OAUTH server
         Controllers\Authorize::addRoutes($routing);
         Controllers\Token::addRoutes($routing);
         Controllers\Resource::addRoutes($routing);

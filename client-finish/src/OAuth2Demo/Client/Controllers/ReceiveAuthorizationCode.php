@@ -9,7 +9,7 @@ class ReceiveAuthorizationCode
 {
     static public function addRoutes($routing)
     {
-        $routing->get('/client/receive_authcode', array(new self(), 'receiveAuthorizationCode'))->bind('authorize_redirect');
+        $routing->get('/receive_authcode', array(new self(), 'receiveAuthorizationCode'))->bind('authorize_redirect');
     }
 
     public function receiveAuthorizationCode(Application $app)
@@ -20,14 +20,14 @@ class ReceiveAuthorizationCode
 
         // the user denied the authorization request
         if (!$code = $request->get('code')) {
-            return $twig->render('client/failed_authorization.twig', array('response' => $request->getAllQueryParameters()));
+            return $twig->render('failed_authorization.twig', array('response' => $request->query->all()));
         }
 
         // verify the "state" parameter matches this user's session (this is like CSRF - very important!!)
         if ($request->get('state') !== $session->getId()) {
-            return $twig->render('client/failed_authorization.twig', array('response' => array('error_description' => 'Your session has expired.  Please try again.')));
+            return $twig->render('failed_authorization.twig', array('response' => array('error_description' => 'Your session has expired.  Please try again.')));
         }
 
-        return $twig->render('client/show_authorization_code.twig', array('code' => $code));
+        return $twig->render('show_authorization_code.twig', array('code' => $code));
     }
 }

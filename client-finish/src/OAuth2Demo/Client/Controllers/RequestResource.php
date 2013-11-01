@@ -9,7 +9,7 @@ class RequestResource
 {
     static public function addRoutes($routing)
     {
-        $routing->get('/client/request_resource', array(new self(), 'requestResource'))->bind('request_resource');
+        $routing->get('/request_resource', array(new self(), 'requestResource'))->bind('request_resource');
     }
 
     public function requestResource(Application $app)
@@ -35,6 +35,6 @@ class RequestResource
 
         $resource_uri = sprintf('%s%saccess_token=%s', $endpoint, false === strpos($endpoint, '?') ? '?' : '&', $token);
 
-        return $twig->render('client/show_resource.twig', array('response' => $json ? $json : $response, 'resource_uri' => $resource_uri));
+        return $twig->render('show_resource.twig', array('response' => $json ? $json : $response, 'resource_uri' => $resource_uri));
     }
 }

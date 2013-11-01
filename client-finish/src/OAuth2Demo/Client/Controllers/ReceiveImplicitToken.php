@@ -9,7 +9,7 @@ class ReceiveImplicitToken
 {
     static public function addRoutes($routing)
     {
-        $routing->get('/client/receive_implicit_token', array(new self(), 'receiveImplicitToken'))->bind('authorize_redirect_implicit');
+        $routing->get('/receive_implicit_token', array(new self(), 'receiveImplicitToken'))->bind('authorize_redirect_implicit');
     }
 
     public function receiveImplicitToken(Application $app)
@@ -18,6 +18,6 @@ class ReceiveImplicitToken
 
         // nothing to do - implicit tokens are in the URL Fragment, so it must be done by the browser
 
-        return $twig->render('client/show_implicit_token.twig');
+        return $twig->render('show_implicit_token.twig');
     }
 }
