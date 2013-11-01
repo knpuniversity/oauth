@@ -4,9 +4,9 @@
   "redirect_uri": "http://knp-oauth-client/receive_authcode",
   "scope": "door-unlock",
 
-  "authorize_url": "http://knp-oauth-server/authorize",
-  "resource_url": "http://knp-oauth-server/api/door-unlock",
-  "token_url": "http://knp-oauth-server/token",
+  "authorize_url": "http://localhost:9000/authorize",
+  "resource_url": "http://localhost:9000/api/door-unlock",
+  "token_url": "http://localhost:9000/token",
   "resource_method": "POST",
   "resource_params": {},
   "http_options": { "exceptions": false }
