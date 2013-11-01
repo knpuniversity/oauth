@@ -1,4 +1,4 @@
-Getting Started with Susan's Website
+Getting Started with the House Website
 ====================================
 
 This code represents the OAuth2.0 server used in the screencast.  Here is how to run it:
