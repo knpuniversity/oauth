@@ -5,6 +5,6 @@ client-finish/vendor
 server-start/data/oauth.sqlite
 server-start/composer.phar
 server-start/vendor
-client-finish/data/oauth.sqlite
+server-finish/data/oauth.sqlite
 server-finish/composer.phar
 server-finish/vendor
