@@ -1,5 +1,5 @@
-Getting Started with Susan's Website
-====================================
+Getting Started with the OAuth Server (Your House)
+==================================================
 
 This code represents the OAuth2.0 server used in the screencast.  Here is how to run it:
 
@@ -7,36 +7,19 @@ This code represents the OAuth2.0 server used in the screencast.  Here is how to
 
     php composer.phar install
 
-2) Copy your parameters.yml.dist file to parameters.yml and customize it
-
-    cp app/config/parameters.yml.dist app/config/parameters.yml
-
-3) Fix your permissions
-
-    chmod -R 777 data
-
-4) Setup a virtualhost that points to the web/ directory and a hosts entry
-   for your fake domain
-
-   * Be sure to set "AllowOverride All" in your apache configuration.  Otherwise,
-     the logic defined in `.htaccess` will not be loaded:
+2) Fix your permissions
 
 ```
-#
-# Knp OAuth Server
-#
-<VirtualHost *:80>
-    ServerName knp-oauth-server
-
-    DocumentRoot "/Library/WebServer/knpuniversity/oauth/server-finish/web"
-    <Directory "/Library/WebServer/knpuniversity/oauth/server-finish/web">
-        AllowOverride All
-        Allow from All
-    </Directory>
-</VirtualHost>
+  $ chmod -R 777 data
 ```
 
-5) edit the `data/parameters.json` file found in the `client-finish` library
-   to point Hal's website at your new OAuth2.0 server's virtualhost.
+3) On the command line, start up a new PHP server on localhost:9000
+
+```
+  $ cd /path/to/knpuniversity/oauth/server-finish/web
+  $ php -S localhost:9000
+```
+
+4) Pop open `http://localhost:9999` in your browser!
 
 

@@ -16,13 +16,13 @@
             <label for="access_token" class="col-lg-2 control-label">Access Token</label>
             <div class="col-lg-10">
               <input type="text" class="form-control" name="access_token" placeholder="Enter your Access Token here">
-              <span class="help-block">Don't have an access token? Go to your <a href="{{ path('home') }}">application</a> to get started</span>
+              <span class="help-block">Don't have an access token? Use an <a href="{{ path('authcode') }}">Authorization Code</a> to get one!</span>
             </div>
           </div>
 
           <div class="form-group">
             <div class="col-lg-10 col-lg-offset-2">
-              <button class="btn btn-default">Back</button>
+              <a class="btn btn-default" href="{{ path('home') }}">Back</a>
               <button type="submit" class="btn btn-primary">Submit</button>
             </div>
           </div>
