@@ -1,0 +1,27 @@
+{% extends "base.twig" %}
+
+{% block header %}<h1>Application: {{client.client_id}}</h1>{% endblock %}
+
+{% block content %}
+{% if message is defined %}
+<div class="bs-docs-section" role="main">
+    <div class="row">
+        {% include '_flash.twig' with {message: message} %}
+    </div>
+</div>
+{% endif %}
+
+<div class="bs-docs-section" role="main">
+    {% include 'app/_details.twig' with {client: client} %}
+</div>
+
+<div class="bs-docs-section" role="main">
+    <div class="row">
+        <p>
+            Now you need to get permission from my owner to perform those functions,
+            using the <code>authorize</code> url below:
+        </p>
+        <pre class="alert-info"><code><a target="_blank" href="{{ url('authorize', {client_id: client.client_id, response_type: 'code'}, true) }}">{{ url('authorize', {client_id: client.client_id, response_type: 'code'}, true) }}</a></code></pre>
+    </div>
+</div>
+{% endblock %}

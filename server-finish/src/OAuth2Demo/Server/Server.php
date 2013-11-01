@@ -6,9 +6,9 @@ use Silex\Application;
 use Silex\ControllerProviderInterface;
 use OAuth2\HttpFoundationBridge\Response as BridgeResponse;
 use OAuth2\Server as OAuth2Server;
-use OAuth2\Storage\Pdo;
 use OAuth2\GrantType\AuthorizationCode;
 use OAuth2\GrantType\UserCredentials;
+use OAuth2Demo\Server\Storage\Pdo;
 
 class Server implements ControllerProviderInterface
 {
