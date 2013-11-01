@@ -8,8 +8,8 @@ class RequestToken
 {
     static public function addRoutes($routing)
     {
-        $routing->get('/client/request_token/authorization_code', array(new self(), 'requestTokenWithAuthCode'))->bind('request_token_with_authcode');
-        $routing->get('/client/request_token/user_credentials', array(new self(), 'requestTokenWithUserCredentials'))->bind('request_token_with_usercredentials');
+        $routing->get('/request_token/authorization_code', array(new self(), 'requestTokenWithAuthCode'))->bind('request_token_with_authcode');
+        $routing->get('/request_token/user_credentials', array(new self(), 'requestTokenWithUserCredentials'))->bind('request_token_with_usercredentials');
 
     }
 
@@ -41,10 +41,10 @@ class RequestToken
 
         // if it is succesful, display the token in our app
         if (isset($json['access_token'])) {
-            return $twig->render('client/show_access_token.twig', array('token' => $json['access_token']));
+            return $twig->render('show_access_token.twig', array('token' => $json['access_token']));
         }
 
-        return $twig->render('client/failed_token_request.twig', array('response' => $json ? $json : $response));
+        return $twig->render('failed_token_request.twig', array('response' => $json ? $json : $response));
     }
 
     public function requestTokenWithUserCredentials(Application $app)
@@ -76,9 +76,9 @@ class RequestToken
 
         // if it is succesful, display the token in our app
         if (isset($json['access_token'])) {
-            return $twig->render('client/show_access_token.twig', array('token' => $json['access_token']));
+            return $twig->render('show_access_token.twig', array('token' => $json['access_token']));
         }
 
-        return $twig->render('client/failed_token_request.twig', array('response' => $json ? $json : $response));
+        return $twig->render('failed_token_request.twig', array('response' => $json ? $json : $response));
     }
 }

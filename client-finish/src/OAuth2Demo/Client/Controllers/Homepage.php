@@ -14,6 +14,6 @@ class Homepage
 
     public function homepage(Application $app)
     {
-        return $app['twig']->render('client/index.twig', array('session_id' => $app['session']->getId()));
+        return $app['twig']->render('index.twig', array('session_id' => $app['session']->getId()));
     }
 }
