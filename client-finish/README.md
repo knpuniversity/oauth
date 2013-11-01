@@ -9,15 +9,7 @@ it out on your own!):
 
     php composer.phar install
 
-2) Copy your parameters.yml.dist file to parameters.yml and customize it
-
-    cp app/config/parameters.yml.dist app/config/parameters.yml
-
-3) Fix your permissions
-
-    chmod -R 777 data
-
-4) Setup a virtualhost that points to the web/ directory and a hosts entry
+2) Setup a virtualhost that points to the web/ directory and a hosts entry
    for your fake domain
 
 ```
@@ -35,6 +27,8 @@ it out on your own!):
 </VirtualHost>
 ```
 
-5) Pop it open in your browser!
+3) (Optional) Copy your parameters.yml.dist file to parameters.yml and customize it
 
+    cp app/config/parameters.yml.dist app/config/parameters.yml
 
+4) Pop it open in your browser!
