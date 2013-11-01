@@ -17,7 +17,13 @@
             Now you need to get permission from my owner to perform those functions,
             using the <code>authorize</code> url below:
         </p>
-        <pre class="alert-info"><code><a href="{{ url('authorize', {client_id:name, response_type:'code'}, true) }}">{{ url('authorize', {client_id:name, response_type:'code'}, true) }}</a></code></pre>
+        <pre class="alert-info">
+            <code>
+                <a href="{{ url('authorize', {client_id: name, response_type: 'code'}, true) }}">
+                    {{ url('authorize', {client_id: name, response_type: 'code'}, true) }}
+                </a>
+            </code>
+        </pre>
     </div>
 </div>
 {% endblock %}
