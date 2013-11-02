@@ -16,13 +16,14 @@
             <label for="code" class="col-lg-2 control-label">Authorization Code</label>
             <div class="col-lg-10">
               <input type="text" class="form-control" name="code" placeholder="Enter your Authorization Code here">
-              <span class="help-block">Don't have an authorization code?  Go to your <a href="{{ path('home') }}">application</a> to obtain the URL</span>
+              <span class="help-block">Don't have an Authorization Code?  Go to your <a href="{{ path('home') }}">application</a> to obtain the URL</span>
             </div>
           </div>
           <div class="form-group">
             <label for="client_id" class="col-lg-2 control-label">Client ID</label>
             <div class="col-lg-10">
               <input type="text" class="form-control" name="client_id" placeholder="Enter your Application Name">
+              <span class="help-block">Don't have a Client ID? Well go <a href="{{ path('app_create') }}">create one</a>!</span>
             </div>
           </div>
           <div class="form-group">

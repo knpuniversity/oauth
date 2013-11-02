@@ -29,7 +29,6 @@ class RequestResource
         $endpoint = $config['resource_url'];
         $response = $http->post($endpoint, $headers, $config['http_options'])->send();
         $json = json_decode((string) $response->getBody(), true);
-        var_dump((string)$response->getBody());exit;
 
         $resource_uri = sprintf('%s%saccess_token=%s', $endpoint, false === strpos($endpoint, '?') ? '?' : '&', $token);
 

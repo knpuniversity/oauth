@@ -5,9 +5,13 @@
     <pre><code>  Access Token: {{ token }}  </code></pre>
 
     <p>
+        Once this is done, use the token to <a href="{{ app.parameters.resource_url }}">Unlock the House's Door!</a>
+    </p>
+{#
+    <p>
         Now use this token to make a request to the OAuth2.0 Server's APIs:
     </p>
-
+#}
     <a class="button" href="{{ path('request_resource', { 'token': token }) }}">make a resource request</a>
 
     <div class="help"><em>This token can now be used multiple times to make API requests for this user.</em></div>

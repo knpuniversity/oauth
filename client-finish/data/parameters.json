@@ -1,6 +1,6 @@
 {
   "client_id": "Hal's Housing Help",
-  "client_secret": "35e92b968647a7d3de5317c7cb4d80b0",
+  "client_secret": "",
   "redirect_uri": "http://knp-oauth-client/receive_authcode",
   "scope": "door-unlock",
 

@@ -16,9 +16,19 @@
       </div>
     {% else %}
         <div class="row">
-            <h3>Well hello there,</h3>
+            <h3>Welcome, homeowner!</h3>
 
-            <p>Click the button below to complete the authorize request and grant an <code>Authoriation Code</code> to {{client_id}}.</p>
+            {% if scope %}
+              <p><strong>{{client_id}}</strong> is requesting permission to perform the following actions: </p>
+
+              <ul>
+                {% for single_scope in scope|split(' ') %}
+                  <li>{{ single_scope }}</li>
+                {% endfor %}
+              </ul>
+            {% endif %}
+
+            <p>Click the button below to complete the authorize request and grant an <code>Authorization Code</code> to {{client_id}}.</p>
         </div>
         <div class="row">
             <a href="{{ path('authorize_submit') ~ '?' ~ app.request.queryString ~ '&authorize=1'}}" type="submit" class="btn btn-default">
