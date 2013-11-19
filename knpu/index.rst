@@ -5,7 +5,6 @@ OAuth 2.0: Episode1
     :hidden:
 
     intro
-    overview
     example
     grant-types
     development
