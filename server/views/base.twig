@@ -24,8 +24,12 @@
             </div>
             <div class="navbar-collapse collapse" id="navbar-main">
               <ul class="nav navbar-nav navbar-right">
-                <li><a href="{{ path('user_register') }}">Register</a></li>
-                  <li><a href="{{ path('user_login') }}">Login</a></li>
+                {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                    <li><a href="{{ path('user_logout') }}">Logout</a></li>
+                {% else %}
+                    <li><a href="{{ path('user_register') }}">Register</a></li>
+                    <li><a href="{{ path('user_login') }}">Login</a></li>
+                {% endif %}
                 <li><a href="http://builtwithbootstrap.com/" target="_blank">Built With Bootstrap</a></li>
                 <li><a href="https://wrapbootstrap.com/?ref=bsw" target="_blank">WrapBootstrap</a></li>
               </ul>

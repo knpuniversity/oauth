@@ -16,6 +16,7 @@ class UserManagement
         $routing->post('/register', [new self(), 'registerHandle'])->bind('user_register_handle');
         $routing->get('/login', [new self(), 'login'])->bind('user_login');
         $routing->post('/login_check', [new self(), 'loginCheck'])->bind('user_login_check');
+        $routing->post('/logout', [new self(), 'logout'])->bind('user_logout');
     }
 
     /**
@@ -76,6 +77,11 @@ class UserManagement
 
     public function loginCheck(Application $app)
     {
-        throw new \Exception('Should not get here - this shoudl be handled magically by the security system!');
+        throw new \Exception('Should not get here - this should be handled magically by the security system!');
+    }
+
+    public function logout(Application $app)
+    {
+        throw new \Exception('Should not get here - this should be handled magically by the security system!');
     }
 }

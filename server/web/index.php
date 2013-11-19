@@ -30,6 +30,7 @@ $app->register(new Silex\Provider\SecurityServiceProvider(), array(
                 return new UserProvider($app['storage']);
             }),
             'anonymous' => true,
+            'logout' => true,
         ),
     )
 ));
