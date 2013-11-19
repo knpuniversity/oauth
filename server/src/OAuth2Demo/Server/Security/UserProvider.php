@@ -5,7 +5,7 @@ namespace OAuth2Demo\Server\Security;
 use OAuth2Demo\Server\Storage\Pdo;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Security\Core\User\User;
+use OAuth2Demo\Server\Security\User;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 
@@ -20,13 +20,21 @@ class UserProvider implements UserProviderInterface
 
     public function loadUserByUsername($username)
     {
-        $user = $this->storage->getUser($username);
+        $userDetails = $this->storage->getUser($username);
 
-        if (!$user) {
+        if (!$userDetails) {
             throw new UsernameNotFoundException(sprintf('Username "%s" does not exist.', $username));
         }
 
-        return new User($user['username'], $user['password'], array('ROLE_USER'));
+        $user = new User();
+        $user->email = $userDetails['username'];
+        $user->encodedPassword = $userDetails['password'];
+        $user->firstName = $userDetails['first_name'];
+        $user->lastName = $userDetails['last_name'];
+        $user->address = $userDetails['address'];
+        // todo - address
+
+        return $user;
     }
 
     public function refreshUser(UserInterface $user)
@@ -40,6 +48,6 @@ class UserProvider implements UserProviderInterface
 
     public function supportsClass($class)
     {
-        return $class === 'Symfony\Component\Security\Core\User\User';
+        return $class === 'OAuth2Demo\Server\Security\User';
     }
 }

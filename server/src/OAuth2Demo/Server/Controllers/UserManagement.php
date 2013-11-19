@@ -40,6 +40,9 @@ class UserManagement
         if (!$password = $request->request->get('password')) {
             $errors[] = '"password" is required';
         }
+        if (!$address = $request->request->get('address')) {
+            $errors[] = '"address" is required';
+        }
 
         $firstName = $request->request->get('firstName');
         $lastName = $request->request->get('lastName');
@@ -57,7 +60,7 @@ class UserManagement
             return $app['twig']->render('user\register.twig', ['errors' => $errors]);
         }
 
-        $storage->setUser($email, $password, $firstName, $lastName);
+        $storage->setUser($email, $password, $firstName, $lastName, $address);
 
         return new RedirectResponse($app['url_generator']->generate('home'));
     }
