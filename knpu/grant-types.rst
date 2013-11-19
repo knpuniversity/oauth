@@ -1,6 +1,9 @@
 Grant Types
 ===========
 
+**NOTE** This *was* planned as a chapter, but I think we should just teach
+    these as we show their examples. I'm leaving this file temporarily so
+    we can use it as notes.
 
 Implicit Grant Type
   - Client receives access token directly in the URL fragment

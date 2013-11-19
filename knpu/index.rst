@@ -6,8 +6,14 @@ OAuth 2.0: Episode1
 
     intro
     example
-    grant-types
-    development
+    project-setup
+    redirecting-authorize
+    access-token
+    single-signon
+    refresh-token
+
+    facebook
+    facebook-javascript
     server
     security
     goodbye
