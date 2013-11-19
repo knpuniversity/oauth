@@ -11,6 +11,10 @@ class Client implements ControllerProviderInterface
 {
     public function connect(Application $app)
     {
+        $this->setup($app);
+        // make sure the database has been initialized
+        $this->generateSqliteDb();
+
         // sets twig extension for client debug rendering
         $app['twig']->addExtension(new Twig\JsonStringifyExtension());
 
@@ -32,7 +36,28 @@ class Client implements ControllerProviderInterface
         Controllers\ReceiveAuthorizationCode::addRoutes($routing);
         Controllers\RequestToken::addRoutes($routing);
         Controllers\RequestResource::addRoutes($routing);
+        Controllers\Authentication::addRoutes($routing);
 
         return $routing;
+    }
+
+    private function setup(Application $app)
+    {
+        if (!file_exists($sqliteFile = __DIR__.'/../../../data/oauth.sqlite')) {
+            $this->generateSqliteDb();
+        }
+
+        $app['pdo'] = $app->share(function() use ($sqliteFile) {
+            return new \PDO('sqlite:'.$sqliteFile);
+        });
+
+        $app['db'] = $app->share(function(Application $app) {
+            return new Db($app['pdo']);
+        });
+    }
+
+    private function generateSqliteDb()
+    {
+        include_once(__DIR__.'/../../../data/rebuild_db.php');
     }
 }
