@@ -1,6 +1,59 @@
 Example Time
 ============
 
+It's the distant future, the year 2014, and someone has created an amazing
+site that lets you control everything in your house called HouseRobot, or HR.
+Just create an account, fill in your address, and magically, HR can do just
+about anything with your house. Forget to lock the door? Just lock it from
+here! What about flushing the toilet? Let's just flush it again to be sure.
+Maybe you live in a farm and need to feed the chickens from the road. Yep,
+HR can handle all of this.
+
+Life is great until we watch "MOVIE" and decide that we deserve a beach vacation
+where we completely unplug. That's right, no computers, no internet, no phones.
+
+But who will feed our chickens while we're unplugged? HR is great, but we
+can't get off the beach to login every day! In fact, more and more people
+start complaining about certain missing features to HR: "Instead of logging
+in and clicking a link at 5 am, why can't my chickens just get fed automatically?
+
+Thankfully, we're developers! So, we decide to build our own app that allows
+people to schedule house activities automatically. Just come to our site,
+give us access to your HR account, schedule an activity, and you're done!
+
+Let's imagine that we've already built the site and some guy from the internet,
+let's call him Brent, wants to use it. In order for our site to take control
+of his house, we need access to his HouseRobot account. So, let's just ask
+him for his username and password. We can store it in the database and then
+use it whenever we need to feed his chickens or flush his toilet.
+
+Except, why would this guy want to give us, a bunch of strangers, his username
+and password? He wouldn't give us a copy of the keys to his house, so why
+give us access to his HR account? How does he know we won't unlock the door
+in the middle of the night or clog his toilet during a party? Maybe he only
+wants us to be able to feed his chickens. But with his username and password,
+we can do anything, Heck, we could even change his password!
+
+That clearly won't work. And really, that's good for us too. If someone gained
+access to our database, they'd have the HR username and password to every
+user in our system. Toilets would be flushing wildly all over the world, and
+we'd need to send out a big ugly security email about it.
+
+
+
+What if HumanRobot let Brent create long alphanumeric
+
+Instead of his username and password, what if Brent gave us a long, secret,
+alphanumeric key that we could use in place of his username and password.
+
+
+
+ORIGINAL NOTES
+--------------
+
+- go through drawings more
+- talk about giving away password
+
 # Analogy
 
 ## Allowing a stranger to feed your chickens
