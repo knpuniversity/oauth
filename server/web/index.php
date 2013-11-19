@@ -6,6 +6,7 @@ use Silex\Application;
 use Silex\Provider\TwigServiceProvider;
 use OAuth2Demo\Server\Server;
 use OAuth2\HttpFoundationBridge\Request;
+use OAuth2Demo\Server\Security\UserProvider;
 
 /** show all errors! */
 ini_set('display_errors', 1);
@@ -17,6 +18,18 @@ $app->register(new Silex\Provider\UrlGeneratorServiceProvider());
 $app->register(new TwigServiceProvider(), array(
     'twig.path' => __DIR__.'/../views',
 ));
+//$app->register(new Silex\Provider\SecurityServiceProvider(), array(
+//    'security.firewalls' => array(
+//        'main' => array(
+//            'pattern' => '^/',
+//            'http' => true,
+//            'users' => $app->share(function () use ($app) {
+//                return new UserProvider($app['db']);
+//            }),
+//            'anonymous' => true,
+//        ),
+//    )
+//));
 $app['debug'] = true;
 
 /** set up routes / controllers */
