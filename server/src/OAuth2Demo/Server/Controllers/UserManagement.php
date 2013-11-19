@@ -5,6 +5,7 @@ namespace OAuth2Demo\Server\Controllers;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\SecurityContextInterface;
 
 class UserManagement
 {
@@ -13,6 +14,8 @@ class UserManagement
     {
         $routing->get('/register', [new self(), 'register'])->bind('user_register');
         $routing->post('/register', [new self(), 'registerHandle'])->bind('user_register_handle');
+        $routing->get('/login', [new self(), 'login'])->bind('user_login');
+        $routing->post('/login_check', [new self(), 'loginCheck'])->bind('user_login_check');
     }
 
     /**
@@ -58,4 +61,21 @@ class UserManagement
         return new RedirectResponse($app['url_generator']->generate('home'));
     }
 
+    /**
+     * Displays the login form
+     *
+     * @param Application $app
+     */
+    public function login(Application $app, Request $request)
+    {
+        return $app['twig']->render('user/login.twig', array(
+            'error'         => $app['security.last_error']($request),
+            'last_username' => $app['session']->get('_security.last_username'),
+        ));
+    }
+
+    public function loginCheck(Application $app)
+    {
+        throw new \Exception('Should not get here - this shoudl be handled magically by the security system!');
+    }
 }

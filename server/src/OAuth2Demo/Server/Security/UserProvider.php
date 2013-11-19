@@ -2,31 +2,31 @@
 
 namespace OAuth2Demo\Server\Security;
 
+use OAuth2Demo\Server\Storage\Pdo;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\User;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
-use Doctrine\DBAL\Connection;
 
 class UserProvider implements UserProviderInterface
 {
-    private $conn;
+    private $storage;
 
-    public function __construct(Connection $conn)
+    public function __construct(Pdo $storage)
     {
-        $this->conn = $conn;
+        $this->storage = $storage;
     }
 
     public function loadUserByUsername($username)
     {
-        $stmt = $this->conn->executeQuery('SELECT * FROM users WHERE username = ?', array(strtolower($username)));
+        $user = $this->storage->getUser($username);
 
-        if (!$user = $stmt->fetch()) {
+        if (!$user) {
             throw new UsernameNotFoundException(sprintf('Username "%s" does not exist.', $username));
         }
 
-        return new User($user['username'], $user['password'], explode(',', $user['roles']), true, true, true, true);
+        return new User($user['username'], $user['password'], array('ROLE_USER'));
     }
 
     public function refreshUser(UserInterface $user)
