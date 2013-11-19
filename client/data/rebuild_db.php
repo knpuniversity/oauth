@@ -18,9 +18,6 @@ if (!is_writable(__DIR__)) {
 // rebuild the DB
 $db = new PDO(sprintf('sqlite://%s', $dbfile));
 $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-$db->exec('CREATE TABLE users (username TEXT, password TEXT, first_name TEXT, last_name TEXT, house_access_token TEXT)');
-
-// add test data
-$db->exec(sprintf('INSERT INTO users (username, password) VALUES ("haluser", "%s")', sha1("halpass")));
+$db->exec('CREATE TABLE users (email TEXT, first_name TEXT, last_name TEXT, house_robot_access_token TEXT)');
 
 chmod($dbfile, 0777);
