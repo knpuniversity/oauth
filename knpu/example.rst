@@ -1,58 +1,84 @@
 Example Time
 ============
 
-It's the distant future, the year 2014, and someone has created an amazing
-site that lets you control everything in your house called HouseRobot, or HR.
-Just create an account, fill in your address, and magically, HR can do just
-about anything with your house. Forget to lock the door? Just lock it from
-here! What about flushing the toilet? Let's just flush it again to be sure.
-Maybe you live in a farm and need to feed the chickens from the road. Yep,
-HR can handle all of this.
+Woohoo! You've just won an all-expense paid 7 day beach vacation to the
+Carribean!
 
-Life is great until we watch "MOVIE" and decide that we deserve a beach vacation
-where we completely unplug. That's right, no computers, no internet, no phones.
+Meet Sally. She's a hardworking programmer that hasn't seen the sun in years.
+But that's about to change, with a 7 day beach vacation with her favorite
+friend Brent. No computers, no phones, no internet, just sunshine, palm trees,
+and clear water.
 
-But who will feed our chickens while we're unplugged? HR is great, but we
-can't get off the beach to login every day! In fact, more and more people
-start complaining about certain missing features to HR: "Instead of logging
-in and clicking a link at 5 am, why can't my chickens just get fed automatically?
+  *show Sally and Brent on a beach with all these nice things*
 
-Thankfully, we're developers! So, we decide to build our own app that allows
-people to schedule house activities automatically. Just come to our site,
-give us access to your HR account, schedule an activity, and you're done!
+But there's just one problem... someone needs to feed the chickens! Brent,
+of the beard-growing, organic farming variety, has a coup of the nicest, smartest,
+but hungriest chickens around. Unless we find someone to feed these guys
+and teach them algebra, we can't have any vacation!
 
-Let's imagine that we've already built the site and some guy from the internet,
-let's call him Brent, wants to use it. In order for our site to take control
-of his house, we need access to his HouseRobot account. So, let's just ask
-him for his username and password. We can store it in the database and then
-use it whenever we need to feed his chickens or flush his toilet.
+  *shows Brent reading a book to chickens that are thinking about either food or math equations*
 
-Except, why would this guy want to give us, a bunch of strangers, his username
-and password? He wouldn't give us a copy of the keys to his house, so why
-give us access to his HR account? How does he know we won't unlock the door
-in the middle of the night or clog his toilet during a party? Maybe he only
-wants us to be able to feed his chickens. But with his username and password,
-we can do anything, Heck, we could even change his password!
+With a quick search, we find "Handy Hal's Housing Help": a guy in the internet
+who offers services to your house when you're away. Perfect!
 
-That clearly won't work. And really, that's good for us too. If someone gained
-access to our database, they'd have the HR username and password to every
-user in our system. Toilets would be flushing wildly all over the world, and
-we'd need to send out a big ugly security email about it.
+  *Photo of Hal, potentially looking a little greasy if possible*
+
+But, do you really want to give this guy a copy of your keys? All you really
+want to give him access to is the chicken coup, not the full house. And what
+if he loses your keys? You'd have to change the locks. And what if he creates
+another copy of your keys and keeps them?
+
+  *Drawing: Keys (with no-smoking sign)*
+
+What if the doors on your house and chicken coup not only took a key, but
+also took a temporary card, like of like a hotel room. You can issue out
+these cards to certain people you trust, and they expire after a limited time.
+Just like a hotel key-card, each card can only open certain doors. This would
+be *perfect*. And because Sally is a programmer, she calls each card an "ACCESS TOKEN".
+
+Chickens and Vacation on a Web App
+----------------------------------
+
+Ok, instead of thinking about Brent's house and some guy named Hal, let's
+turn to the web! Imagine it's the distant future, the year 2014, and someone
+has created a web site where you can register, verify your home address,
+then completely control anything in your house. It's called HouseRobot, and
+you can do anything from feeding the chickens to flushing the toilet.
+
+If Brent signs up, he could feed his chickens right from the web. That's nice,
+but with his laptop at home, and the pina coladas on the beach, he won't
+even have access to HumanRobot while on vacation.
+
+Sally, being the programming master-mind, sees an opportunity: a site where
+you can schedule house tasks ahead of time, like feeding the chickens each
+day at 5 am. When that time comes, the site can use your HumanRobot account
+on your behalf to actually do things. Genius!
+
+But if Sally makes the users to the site enter their HouseRobot username and
+password, that's just as bad as making someone give you a copy of their house key.
+Sally seem nice, but her site could do anything to your house, like unlocking
+the doors at night or, worse, clogging your toilet during a part! And if
+someone got access to her database, someone nasty would have complete control
+over everyone's home!
+
+In this screencast, we'll play the part of Sally, using OAuth to avoid this
+situation. Instead of a username and password, our users will give us a token
+that grants us temporary access to control only certain parts of their house
+through HouseRobot. We'll learn about the different OAuth grant types, from
+the classic auth code flow to the implicit flow that's commonly used by JavaScript
+or mobile apps. And of course we'll talk about more advanced things like handling
+refresh tokens and include a practical example of connecting with Facebook.
+
+Let's go!
 
 
 
-What if HumanRobot let Brent create long alphanumeric
 
-Instead of his username and password, what if Brent gave us a long, secret,
-alphanumeric key that we could use in place of his username and password.
+NOTES
+-----
 
-
-
-ORIGINAL NOTES
---------------
-
-- go through drawings more
-- talk about giving away password
+- Maybe introduce more terms here (see below)? Or perhaps we can do this
+as things come up later.
 
 # Analogy
 
