@@ -20,10 +20,11 @@
         <div class="navbar navbar-default navbar-fixed-top">
           <div class="container">
             <div class="navbar-header">
-              <a href="../" class="navbar-brand">Home</a>
+              <a href="{{ path('home') }}" class="navbar-brand">Home</a>
             </div>
             <div class="navbar-collapse collapse" id="navbar-main">
               <ul class="nav navbar-nav navbar-right">
+                <li><a href="{{ path('user_register') }}">Register</a></li>
                 <li><a href="http://builtwithbootstrap.com/" target="_blank">Built With Bootstrap</a></li>
                 <li><a href="https://wrapbootstrap.com/?ref=bsw" target="_blank">WrapBootstrap</a></li>
               </ul>
