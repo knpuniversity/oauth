@@ -6,8 +6,6 @@ use OAuth2\Storage\Pdo as OAuth2Pdo;
 
 class Pdo extends OAuth2Pdo
 {
-
-
     public function getAllClientDetails()
     {
         $stmt = $this->db->prepare(sprintf('SELECT * from %s', $this->config['client_table']));
