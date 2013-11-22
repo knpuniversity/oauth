@@ -1,14 +1,12 @@
 {% extends "base.twig" %}
 
+{% block header %}<h1>{{ message }}</h1>{% endblock %}
+
 {% block content %}
 <div class="bs-docs-section" role="main">
     <div class="row">
-        <h3>
-            Hey {{ user.username }}!
-            It's me, your house
-        </h3>
         <p>
-            You can do all sorts of cool things from this website. For instance:
+            Now do some more stuff:
         </p>
         {{ include('_houseActions.twig') }}
     </div>
