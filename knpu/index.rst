@@ -6,14 +6,17 @@ OAuth 2.0: Episode1
 
     intro
     example
-    project-setup
+    farm-robot
+    client-credentials
     redirecting-authorize
     access-token
-    single-signon
-    refresh-token
-
+    logging-in
     facebook
     facebook-javascript
-    server
+    expired-token
+    refresh-token
     security
     goodbye
+
+
+    server
