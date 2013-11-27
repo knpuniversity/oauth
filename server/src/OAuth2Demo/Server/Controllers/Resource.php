@@ -4,6 +4,7 @@ namespace OAuth2Demo\Server\Controllers;
 
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class Resource
 {
@@ -12,6 +13,8 @@ class Resource
     {
         $routing->get('/api/{action}', [new self(), 'get'])->bind('api_call');
         $routing->post('/api/{action}', [new self(), 'run']);
+        // actions taken on your house using your authenticated account instead of a token
+        $routing->post('/house/{action}', [new self(), 'webAction'])->bind('web_call');
     }
 
     /**
@@ -59,5 +62,24 @@ class Resource
             'message' => 'nice work!  You did it!',
         ];
         return new Response(json_encode($api_response));
+    }
+
+    public function webAction(Application $app, $action)
+    {
+        switch ($action) {
+            case 'door-unlock':
+                $message = 'You just unlocked your door! What out for strangers!';
+                break;
+            case 'toiletseat-down':
+                $message = 'You just put the toilet seat down. You\'re a wonderful roommate!';
+                break;
+            case 'ac-on':
+                $message = 'Cool air is coming through!';
+                break;
+            default:
+                throw new NotFoundHttpException('Unsupported action '.$action);
+        }
+
+        return $app['twig']->render('webAction.twig', ['message' => $message]);
     }
 }
