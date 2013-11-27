@@ -25,6 +25,7 @@ class Resource
     public function get(Application $app, $action)
     {
         $token = $app['request']->query->get('access_token');
+
         return $app['twig']->render('api_call.twig', ['action' => $action, 'token' => $token]);
     }
 

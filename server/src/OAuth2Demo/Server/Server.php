@@ -7,7 +7,7 @@ use Silex\ControllerProviderInterface;
 use OAuth2\HttpFoundationBridge\Response as BridgeResponse;
 use OAuth2\Server as OAuth2Server;
 use OAuth2\GrantType\AuthorizationCode;
-use OAuth2\GrantType\UserCredentials;
+use OAuth2\GrantType\ClientCredentials;
 use OAuth2\Storage\Memory;
 use OAuth2\Scope;
 use OAuth2Demo\Server\Storage\Pdo;
@@ -30,7 +30,7 @@ class Server implements ControllerProviderInterface
         // create array of supported grant types
         $grantTypes = array(
             'authorization_code' => new AuthorizationCode($storage),
-            'user_credentials'   => new UserCredentials($storage),
+            'client_credentials' => new ClientCredentials($storage),
         );
 
         // instantiate the oauth server

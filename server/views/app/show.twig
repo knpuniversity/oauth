@@ -47,15 +47,21 @@
 
 <div class="bs-docs-section" role="main">
     <div class="row">
+        <h3> Call your own APIs</h3>
         <p>
-            Now you need to get permission from my owner to perform those functions,
-            using the <code>authorize</code> url below:
+            Get an <a target="_blank" href="{{ url('token_get', {client_id: client.client_id, client_secret: client.client_secret, user_id: client.user_id, grant_type: 'client_credentials' }) }}">Access Token</a>!
+        </p>
+    </div>
+    <div class="row">
+        <h3> Call APIs on Behalf of Another User</h3>
+        <p>
+            In order to call another user's APIs, you must first obtain their authorization bysending them to the <code>authorize</code> url below:
         </p>
         <pre class="alert-info"><code><a target="_blank" href="{{ url('authorize', {client_id: client.client_id, response_type: 'code'}, true) }}">{{ url('authorize', {client_id: client.client_id, response_type: 'code'}, true) }}</a></code></pre>
     </div>
     <div class="row">
         <p>
-            Then, you can <a href="{{ path('authcode') }}">exchange your authorization code</a> for an access token!
+            Then, you can <a href="{{ path('token_get', { grant_type: 'authorization_code' }) }}">exchange your authorization code</a> for an access token!
         </p>
     </div>
 </div>
