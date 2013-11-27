@@ -5,7 +5,7 @@
   "scope": "barn-unlock",
 
   "authorize_url": "http://localhost:9000/authorize",
-  "resource_url": "http://localhost:9000/api/barn-unlock",
+  "resource_url": "http://localhost:9000/api",
   "token_url": "http://localhost:9000/token",
   "resource_method": "POST",
   "resource_params": {},
