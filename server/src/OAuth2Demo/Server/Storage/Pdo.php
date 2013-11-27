@@ -38,4 +38,50 @@ class Pdo extends OAuth2Pdo
         }
         return $stmt->execute(compact('username', 'password', 'firstName', 'lastName', 'address'));
     }
+
+    /* The COOP storage methods */
+    public function logApiCall($user_id, $action)
+    {
+        $timestamp = time();
+        $sql = 'INSERT INTO api_log (user_id, action, timestamp) VALUES (:user_id, :action, :timestamp)';
+
+        $stmt = $this->db->prepare($sql);
+        return $stmt->execute(compact('user_id', 'action', 'timestamp'));
+    }
+
+    public function wasApiCalledRecently($user_id, $action, $seconds)
+    {
+        $timestamp = time() - $seconds;
+        $sql = 'SELECT count(*) as count FROM api_log WHERE user_id=:user_id AND action=:action AND timestamp>=:timestamp';
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute(compact('user_id', 'action', 'timestamp'));
+        $result = $stmt->fetch();
+        return $result && $result['count'] > 0;
+    }
+
+    public function addEggCount($user_id, $egg_count, $day = null)
+    {
+        $day = $day ?: strtotime(date('Y-m-d'));
+        if (is_null($this->getEggCount($user_id, $day))) {
+            $sql = 'INSERT INTO egg_count (user_id, day, count) VALUES (:user_id, :day, :egg_count)';
+        } else {
+            $sql = 'UPDATE egg_count SET count = count + :egg_count WHERE user_id=:user_id and day=:day';
+        }
+
+        $stmt = $this->db->prepare($sql);
+        return $stmt->execute(compact('user_id', 'day', 'egg_count'));
+    }
+
+    public function getEggCount($user_id, $day = null)
+    {
+        $day = $day ?: strtotime(date('Y-m-d'));
+        $sql = 'SELECT count from egg_count where user_id=:user_id and day=:day';
+        $stmt = $this->db->prepare($sql);
+
+        $stmt->execute(compact('user_id', 'day'));
+        $result = $stmt->fetch();
+
+        return $result ? $result['count'] : null;
+    }
 }

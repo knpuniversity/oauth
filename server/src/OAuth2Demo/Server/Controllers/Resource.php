@@ -12,7 +12,7 @@ class Resource
     static public function addRoutes($routing)
     {
         $routing->get('/api/{action}', [new self(), 'get'])->bind('api_call');
-        $routing->post('/api/{action}', [new self(), 'run']);
+        $routing->post('/api/{action}', [new self(), 'apiAction']);
         // actions taken on your house using your authenticated account instead of a token
         $routing->post('/house/{action}', [new self(), 'webAction'])->bind('web_call');
     }
@@ -34,7 +34,7 @@ class Resource
      * token for the current user.  If the token is valid, the resource (in this
      * case, the "friends" of the current user) will be returned to the client
      */
-    public function run(Application $app, $action)
+    public function apiAction(Application $app, $action)
     {
         // get the oauth server (configured in src/OAuth2Demo/Server/Server.php)
         $server = $app['oauth_server'];
@@ -55,12 +55,15 @@ class Resource
             return $response;
         }
 
+        $token = $server->getResourceController()->getToken();
+        $message = $this->doAction($app, $token['user_id'], $action);
+
         // return a generic API response - not that exciting
         // @TODO return something more valuable, like the name of the logged in user
         $api_response = [
-            'action' => $action,
+            'action'  => $action,
             'success' => true,
-            'message' => 'nice work!  You did it!',
+            'message' => $message,
         ];
         return new Response(json_encode($api_response));
     }
@@ -69,48 +72,63 @@ class Resource
     {
         $user = $app['security']->getToken()->getUser();
 
+        $message = $this->doAction($app, $user->getUsername(), $action);
+
+        return $app['twig']->render('webAction.twig', ['message' => $message]);
+    }
+
+    private function doAction($app, $username, $action)
+    {
         switch ($action) {
             case 'barn-unlock':
-                if ($this->calledInLast($app, $action, 20)) {
+                if ($app['storage']->wasApiCalledRecently($username, $action, 20)) {
                     $message = 'The barn is now locked.  Just to be safe.';
                 } else {
                     $message = 'You just unlocked your barn! Watch out for strangers!';
+                    $app['storage']->logApiCall($username, $action);
                 }
                 break;
             case 'toiletseat-down':
-                if ($this->calledInLast($app, $action, 20)) {
+                if ($app['storage']->wasApiCalledRecently($username, $action, 20)) {
                     $message = 'You put the toilet seat back up, for no good reason';
                 } else {
                     $message = 'You just put the toilet seat down. You\'re a wonderful roommate!';
+                    $app['storage']->logApiCall($username, $action);
                 }
                 break;
             case 'chickens-feed':
-                if ($this->calledInLast($app, $action, 20)) {
+                if ($app['storage']->wasApiCalledRecently($username, $action, 20)) {
                     $message = 'You just fed them! Do you want them to explode??';
                 } else {
                     $message = 'Your chickens are now full and happy';
+                    $app['storage']->logApiCall($username, $action);
                 }
                 break;
             case 'eggs-collect':
-                if ($this->calledInLast($app, $action, 20)) {
+                if ($app['storage']->wasApiCalledRecently($username, $action, 20)) {
                     $message = 'Hey, give the ladies a break. Makin\' eggs ain\'t easy!';
                 } else {
                     $eggCount = rand(2, 5);
-                    $app['session']->set('api.egg_count', $eggCount + $app['session']->get('api.egg_count'));
+                    $app['storage']->addEggCount($username, $eggCount);
                     $message = sprintf('Hey look at that, %s eggs have been collected!', $eggCount);
+                    $app['storage']->logApiCall($username, $action);
                 }
                 break;
             case 'eggs-count':
-                $eggCount = $app['session']->get('api.egg_count');
+                $eggCount = $app['storage']->getEggCount($username);
                 $message = sprintf('You have collected a total of %s eggs today', intval($eggCount));
+                $app['storage']->logApiCall($username, $action);
                 break;
             default:
                 throw new NotFoundHttpException('Unsupported action '.$action);
         }
 
-        $app['session']->set(sprintf('api.%s.last_called', $action), time());
+        return $message;
+    }
 
-        return $app['twig']->render('webAction.twig', ['message' => $message]);
+    private function markAsCalled($app, $action)
+    {
+        $app['session']->set(sprintf('api.%s.last_called', $action), time());
     }
 
     private function calledInLast($app, $action, $seconds)

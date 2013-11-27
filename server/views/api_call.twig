@@ -16,7 +16,7 @@
             <label for="access_token" class="col-lg-2 control-label">Access Token</label>
             <div class="col-lg-10">
               <input type="text" class="form-control" name="access_token" placeholder="Enter your Access Token here" value="{{token}}">
-              <span class="help-block">Don't have an access token? Use an <a href="{{ path('authcode') }}">Authorization Code</a> to get one!</span>
+              <span class="help-block">Don't have an access token? Use an <a href="{{ path('token_get', { grant_type: 'authorization_code'}) }}">Authorization Code</a> to get one!</span>
             </div>
           </div>
 
