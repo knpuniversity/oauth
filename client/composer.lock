@@ -11,12 +11,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/guzzle.git",
-                "reference": "e62f205c834a23e3a8c5933b1748f3336721bcc1"
+                "reference": "695a0d42e22751c79099b61e8acce79c8fa944db"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/e62f205c834a23e3a8c5933b1748f3336721bcc1",
-                "reference": "e62f205c834a23e3a8c5933b1748f3336721bcc1",
+                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/695a0d42e22751c79099b61e8acce79c8fa944db",
+                "reference": "695a0d42e22751c79099b61e8acce79c8fa944db",
                 "shasum": ""
             },
             "require": {
@@ -95,11 +95,11 @@
                 "rest",
                 "web service"
             ],
-            "time": "2013-10-16 00:14:18"
+            "time": "2013-11-19 06:47:21"
         },
         {
             "name": "pimple/pimple",
-            "version": "dev-master",
+            "version": "1.1.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/fabpot/Pimple.git",
@@ -145,19 +145,24 @@
         },
         {
             "name": "psr/log",
-            "version": "1.0.0",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-fig/log.git",
-                "reference": "fe0936ee26643249e916849d48e3a51d5f5e278b"
+                "reference": "134145e8d08ddcb9bb8f49a2feb9aa1f2393650c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-fig/log/zipball/fe0936ee26643249e916849d48e3a51d5f5e278b",
-                "reference": "fe0936ee26643249e916849d48e3a51d5f5e278b",
+                "url": "https://api.github.com/repos/php-fig/log/zipball/134145e8d08ddcb9bb8f49a2feb9aa1f2393650c",
+                "reference": "134145e8d08ddcb9bb8f49a2feb9aa1f2393650c",
                 "shasum": ""
             },
             "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
             "autoload": {
                 "psr-0": {
                     "Psr\\Log\\": ""
@@ -179,20 +184,20 @@
                 "psr",
                 "psr-3"
             ],
-            "time": "2012-12-21 11:40:51"
+            "time": "2013-11-19 10:21:35"
         },
         {
             "name": "silex/silex",
             "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/fabpot/Silex.git",
-                "reference": "bc673b478ec276217305f6a81c8aeafb0f9ffe63"
+                "url": "https://github.com/silexphp/Silex.git",
+                "reference": "71661809247193080e77c0613415f0df15edb485"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fabpot/Silex/zipball/bc673b478ec276217305f6a81c8aeafb0f9ffe63",
-                "reference": "bc673b478ec276217305f6a81c8aeafb0f9ffe63",
+                "url": "https://api.github.com/repos/silexphp/Silex/zipball/71661809247193080e77c0613415f0df15edb485",
+                "reference": "71661809247193080e77c0613415f0df15edb485",
                 "shasum": ""
             },
             "require": {
@@ -263,7 +268,7 @@
             "keywords": [
                 "microframework"
             ],
-            "time": "2013-10-16 17:53:18"
+            "time": "2013-11-11 19:01:23"
         },
         {
             "name": "symfony/debug",
@@ -272,12 +277,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Debug.git",
-                "reference": "10236d7c34e135a9e0879b62a443e3870ce639c6"
+                "reference": "a11358e464d91417b3bcb81a20edb57cfb928594"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Debug/zipball/10236d7c34e135a9e0879b62a443e3870ce639c6",
-                "reference": "10236d7c34e135a9e0879b62a443e3870ce639c6",
+                "url": "https://api.github.com/repos/symfony/Debug/zipball/a11358e464d91417b3bcb81a20edb57cfb928594",
+                "reference": "a11358e464d91417b3bcb81a20edb57cfb928594",
                 "shasum": ""
             },
             "require": {
@@ -318,7 +323,7 @@
             ],
             "description": "Symfony Debug Component",
             "homepage": "http://symfony.com",
-            "time": "2013-10-16 11:59:56"
+            "time": "2013-11-16 18:00:51"
         },
         {
             "name": "symfony/event-dispatcher",
@@ -381,12 +386,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/HttpFoundation.git",
-                "reference": "a7af7a60fa83695c85c62a1253b15e7e67993274"
+                "reference": "acf83915754a2c25f7a7d9d90454185bf5ac9de5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/HttpFoundation/zipball/a7af7a60fa83695c85c62a1253b15e7e67993274",
-                "reference": "a7af7a60fa83695c85c62a1253b15e7e67993274",
+                "url": "https://api.github.com/repos/symfony/HttpFoundation/zipball/acf83915754a2c25f7a7d9d90454185bf5ac9de5",
+                "reference": "acf83915754a2c25f7a7d9d90454185bf5ac9de5",
                 "shasum": ""
             },
             "require": {
@@ -422,7 +427,7 @@
             ],
             "description": "Symfony HttpFoundation Component",
             "homepage": "http://symfony.com",
-            "time": "2013-10-17 21:29:17"
+            "time": "2013-11-13 21:30:16"
         },
         {
             "name": "symfony/http-kernel",
@@ -431,12 +436,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/HttpKernel.git",
-                "reference": "445a47de0b50acfdf3e1a30bf3a6153733d84c46"
+                "reference": "32b635be49e4001ee7d11479d380d176d692ecd3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/HttpKernel/zipball/445a47de0b50acfdf3e1a30bf3a6153733d84c46",
-                "reference": "445a47de0b50acfdf3e1a30bf3a6153733d84c46",
+                "url": "https://api.github.com/repos/symfony/HttpKernel/zipball/32b635be49e4001ee7d11479d380d176d692ecd3",
+                "reference": "32b635be49e4001ee7d11479d380d176d692ecd3",
                 "shasum": ""
             },
             "require": {
@@ -493,7 +498,7 @@
             ],
             "description": "Symfony HttpKernel Component",
             "homepage": "http://symfony.com",
-            "time": "2013-10-16 11:59:56"
+            "time": "2013-11-04 06:11:47"
         },
         {
             "name": "symfony/routing",
@@ -502,28 +507,29 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Routing.git",
-                "reference": "5b59329198eb40039d9dbfd85aefefc35f442ea2"
+                "reference": "393ce6b11f7fe37a5920452ef3a3e43f16fdac68"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Routing/zipball/5b59329198eb40039d9dbfd85aefefc35f442ea2",
-                "reference": "5b59329198eb40039d9dbfd85aefefc35f442ea2",
+                "url": "https://api.github.com/repos/symfony/Routing/zipball/393ce6b11f7fe37a5920452ef3a3e43f16fdac68",
+                "reference": "393ce6b11f7fe37a5920452ef3a3e43f16fdac68",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.3"
             },
             "require-dev": {
-                "doctrine/common": "~2.2",
+                "doctrine/annotations": "~1.0",
                 "psr/log": "~1.0",
                 "symfony/config": "~2.2",
                 "symfony/expression-language": "~2.4",
                 "symfony/yaml": "~2.0"
             },
             "suggest": {
-                "doctrine/common": "",
-                "symfony/config": "",
-                "symfony/yaml": ""
+                "doctrine/annotations": "For using the annotation loader",
+                "symfony/config": "For using the all-in-one router or any loader",
+                "symfony/expression-language": "For using expression matching",
+                "symfony/yaml": "For using the YAML loader"
             },
             "type": "library",
             "extra": {
@@ -552,7 +558,13 @@
             ],
             "description": "Symfony Routing Component",
             "homepage": "http://symfony.com",
-            "time": "2013-10-16 14:40:12"
+            "keywords": [
+                "router",
+                "routing",
+                "uri",
+                "url"
+            ],
+            "time": "2013-11-12 07:05:02"
         },
         {
             "name": "symfony/twig-bridge",
@@ -619,12 +631,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/fabpot/Twig.git",
-                "reference": "27bd8b185f9e7e217952de05756fdfce6bdc4673"
+                "reference": "39eb50c00e2c0b8174dbcd63e0ed45815ff7babf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fabpot/Twig/zipball/27bd8b185f9e7e217952de05756fdfce6bdc4673",
-                "reference": "27bd8b185f9e7e217952de05756fdfce6bdc4673",
+                "url": "https://api.github.com/repos/fabpot/Twig/zipball/39eb50c00e2c0b8174dbcd63e0ed45815ff7babf",
+                "reference": "39eb50c00e2c0b8174dbcd63e0ed45815ff7babf",
                 "shasum": ""
             },
             "require": {
@@ -633,7 +645,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.14-dev"
+                    "dev-master": "1.15-dev"
                 }
             },
             "autoload": {
@@ -660,7 +672,7 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2013-10-17 08:34:06"
+            "time": "2013-11-14 08:08:49"
         }
     ],
     "packages-dev": [

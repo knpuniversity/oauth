@@ -1,0 +1,15 @@
+{% set actions = [
+    { 'action': 'door-unlock', 'message': 'Unlock the Door'},
+    { 'action': 'toiletseat-down', 'message': 'Put the Toilet Seat Down'},
+    { 'action': 'ac-on', 'message': 'Turn on the A.C.'},
+] %}
+
+<ul>
+    {% for action in actions %}
+        <li style="margin-bottom: 10px;">
+            <form action="{{ path('web_call', {'action': action.action}) }}" method="POST">
+                <button type="submit" class="btn btn-primary btn-xs">{{ action.message }}</button>
+            </form>
+        </li>
+    {% endfor %}
+</ul>

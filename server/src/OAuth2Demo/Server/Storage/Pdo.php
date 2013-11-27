@@ -24,4 +24,18 @@ class Pdo extends OAuth2Pdo
         }
         return $stmt->execute(compact('client_id', 'client_secret', 'redirect_uri', 'grant_types', 'scope'));
     }
+
+    public function setUser($username, $password, $firstName = null, $lastName = null, $address = null)
+    {
+        // do not store in plaintext
+        $password = sha1($password);
+
+        // if it exists, update it.
+        if ($this->getUser($username)) {
+            $stmt = $this->db->prepare($sql = sprintf('UPDATE %s SET password=:password, first_name=:firstName, last_name=:lastName, address=:address where username=:username', $this->config['user_table']));
+        } else {
+            $stmt = $this->db->prepare(sprintf('INSERT INTO %s (username, password, first_name, last_name, address) VALUES (:username, :password, :firstName, :lastName, :address)', $this->config['user_table']));
+        }
+        return $stmt->execute(compact('username', 'password', 'firstName', 'lastName', 'address'));
+    }
 }

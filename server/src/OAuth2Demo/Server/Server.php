@@ -68,6 +68,7 @@ class Server implements ControllerProviderInterface
         /* Set corresponding endpoints on the controller classes */
         Controllers\Home::addRoutes($routing);
         Controllers\AppManagement::addRoutes($routing);
+        Controllers\UserManagement::addRoutes($routing);
 
         // For the OAUTH server
         Controllers\Authorize::addRoutes($routing);
