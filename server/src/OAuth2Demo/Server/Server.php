@@ -36,9 +36,17 @@ class Server implements ControllerProviderInterface
         // instantiate the oauth server
         $server = new OAuth2Server($storage, array('enforce_state' => false, 'allow_implicit' => true), $grantTypes);
 
+        $app['scopes'] = [
+            'barn-unlock'     => 'Unlock the Barn',
+            'toiletseat-down' => 'Put the Toilet Seat Down',
+            'chickens-feed'   => 'Feed Your Chickens',
+            'eggs-collect'    => 'Collect Eggs from Your Chickens',
+            'eggs-count'      => 'Get the Number of Eggs Collected Today',
+        ];
+
         // add scopes
         $memory = new Memory(array(
-          'supported_scopes' => ['door-unlock', 'toiletseat-down', 'ac-on'],
+          'supported_scopes' => array_keys($app['scopes']),
         ));
 
         $server->setScopeUtil(new Scope($memory));

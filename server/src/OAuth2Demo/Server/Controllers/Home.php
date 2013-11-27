@@ -22,9 +22,7 @@ class Home
             $user = $app['security']->getToken()->getUser();
 
             // we're logged in! Show the nice dashboard
-            $clients = $app['storage']->getAllClientDetails($user->getUsername());
-
-            return $app['twig']->render('dashboard.twig', ['user' => $user, 'clients' => $clients]);
+            return $app['twig']->render('dashboard.twig', ['user' => $user]);
         } else {
             // we're anonymous, jsut show them some marketing jargon
             return $app['twig']->render('home.twig');
@@ -38,6 +36,9 @@ class Home
         // the API docs will be here and all this functionality will
         // basically be an API playground
 
-        return $app['twig']->render('apiHome.twig');
+        $user    = $app['security']->getToken()->getUser();
+        $clients = $app['storage']->getAllClientDetails($user->getUsername());
+
+        return $app['twig']->render('apiHome.twig', ['clients' => $clients]);
     }
 }

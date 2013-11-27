@@ -39,21 +39,13 @@
             <label class="col-lg-2 control-label">Scope
               <span class="help-block"><em>What is it you want to do?</em></span></label>
             <div class="col-lg-10">
-              <div class="checkbox">
-                <label>
-                  <input type="checkbox" name="scope[]" value="door-unlock"> Unlock the Door
-                </label>
-              </div>
-              <div class="checkbox">
-                <label>
-                  <input type="checkbox" name="scope[]" value="toiletseat-down"> Put the Toilet Seat Down
-                </label>
-              </div>
-              <div class="checkbox">
-                <label>
-                  <input type="checkbox" name="scope[]" value="ac-on"> Turn on the AC
-                </label>
-              </div>
+              {% for action,message in app.scopes %}
+                <div class="checkbox">
+                  <label>
+                    <input type="checkbox" name="scope[]" value="{{ action }}"> {{ message }}
+                  </label>
+                </div>
+              {% endfor %}
             </div>
           </div>
           <div class="form-group">

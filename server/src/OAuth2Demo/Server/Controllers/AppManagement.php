@@ -41,8 +41,7 @@ class AppManagement
         $secret = substr(md5(microtime()), 0, 32);
 
         // get the logged-in user and tie it to the newly-created client
-        $token = $app['security']->getToken();
-        $user = $token->getUser();
+        $user = $app['security']->getToken()->getUser();
 
         // create the client
         $app['storage']->setClientDetails($name, $secret, $redirect_uri, null, $scope, $user->getUsername());
