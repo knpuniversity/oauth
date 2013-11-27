@@ -36,7 +36,7 @@
                 {
                     "name": "Brent Shaffer",
                     "email": "bshafs@gmail.com",
-                    "homepage": "http://brentertainment.com"
+                    "homepage": "http://github.com/bshaffer"
                 }
             ],
             "description": "A bridge to HttpFoundation for oauth2-server-php",
@@ -80,7 +80,7 @@
                 {
                     "name": "Brent Shaffer",
                     "email": "bshafs@gmail.com",
-                    "homepage": "http://brentertainment.com"
+                    "homepage": "http://github.com/bshaffer"
                 }
             ],
             "description": "OAuth2 Server for PHP",
@@ -98,12 +98,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/fabpot/Pimple.git",
-                "reference": "471c7d7c52ad6594e17b8ec33efdd1be592b5d83"
+                "reference": "2019c145fe393923f3441b23f29bbdfaa5c58c4d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fabpot/Pimple/zipball/471c7d7c52ad6594e17b8ec33efdd1be592b5d83",
-                "reference": "471c7d7c52ad6594e17b8ec33efdd1be592b5d83",
+                "url": "https://api.github.com/repos/fabpot/Pimple/zipball/2019c145fe393923f3441b23f29bbdfaa5c58c4d",
+                "reference": "2019c145fe393923f3441b23f29bbdfaa5c58c4d",
                 "shasum": ""
             },
             "require": {
@@ -136,7 +136,7 @@
                 "container",
                 "dependency injection"
             ],
-            "time": "2013-09-19 04:53:08"
+            "time": "2013-11-22 08:30:29"
         },
         {
             "name": "psr/log",
@@ -270,12 +270,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Debug.git",
-                "reference": "a11358e464d91417b3bcb81a20edb57cfb928594"
+                "reference": "598ba50d67b9d4857fca21a414eef58c5ec456fa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Debug/zipball/a11358e464d91417b3bcb81a20edb57cfb928594",
-                "reference": "a11358e464d91417b3bcb81a20edb57cfb928594",
+                "url": "https://api.github.com/repos/symfony/Debug/zipball/598ba50d67b9d4857fca21a414eef58c5ec456fa",
+                "reference": "598ba50d67b9d4857fca21a414eef58c5ec456fa",
                 "shasum": ""
             },
             "require": {
@@ -292,7 +292,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.4-dev"
+                    "dev-master": "2.5-dev"
                 }
             },
             "autoload": {
@@ -316,7 +316,7 @@
             ],
             "description": "Symfony Debug Component",
             "homepage": "http://symfony.com",
-            "time": "2013-11-16 18:00:51"
+            "time": "2013-11-24 20:17:07"
         },
         {
             "name": "symfony/event-dispatcher",
@@ -379,12 +379,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/HttpFoundation.git",
-                "reference": "1c4b897064f4f621031a0e3bc19fd7054d5e0315"
+                "reference": "c4522cb62c25f3e6d481a93701d4d7814ab434a8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/HttpFoundation/zipball/1c4b897064f4f621031a0e3bc19fd7054d5e0315",
-                "reference": "1c4b897064f4f621031a0e3bc19fd7054d5e0315",
+                "url": "https://api.github.com/repos/symfony/HttpFoundation/zipball/c4522cb62c25f3e6d481a93701d4d7814ab434a8",
+                "reference": "c4522cb62c25f3e6d481a93701d4d7814ab434a8",
                 "shasum": ""
             },
             "require": {
@@ -420,7 +420,7 @@
             ],
             "description": "Symfony HttpFoundation Component",
             "homepage": "http://symfony.com",
-            "time": "2013-11-13 21:27:40"
+            "time": "2013-11-25 14:49:41"
         },
         {
             "name": "symfony/http-kernel",
@@ -429,12 +429,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/HttpKernel.git",
-                "reference": "9d45e71824fae3d02d0725c7eaeaebe019c54827"
+                "reference": "46aa5b516dded0a8b1994b0a19e916bb6bea4f50"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/HttpKernel/zipball/9d45e71824fae3d02d0725c7eaeaebe019c54827",
-                "reference": "9d45e71824fae3d02d0725c7eaeaebe019c54827",
+                "url": "https://api.github.com/repos/symfony/HttpKernel/zipball/46aa5b516dded0a8b1994b0a19e916bb6bea4f50",
+                "reference": "46aa5b516dded0a8b1994b0a19e916bb6bea4f50",
                 "shasum": ""
             },
             "require": {
@@ -491,7 +491,7 @@
             ],
             "description": "Symfony HttpKernel Component",
             "homepage": "http://symfony.com",
-            "time": "2013-11-14 09:43:43"
+            "time": "2013-11-25 14:49:41"
         },
         {
             "name": "symfony/routing",
@@ -558,12 +558,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Security.git",
-                "reference": "2d03373e16a1f3f7947a0bf980ab76ecca61a310"
+                "reference": "d195e94d9bdc366116887ee9c5eee04eb9dc1a76"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Security/zipball/2d03373e16a1f3f7947a0bf980ab76ecca61a310",
-                "reference": "2d03373e16a1f3f7947a0bf980ab76ecca61a310",
+                "url": "https://api.github.com/repos/symfony/Security/zipball/d195e94d9bdc366116887ee9c5eee04eb9dc1a76",
+                "reference": "d195e94d9bdc366116887ee9c5eee04eb9dc1a76",
                 "shasum": ""
             },
             "require": {
@@ -617,7 +617,7 @@
             ],
             "description": "Symfony Security Component",
             "homepage": "http://symfony.com",
-            "time": "2013-10-30 08:28:22"
+            "time": "2013-11-25 14:49:41"
         },
         {
             "name": "symfony/security-core",
@@ -626,12 +626,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/security-core.git",
-                "reference": "d556a893746efabb499dbbb6c21cccbd443fa174"
+                "reference": "49cfc8ca77642e27dbf72f8c1995bbeb5ccd008b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/security-core/zipball/d556a893746efabb499dbbb6c21cccbd443fa174",
-                "reference": "d556a893746efabb499dbbb6c21cccbd443fa174",
+                "url": "https://api.github.com/repos/symfony/security-core/zipball/49cfc8ca77642e27dbf72f8c1995bbeb5ccd008b",
+                "reference": "49cfc8ca77642e27dbf72f8c1995bbeb5ccd008b",
                 "shasum": ""
             },
             "require": {
@@ -654,7 +654,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.4-dev"
+                    "dev-master": "2.5-dev"
                 }
             },
             "autoload": {
@@ -678,7 +678,7 @@
             ],
             "description": "Symfony Security Component - Core Library",
             "homepage": "http://symfony.com",
-            "time": "2013-11-07 13:20:52"
+            "time": "2013-11-26 16:43:09"
         },
         {
             "name": "symfony/security-csrf",
@@ -687,12 +687,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/security-csrf.git",
-                "reference": "9c832e1d0b7a10872bad13bd0b4f297246d907ba"
+                "reference": "1f8af67b34eefd38753cb727b6798cfc54019592"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/security-csrf/zipball/9c832e1d0b7a10872bad13bd0b4f297246d907ba",
-                "reference": "9c832e1d0b7a10872bad13bd0b4f297246d907ba",
+                "url": "https://api.github.com/repos/symfony/security-csrf/zipball/1f8af67b34eefd38753cb727b6798cfc54019592",
+                "reference": "1f8af67b34eefd38753cb727b6798cfc54019592",
                 "shasum": ""
             },
             "require": {
@@ -708,7 +708,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.4-dev"
+                    "dev-master": "2.5-dev"
                 }
             },
             "autoload": {
@@ -732,7 +732,7 @@
             ],
             "description": "Symfony Security Component - CSRF Library",
             "homepage": "http://symfony.com",
-            "time": "2013-10-30 08:33:58"
+            "time": "2013-11-24 20:17:07"
         },
         {
             "name": "symfony/twig-bridge",
@@ -741,12 +741,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/TwigBridge.git",
-                "reference": "c603652a2c1bd5055f9a0bacb3ffe08955aa3d88"
+                "reference": "129b29e4fff87812e45065a6b72362dec123e8bc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/TwigBridge/zipball/c603652a2c1bd5055f9a0bacb3ffe08955aa3d88",
-                "reference": "c603652a2c1bd5055f9a0bacb3ffe08955aa3d88",
+                "url": "https://api.github.com/repos/symfony/TwigBridge/zipball/129b29e4fff87812e45065a6b72362dec123e8bc",
+                "reference": "129b29e4fff87812e45065a6b72362dec123e8bc",
                 "shasum": ""
             },
             "require": {
@@ -777,7 +777,7 @@
             "type": "symfony-bridge",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.4-dev"
+                    "dev-master": "2.5-dev"
                 }
             },
             "autoload": {
@@ -801,7 +801,7 @@
             ],
             "description": "Symfony Twig Bridge",
             "homepage": "http://symfony.com",
-            "time": "2013-10-07 12:50:43"
+            "time": "2013-11-24 20:17:07"
         },
         {
             "name": "twig/twig",
@@ -809,12 +809,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/fabpot/Twig.git",
-                "reference": "39eb50c00e2c0b8174dbcd63e0ed45815ff7babf"
+                "reference": "cab9fd9a100e74aafa201a03ca31aeeb4097c9bc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fabpot/Twig/zipball/39eb50c00e2c0b8174dbcd63e0ed45815ff7babf",
-                "reference": "39eb50c00e2c0b8174dbcd63e0ed45815ff7babf",
+                "url": "https://api.github.com/repos/fabpot/Twig/zipball/cab9fd9a100e74aafa201a03ca31aeeb4097c9bc",
+                "reference": "cab9fd9a100e74aafa201a03ca31aeeb4097c9bc",
                 "shasum": ""
             },
             "require": {
@@ -850,7 +850,7 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2013-11-14 08:08:49"
+            "time": "2013-11-24 18:36:20"
         }
     ],
     "packages-dev": [

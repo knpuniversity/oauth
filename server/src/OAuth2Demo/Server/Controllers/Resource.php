@@ -68,7 +68,7 @@ class Resource
     {
         switch ($action) {
             case 'door-unlock':
-                $message = 'You just unlocked your door! What out for strangers!';
+                $message = 'You just unlocked your door! Watch out for strangers!';
                 break;
             case 'toiletseat-down':
                 $message = 'You just put the toilet seat down. You\'re a wonderful roommate!';
