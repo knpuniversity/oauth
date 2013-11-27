@@ -1,0 +1,41 @@
+{% extends "base.twig" %}
+
+{% block content %}
+<div class="bs-docs-section" role="main">
+    <div class="row">
+        <h3>
+            API into your House!
+        </h3>
+        <p>
+            You can do all sorts of cool things from this website.  For instance:
+        </p>
+        <ul>
+            <li><a href="{{ path('api_call', {'action': 'door-unlock'}) }}">Unlock the Door</a></li>
+            <li><a href="{{ path('api_call', {'action': 'toiletseat-down'}) }}">Put the Toilet Seat Down</a></li>
+            <li><a href="{{ path('api_call', {'action': 'ac-on'}) }}">Turn on the A.C.</a></li>
+        </ul>
+        <h4>
+            Not the owner of this house?
+        </h4>
+        <p>
+            That's okay. You can still perform actions on behalf of the home owner, but
+            first, you'll need to <a href="{{ path('app_create') }}">Create your Application</a>
+        </p>
+    </div>
+    {% if clients|length > 0 %}
+    <div class="row">
+        <h4>
+            Already created your application?
+        </h4>
+        <p>
+            Here are a few existing ones that might be yours:
+        </p>
+        <ul>
+        {% for client in clients %}
+            <li><a href="{{ path('app_show', {name: client.client_id|url_encode}) }}">{{ client.client_id }}</a></li>
+        {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+<div>
+{% endblock %}
