@@ -12,5 +12,29 @@
         </p>
         {{ include('_houseActions.twig') }}
     </div>
+
+    <div class="row">
+        {% if clients|length > 0 %}
+        <p>
+            Here is a list of your applications:
+        </p>
+
+        <ul>
+        {% for client in clients %}
+            <li><a href="{{ path('app_show', {name: client.client_id|url_encode}) }}">{{ client.client_id }}</a></li>
+        {% endfor %}
+        </ul>
+        <p>
+            <a class="btn btn-default" href="{{ path('app_create') }}">Create another Application</a>
+        </p>
+        {% else %}
+        <h3>
+            You have not registered any Applications!
+        </h3>
+        <p>
+            Well let's not waste any more time... <a href="{{ path('app_create') }}">Create your Application</a>!
+        </p>
+        {% endif %}
+    </div>
 <div>
 {% endblock %}

@@ -31,11 +31,21 @@ class AppManagement
             return $app['twig']->render('app\create.twig', ['error' => '"name" is required']);
         }
 
-        $secret = substr(md5(microtime()), 0, 32);
+        // get the requested client scope
         $scope = implode(' ', $app['request']->request->get('scope', []));
+
+        // get the requested redirect_uri
         $redirect_uri = $app['request']->request->get('redirect_uri');
 
-        $app['storage']->setClientDetails($name, $secret, $redirect_uri, null, $scope);
+        // generate a random secret
+        $secret = substr(md5(microtime()), 0, 32);
+
+        // get the logged-in user and tie it to the newly-created client
+        $token = $app['security']->getToken();
+        $user = $token->getUser();
+
+        // create the client
+        $app['storage']->setClientDetails($name, $secret, $redirect_uri, null, $scope, $user->getUsername());
 
         return $app['twig']->render('app\show.twig', [
             'client' => $app['storage']->getClientDetails($name),
