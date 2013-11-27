@@ -19,6 +19,9 @@ $app->register(new Silex\Provider\UrlGeneratorServiceProvider());
 $app->register(new TwigServiceProvider(), array(
     'twig.path' => __DIR__.'/../views',
 ));
+$app['security.user_provider'] = $app->share(function () use ($app) {
+    return new UserProvider($app['storage']);
+});
 $app->register(new \Silex\Provider\SessionServiceProvider());
 $app->register(new Silex\Provider\SecurityServiceProvider(), array(
     'security.firewalls' => array(
@@ -27,7 +30,7 @@ $app->register(new Silex\Provider\SecurityServiceProvider(), array(
             //'http' => true,
             'form' => true,
             'users' => $app->share(function () use ($app) {
-                return new UserProvider($app['storage']);
+                return $app['security.user_provider'];
             }),
             'anonymous' => true,
             'logout' => true,
