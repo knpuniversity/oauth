@@ -5,12 +5,11 @@ namespace OAuth2Demo\Server\Controllers;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Core\SecurityContextInterface;
 
 class UserManagement
 {
     // Connects the routes in Silex
-    static public function addRoutes($routing)
+    public static function addRoutes($routing)
     {
         $routing->get('/register', [new self(), 'register'])->bind('user_register');
         $routing->post('/register', [new self(), 'registerHandle'])->bind('user_register_handle');

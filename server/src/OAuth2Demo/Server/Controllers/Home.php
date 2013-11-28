@@ -7,7 +7,7 @@ use Silex\Application;
 class Home
 {
     // Connects the routes in Silex
-    static public function addRoutes($routing)
+    public static function addRoutes($routing)
     {
         $routing->get('/', array(new self(), 'home'))->bind('home');
         $routing->get('/api', array(new self(), 'apiHome'))->bind('api_home');

@@ -2,12 +2,11 @@
 
 namespace OAuth2Demo\Client\Controllers;
 
-use OAuth2Demo\Client\Http\Curl;
 use Silex\Application;
 
 class RequestResource
 {
-    static public function addRoutes($routing)
+    public static function addRoutes($routing)
     {
         $routing->get('/request_resource', array(new self(), 'requestResource'))->bind('request_resource');
     }

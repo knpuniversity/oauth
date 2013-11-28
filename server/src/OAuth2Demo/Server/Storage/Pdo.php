@@ -22,6 +22,7 @@ class Pdo extends OAuth2Pdo
         } else {
             $stmt = $this->db->prepare(sprintf('INSERT INTO %s (client_id, client_secret, redirect_uri, grant_types, scope, user_id) VALUES (:client_id, :client_secret, :redirect_uri, :grant_types, :scope, :user_id)', $this->config['client_table']));
         }
+
         return $stmt->execute(compact('client_id', 'client_secret', 'redirect_uri', 'grant_types', 'scope', 'user_id'));
     }
 
@@ -36,6 +37,7 @@ class Pdo extends OAuth2Pdo
         } else {
             $stmt = $this->db->prepare(sprintf('INSERT INTO %s (username, password, first_name, last_name, address) VALUES (:username, :password, :firstName, :lastName, :address)', $this->config['user_table']));
         }
+
         return $stmt->execute(compact('username', 'password', 'firstName', 'lastName', 'address'));
     }
 
@@ -46,6 +48,7 @@ class Pdo extends OAuth2Pdo
         $sql = 'INSERT INTO api_log (user_id, action, timestamp) VALUES (:user_id, :action, :timestamp)';
 
         $stmt = $this->db->prepare($sql);
+
         return $stmt->execute(compact('user_id', 'action', 'timestamp'));
     }
 
@@ -57,6 +60,7 @@ class Pdo extends OAuth2Pdo
         $stmt = $this->db->prepare($sql);
         $stmt->execute(compact('user_id', 'action', 'timestamp'));
         $result = $stmt->fetch();
+
         return $result && $result['count'] > 0;
     }
 
@@ -70,6 +74,7 @@ class Pdo extends OAuth2Pdo
         }
 
         $stmt = $this->db->prepare($sql);
+
         return $stmt->execute(compact('user_id', 'day', 'egg_count'));
     }
 

@@ -2,7 +2,6 @@
 
 namespace OAuth2Demo\Server\Security;
 
-use Symfony\Component\Security\Core\Role\Role;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 class User implements UserInterface

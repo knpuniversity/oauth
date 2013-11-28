@@ -9,7 +9,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class Resource
 {
     // Connects the routes in Silex
-    static public function addRoutes($routing)
+    public static function addRoutes($routing)
     {
         $routing->get('/api/{action}', [new self(), 'get'])->bind('api_call');
         $routing->post('/api/{action}', [new self(), 'apiAction']);
@@ -52,6 +52,7 @@ class Resource
                     'error_description' => 'an access token is required')
                 ));
             }
+
             return $response;
         }
 
@@ -65,6 +66,7 @@ class Resource
             'success' => true,
             'message' => $message,
         ];
+
         return new Response(json_encode($api_response));
     }
 

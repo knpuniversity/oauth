@@ -7,7 +7,7 @@ use Silex\Application;
 class AppManagement
 {
     // Connects the routes in Silex
-    static public function addRoutes($routing)
+    public static function addRoutes($routing)
     {
         $routing->get('/application', [new self(), 'create'])->bind('app_create');
         $routing->post('/application', [new self(), 'add'])->bind('app_add');

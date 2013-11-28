@@ -53,11 +53,11 @@ class Client implements ControllerProviderInterface
             $this->generateSqliteDb();
         }
 
-        $app['pdo'] = $app->share(function() use ($sqliteFile) {
+        $app['pdo'] = $app->share(function () use ($sqliteFile) {
             return new \PDO('sqlite:'.$sqliteFile);
         });
 
-        $app['db'] = $app->share(function(Application $app) {
+        $app['db'] = $app->share(function (Application $app) {
             return new Db($app['pdo']);
         });
 
@@ -71,6 +71,7 @@ class Client implements ControllerProviderInterface
         if (!$parameters = json_decode(file_get_contents($parameterFile), true)) {
             throw new Exception('unable to parse parameters file: '.$parameterFile);
         }
+
         return $parameters;
     }
 

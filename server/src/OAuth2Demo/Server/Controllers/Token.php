@@ -10,7 +10,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class Token
 {
     // Connects the routes in Silex
-    static public function addRoutes($routing)
+    public static function addRoutes($routing)
     {
         $routing->post('/token', array(new self(), 'tokenPost'))->bind('token_post');
         $routing->get('/token', array(new self(), 'tokenGet'))->bind('token_get');
@@ -51,6 +51,7 @@ class Token
                 if (!$token = $response->getParameter('access_token')) {
                     throw new \Exception('failed to get access token from client credentials');
                 }
+
                 return $app['twig']->render('token/client_credentials.twig', [
                     'token' => $token,
                     'client_id' => $app['request']->query->get('client_id'),
