@@ -37,6 +37,7 @@ class Resource
     public function apiAction(Application $app, $action)
     {
         // get the oauth server (configured in src/OAuth2Demo/Server/Server.php)
+        /** @var \OAuth2\Server $server */
         $server = $app['oauth_server'];
 
         // get the oauth response (configured in src/OAuth2Demo/Server/Server.php)

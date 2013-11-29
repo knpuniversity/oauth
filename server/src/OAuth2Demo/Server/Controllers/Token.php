@@ -24,6 +24,7 @@ class Token
     public function tokenPost(Application $app)
     {
         // get the oauth server (configured in src/OAuth2Demo/Server/Server.php)
+        /** @var \OAuth2\Server $server */
         $server = $app['oauth_server'];
 
         // get the oauth response (configured in src/OAuth2Demo/Server/Server.php)
