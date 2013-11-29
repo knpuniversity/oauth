@@ -10,25 +10,26 @@
         </h3>
     </div>
     <div class="row">
-      <form class="bs-example form-horizontal" action="{{ path('api_call', {action: action}) }}" method="post">
-        <fieldset>
-          <div class="form-group">
-            <label for="access_token" class="col-lg-2 control-label">Access Token</label>
-            <div class="col-lg-10">
-              <input type="text" class="form-control" name="access_token" placeholder="Enter your Access Token here" value="{{token}}">
-              <span class="help-block">Don't have an access token? Use an <a href="{{ path('authcode') }}">Authorization Code</a> to get one!</span>
-            </div>
-          </div>
-
-          <div class="form-group">
-            <div class="col-lg-10 col-lg-offset-2">
-              <a class="btn btn-default" href="{{ path('home') }}">Back</a>
-              <button type="submit" class="btn btn-primary">Submit</button>
-            </div>
-          </div>
-          <input type="hidden" name="grant_type" value="authorization_code" />
-        </fieldset>
-      </form>
+        <form class="bs-example form-horizontal" action="{{ path('api_call', {action: action}) }}" method="post">
+            <fieldset>
+                <div class="form-group">
+                    <label for="access_token" class="col-lg-2 control-label">Access Token</label>
+                    <div class="col-lg-10">
+                        <input type="text" class="form-control" name="access_token" placeholder="Enter your Access Token here" value="{{token}}">
+                        <span class="help-block">
+                            Don't have an access token? Use an <a href="{{ path('token_get', { grant_type: 'authorization_code'}) }}">Authorization Code</a> to get one!
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-lg-10 col-lg-offset-2">
+                        <a class="btn btn-default" href="{{ path('home') }}">Back</a>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                </div>
+                <input type="hidden" name="grant_type" value="authorization_code" />
+            </fieldset>
+        </form>
     </div>
 <div>
 {% endblock %}

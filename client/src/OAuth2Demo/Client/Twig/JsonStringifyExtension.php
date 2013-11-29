@@ -17,8 +17,10 @@ class JsonStringifyExtension extends \Twig_Extension
             if (is_string($json)) {
                 $json = json_decode($json, true);
             }
+
             return json_encode($json, JSON_PRETTY_PRINT);
         }
+
         return $this->jsonPrettyPrint($json);
     }
 
@@ -51,7 +53,7 @@ class JsonStringifyExtension extends \Twig_Extension
 
             // If this character is the end of an element,
             // output a new line and indent the next line.
-            } else if(($char == '}' || $char == ']') && $outOfQuotes) {
+            } elseif (($char == '}' || $char == ']') && $outOfQuotes) {
                 $result .= $newLine;
                 $pos --;
                 for ($j=0; $j<$pos; $j++) {

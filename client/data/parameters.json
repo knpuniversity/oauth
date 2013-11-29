@@ -2,10 +2,10 @@
   "client_id": "Hal's Housing Help",
   "client_secret": "",
   "redirect_uri": "http://knp-oauth-client/receive_authcode",
-  "scope": "door-unlock",
+  "scope": "barn-unlock",
 
   "authorize_url": "http://localhost:9000/authorize",
-  "resource_url": "http://localhost:9000/api/door-unlock",
+  "resource_url": "http://localhost:9000/api",
   "token_url": "http://localhost:9000/token",
   "resource_method": "POST",
   "resource_params": {},

@@ -11,7 +11,7 @@ use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 class UserManagement
 {
     // Connects the routes in Silex
-    static public function addRoutes($routing)
+    public static function addRoutes($routing)
     {
         $routing->get('/register', [new self(), 'register'])->bind('user_register');
         $routing->post('/register', [new self(), 'registerHandle'])->bind('user_register_handle');

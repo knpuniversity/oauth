@@ -5,12 +5,20 @@
     <div class="row">
         <h3>
             Hey {{ user.username }}!
-            It's me, your house
+            It's me, your farm
         </h3>
         <p>
-            You can do all sorts of cool things from this website. For instance:
+            You can do all sorts of cool things from <span class="label label-primary">The Coop</span>. For instance:
         </p>
         {{ include('_houseActions.twig') }}
+    </div>
+    <div class="row">
+        <h3>
+            Yes, we have an API!
+        </h3>
+        <p>
+            Explore <a href="{{ path('api_home') }}">The Coop's API</a> to customize and extend our platform!
+        </p>
     </div>
 <div>
 {% endblock %}

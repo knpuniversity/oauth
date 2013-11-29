@@ -7,7 +7,7 @@ use Silex\Application;
 class Home
 {
     // Connects the routes in Silex
-    static public function addRoutes($routing)
+    public static function addRoutes($routing)
     {
         $routing->get('/', array(new self(), 'home'))->bind('home');
         $routing->get('/api', array(new self(), 'apiHome'))->bind('api_home');
@@ -36,7 +36,8 @@ class Home
         // the API docs will be here and all this functionality will
         // basically be an API playground
 
-        $clients = $app['storage']->getAllClientDetails();
+        $user    = $app['security']->getToken()->getUser();
+        $clients = $app['storage']->getAllClientDetails($user->getUsername());
 
         return $app['twig']->render('apiHome.twig', ['clients' => $clients]);
     }

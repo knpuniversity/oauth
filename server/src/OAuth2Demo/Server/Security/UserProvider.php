@@ -33,7 +33,6 @@ class UserProvider implements UserProviderInterface
         $user->lastName = $userDetails['last_name'];
         $user->address = $userDetails['address'];
         // todo - address
-
         return $user;
     }
 

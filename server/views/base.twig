@@ -20,7 +20,7 @@
     <div class="navbar navbar-default navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
-                <a href="{{ path('home') }}" class="navbar-brand">Home</a>
+                <a href="{{ path('home') }}" class="navbar-brand">The COOP</a>
             </div>
             <div class="navbar-collapse collapse" id="navbar-main">
                 <ul class="nav navbar-nav navbar-right">
@@ -32,7 +32,7 @@
                     {% endif %}
                     <li><a href="{{ path('api_home') }}">API</a></li>
                     <li><a href="http://builtwithbootstrap.com/" target="_blank">Built With Bootstrap</a></li>
-                    <li><a href="https://wrapbootstrap.com/?ref=bsw" target="_blank">WrapBootstrap</a></li>
+                    <li><a href="http://bootswatch.com/amelia/" target="_blank">BootsWatch</a></li>
                 </ul>
             </div>
         </div>
@@ -40,7 +40,14 @@
 
     <div class="container">
         <div class="page-header">
-            {% block header %}<h1>Your House</h1>{% endblock %}
+            {% block header %}
+            <h2>
+                Welcome to <span class="label label-primary">The COOP</span>!
+            </h2>
+            <p>
+                The <span class="text-primary">C</span>hicken <span class="text-primary">O</span>versight <span class="text-primary">O</span>perations <span class="text-primary">P</span>latform</small>
+            </p>
+            {% endblock %}
         </div>
 
         {% block content %}

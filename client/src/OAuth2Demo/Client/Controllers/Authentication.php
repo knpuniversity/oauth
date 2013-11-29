@@ -7,7 +7,7 @@ use Silex\Application;
 class Authentication
 {
     // Connects the routes in Silex
-    static public function addRoutes($routing)
+    public static function addRoutes($routing)
     {
         $routing->get('/login', array(new self(), 'login'))->bind('login');
     }

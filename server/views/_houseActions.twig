@@ -1,14 +1,8 @@
-{% set actions = [
-    { 'action': 'door-unlock', 'message': 'Unlock the Door'},
-    { 'action': 'toiletseat-down', 'message': 'Put the Toilet Seat Down'},
-    { 'action': 'ac-on', 'message': 'Turn on the A.C.'},
-] %}
-
 <ul>
-    {% for action in actions %}
+    {% for action,message in app.scopes %}
         <li style="margin-bottom: 10px;">
-            <form action="{{ path('web_call', {'action': action.action}) }}" method="POST">
-                <button type="submit" class="btn btn-primary btn-xs">{{ action.message }}</button>
+            <form action="{{ path('web_call', {'action': action}) }}" method="POST">
+                <button type="submit" class="btn btn-primary btn-xs">{{ message }}</button>
             </form>
         </li>
     {% endfor %}

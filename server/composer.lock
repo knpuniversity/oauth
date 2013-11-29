@@ -55,12 +55,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/bshaffer/oauth2-server-php.git",
-                "reference": "75739ef90b4c1b05404d36cb3db167e9e6074757"
+                "reference": "f670001f81b857320c5f52553f40f6786707e826"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bshaffer/oauth2-server-php/zipball/75739ef90b4c1b05404d36cb3db167e9e6074757",
-                "reference": "75739ef90b4c1b05404d36cb3db167e9e6074757",
+                "url": "https://api.github.com/repos/bshaffer/oauth2-server-php/zipball/f670001f81b857320c5f52553f40f6786707e826",
+                "reference": "f670001f81b857320c5f52553f40f6786707e826",
                 "shasum": ""
             },
             "require": {
@@ -80,7 +80,7 @@
                 {
                     "name": "Brent Shaffer",
                     "email": "bshafs@gmail.com",
-                    "homepage": "http://github.com/bshaffer"
+                    "homepage": "http://brentertainment.com"
                 }
             ],
             "description": "OAuth2 Server for PHP",
@@ -90,7 +90,7 @@
                 "oauth",
                 "oauth2"
             ],
-            "time": "2013-10-31 23:41:10"
+            "time": "2013-11-27 19:51:34"
         },
         {
             "name": "pimple/pimple",

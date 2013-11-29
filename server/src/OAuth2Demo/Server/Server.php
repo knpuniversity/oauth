@@ -7,7 +7,7 @@ use Silex\ControllerProviderInterface;
 use OAuth2\HttpFoundationBridge\Response as BridgeResponse;
 use OAuth2\Server as OAuth2Server;
 use OAuth2\GrantType\AuthorizationCode;
-use OAuth2\GrantType\UserCredentials;
+use OAuth2\GrantType\ClientCredentials;
 use OAuth2\Storage\Memory;
 use OAuth2\Scope;
 use OAuth2Demo\Server\Storage\Pdo;
@@ -30,15 +30,23 @@ class Server implements ControllerProviderInterface
         // create array of supported grant types
         $grantTypes = array(
             'authorization_code' => new AuthorizationCode($storage),
-            'user_credentials'   => new UserCredentials($storage),
+            'client_credentials' => new ClientCredentials($storage),
         );
 
         // instantiate the oauth server
         $server = new OAuth2Server($storage, array('enforce_state' => false, 'allow_implicit' => true), $grantTypes);
 
+        $app['scopes'] = [
+            'barn-unlock'     => 'Unlock the Barn',
+            'toiletseat-down' => 'Put the Toilet Seat Down',
+            'chickens-feed'   => 'Feed Your Chickens',
+            'eggs-collect'    => 'Collect Eggs from Your Chickens',
+            'eggs-count'      => 'Get the Number of Eggs Collected Today',
+        ];
+
         // add scopes
         $memory = new Memory(array(
-          'supported_scopes' => ['door-unlock', 'toiletseat-down', 'ac-on'],
+          'supported_scopes' => array_keys($app['scopes']),
         ));
 
         $server->setScopeUtil(new Scope($memory));
