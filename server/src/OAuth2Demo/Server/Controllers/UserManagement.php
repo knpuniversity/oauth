@@ -6,6 +6,7 @@ use Silex\Application;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 class UserManagement
 {
@@ -62,6 +63,8 @@ class UserManagement
 
         $storage->setUser($email, $password, $firstName, $lastName, $address);
 
+        $this->autoLogin($app, $email);
+
         return new RedirectResponse($app['url_generator']->generate('home'));
     }
 
@@ -86,5 +89,18 @@ class UserManagement
     public function logout(Application $app)
     {
         throw new \Exception('Should not get here - this should be handled magically by the security system!');
+    }
+
+    private function autoLogin($app, $email)
+    {
+        $provider = $app['security.user_provider'];
+
+        if (!$user = $provider->loadUserByUsername($email)) {
+            throw new \Exception('Unable to login user - something went terribly wrong');
+        }
+
+        $token = new UsernamePasswordToken($user, $user->getPassword(), 'main', $user->getRoles());
+
+        $app['security']->setToken($token);
     }
 }
