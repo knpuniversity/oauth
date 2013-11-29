@@ -28,7 +28,7 @@ class AppManagement
     public function add(Application $app)
     {
         if (!$name = $app['request']->request->get('name')) {
-            return $app['twig']->render('app\new.twig', ['error' => '"name" is required']);
+            return $app['twig']->render('app\create.twig', ['error' => '"name" is required']);
         }
 
         $secret = substr(md5(microtime()), 0, 32);

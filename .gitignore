@@ -1,5 +1,7 @@
 /client/composer.phar
 /client/vendor
+/client/data/*.sqlite
 /server/data/oauth.sqlite
 /server/composer.phar
 /server/vendor
+

@@ -4,12 +4,13 @@
 <div class="bs-docs-section" role="main">
     <div class="row">
         <h3>
-            Control your house!
+            Hey {{ user.username }}!
+            It's me, your house
         </h3>
         <p>
-            Register/login to get started. Or check out the
-            <a href="{{ path('api_home') }}">API</a>
+            You can do all sorts of cool things from this website. For instance:
         </p>
+        {{ include('_houseActions.twig') }}
     </div>
 <div>
 {% endblock %}
