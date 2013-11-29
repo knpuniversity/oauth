@@ -6,7 +6,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Guzzle\Http\Client as GuzzleHttpClient;
+use Guzzle\Http\Client;
 
 class CollectEggsCommand extends Command
 {
@@ -34,7 +34,7 @@ class CollectEggsCommand extends Command
         $endpoint = 'localhost:9000';
 
         // create our http client
-        $http = new GuzzleHttpClient();
+        $http = new Client();
 
         /* 1. Get the Access Token */
 
@@ -45,7 +45,6 @@ class CollectEggsCommand extends Command
             'grant_type'    => 'client_credentials',
         );
 
-        // get the token url from parameters.json
         $token_url = sprintf('http://%s/token', $endpoint);
 
         // make a request to the token url
