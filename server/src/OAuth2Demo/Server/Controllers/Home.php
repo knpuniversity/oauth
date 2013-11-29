@@ -3,6 +3,7 @@
 namespace OAuth2Demo\Server\Controllers;
 
 use Silex\Application;
+use Symfony\Component\HttpFoundation\Response;
 
 class Home
 {
@@ -11,6 +12,7 @@ class Home
     {
         $routing->get('/', array(new self(), 'home'))->bind('home');
         $routing->get('/api', array(new self(), 'apiHome'))->bind('api_home');
+        $routing->get('/db/reset', array(new self(), 'resetDb'));
     }
 
     /**
@@ -40,5 +42,13 @@ class Home
         $clients = $app['storage']->getAllClientDetails($user->getUsername());
 
         return $app['twig']->render('apiHome.twig', ['clients' => $clients]);
+    }
+
+    public function resetDb()
+    {
+        $path = __DIR__.'/../../../../data/rebuild_db.php';
+        exec('php '.$path, $output, $code);
+
+        return new Response($code == 0 ? 'Success' : 'Failure');
     }
 }
