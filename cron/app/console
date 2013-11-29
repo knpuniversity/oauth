@@ -3,7 +3,7 @@
 
 require_once __DIR__.'/../vendor/autoload.php';
 
-use OAuth2Demo\Client\Command\CollectEggsCommand;
+use OAuth2Demo\Cron\Command\CollectEggsCommand;
 use Symfony\Component\Console\Application;
 
 $application = new Application();
