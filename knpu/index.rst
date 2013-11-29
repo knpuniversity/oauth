@@ -5,8 +5,8 @@ OAuth 2.0: Episode1
     :hidden:
 
     intro
-    example
-    farm-robot
+    the-farm
+    coop
     client-credentials
     redirecting-authorize
     access-token

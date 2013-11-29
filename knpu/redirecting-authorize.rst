@@ -1,6 +1,28 @@
 Redirecting and Authorizing your Site
 =====================================
 
+The Client Application
+----------------------
+
+So let's look at *our* site, which will interact with HouseRobot's API. Go
+the the GitHub repository for this tutorial and clone or download the code.
+Inside, you'll see a ``client-start`` directory, which is a very simple
+starting point for our new app written in Silex, a PHP microframework. If
+you're not familiar with Silex, don't worry! We won't interact with it too
+much and we'll explain things along the way.
+
+To run the application, open up your terminal and move into this directory.
+From here, keep going into the ``web/`` directory, which is the document
+root of the project. Here, we'll use the built-in PHP web server to get the
+site running quickly:
+
+.. code-block:: bash
+
+    php -S localhost:8000
+
+When we go to ``http://localhost:8000``, we see a starting client app. Awesome!
+It doesn't do much yet, but we'll fix that!
+
 - Setting up the URL to redirect the user
     - redirect URL
     - scope
