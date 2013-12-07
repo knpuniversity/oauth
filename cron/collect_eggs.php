@@ -25,10 +25,11 @@ $parameters = array(
 );
 
 // make a request to the token url
-$response = $http->post($token_url, null, $parameters)->send();
-$token = json_decode((string) $response->getBody(), true);
+$response   = $http->post($token_url, null, $parameters)->send();
+$token_json = json_decode((string) $response->getBody(), true);
+$token      = $token_json['access_token'];
 
-printf("Received access token: $token[access_token]\n");
+printf("Received access token: $token\n");
 
 /* 2. Call the APIs with the Access Token */
 
