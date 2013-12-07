@@ -1,12 +1,6 @@
 {
     "require": {
-        "symfony/Console": "2.4.*",
         "guzzle/guzzle": "~3.7"
-    },
-    "autoload" : {
-        "psr-0": {
-            "OAuth2Demo": "src/"
-        }
     },
     "minimum-stability": "dev"
 }
