@@ -8,7 +8,9 @@ include __DIR__.'/vendor/autoload.php';
 use Guzzle\Http\Client;
 
 // define our base parameters
-$endpoint = 'localhost:9000';
+$endpoint = 'coop.apps.knpuniversity.com';
+$token_url = sprintf('http://%s/token', $endpoint);
+$resource_url = sprintf('http://%s/api/eggs-collect', $endpoint);
 
 // create our http client (Guzzle)
 $http = new Client();
@@ -22,8 +24,6 @@ $parameters = array(
     'grant_type'    => 'client_credentials',
 );
 
-$token_url = sprintf('http://%s/token', $endpoint);
-
 // make a request to the token url
 $response = $http->post($token_url, null, $parameters)->send();
 $token = json_decode((string) $response->getBody(), true);
@@ -35,11 +35,9 @@ printf("Received access token: $token[access_token]\n");
 // create OAuth2 Authorization header using the Access Token
 $headers = array('Authorization' => sprintf('Bearer %s', $token['access_token']));
 
-// get the resource url from parameters.json
-$resource_url = sprintf('http://%s/api/eggs-collect', $endpoint);
-
 // make the request
 $response = $http->post($resource_url, $headers)->send();
 $api_response = json_decode((string) $response->getBody(), true);
+$message = $api_response['message'];
 
-printf("API Response: \n$api_response[message]\n");
+printf("API Response: $message\n");
