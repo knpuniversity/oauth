@@ -4,7 +4,7 @@ OAuth2.0 - Episode 1
 Sir or madam,
 Inside this archive, you'll find 2 things:
 
-1) client-start - This is the start version of the code that's used to call
+1) client-start - This is the start version of the code that we used to call
    the OAuth2.0 server.  If you've watched the episode, this should be the
    exact code we finished with for Hal's website.
    For more details on how to run the code, see the README.md file in that

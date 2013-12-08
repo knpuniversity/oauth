@@ -7,12 +7,14 @@ it out on your own!):
 
 1) Update your vendors via Composer
 
+```cli
     php composer.phar install
+```
 
 2) Setup a virtualhost that points to the web/ directory and a hosts entry
    for your fake domain
 
-```
+```config
 #
 # Knp OAuth Client
 #
@@ -27,8 +29,14 @@ it out on your own!):
 </VirtualHost>
 ```
 
-3) (Optional) Copy your parameters.yml.dist file to parameters.yml and customize it
+3) (Optional) you can customize parameters.json
 
-    cp app/config/parameters.yml.dist app/config/parameters.yml
+```cli
+    cp client/data/parameters.json.dist client/data/parameters.json
+```
 
 4) Pop it open in your browser!
+
+```cli
+    php -S localhost:9000
+```

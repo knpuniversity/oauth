@@ -18,42 +18,44 @@
     </head>
     <body>
         <!--[if lt IE 7]>
-            <p class="chromeframe">You are using an outdated browser. <a href="http://browsehappy.com/">Upgrade your browser today</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to better experience this site.</p>
+            <p class="chromeframe">
+                You are using an outdated browser. <a href="http://browsehappy.com/">Upgrade your browser today</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to better experience this site.
+            </p>
         <![endif]-->
 
         <div id="container">
             <header role="banner">
-              {% block header %}
-              <hgroup>
-                  <h1>Hal's Housing Help</h1>
-                  <h2>For the Chickens</h2>
-              </hgroup>
-              <nav class="primary">
-                  <ul class="menu">
-                      <li class="current">
-                          <a href="{{ path('homepage') }}">Home</a>
-                      </li>
-                      <li>
-                          <a href="http://morehazards.com">Music</a>
-                      </li>
-                      <li>
-                          <a href="http://github.com/knpuniversity">Github</a>
-                      </li>
-                      <li>
-                          <a href="http://twitter.com/knpuniversity">Twitter</a>
-                      </li>
-                      <li>
-                          <a href="{{ path('login') }}">Login</a>
-                      </li>
-                  </ul>
-              </nav>
-              {% endblock %}
+                {% block header %}
+                    <hgroup>
+                        <h1>Hal's Housing Help</h1>
+                        <h2>For the Chickens</h2>
+                    </hgroup>
+                    <nav class="primary">
+                        <ul class="menu">
+                            <li class="current">
+                                <a href="{{ path('homepage') }}">Home</a>
+                            </li>
+                            <li>
+                                <a href="http://morehazards.com">Music</a>
+                            </li>
+                            <li>
+                                <a href="http://github.com/knpuniversity">Github</a>
+                            </li>
+                            <li>
+                                <a href="http://twitter.com/knpuniversity">Twitter</a>
+                            </li>
+                            <li>
+                                <a href="{{ path('login') }}">Login</a>
+                            </li>
+                        </ul>
+                    </nav>
+                {% endblock %}
             </header>
 
             <article class="home" role="main">
                 <div  role="main">
-                  {% block content %}
-                  {% endblock %}
+                    {% block content %}
+                    {% endblock %}
                 </div>
             </article>
         </div>

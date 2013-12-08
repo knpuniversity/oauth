@@ -15,7 +15,7 @@ $app = new Application();
 $app['debug'] = true;
 
 /** set up routes / controllers */
-$app->mount('/', new OAuth2Demo\Client\Client());
+$app->mount('/', new Client());
 
 $request = Request::createFromGlobals();
 $app->run($request);

@@ -4,14 +4,9 @@ namespace OAuth2Demo\Client\Controllers;
 
 use Silex\Application;
 
-class ReceiveAuthorizationCode
+class ReceiveAuthorizationCode extends ActionableController
 {
-    public static function addRoutes($routing)
-    {
-        $routing->get('/receive_authcode', array(new self(), 'receiveAuthorizationCode'))->bind('authorize_redirect');
-    }
-
-    public function receiveAuthorizationCode(Application $app)
+    public function __invoke(Application $app)
     {
         $request   = $app['request']; // the request object
         $session   = $app['session']; // the session (or user) object

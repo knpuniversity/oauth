@@ -38,11 +38,11 @@ class Client implements ControllerProviderInterface
         $routing = $app['controllers_factory'];
 
         // Set corresponding endpoints on the controller classes
-        Controllers\Homepage::addRoutes($routing);
-        Controllers\ReceiveAuthorizationCode::addRoutes($routing);
-        Controllers\RequestToken::addRoutes($routing);
-        Controllers\RequestResource::addRoutes($routing);
-        Controllers\Authentication::addRoutes($routing);
+        Controllers\Homepage::route(                                    '/', 'homepage'                   , $routing);
+        Controllers\ReceiveAuthorizationCode::route(    '/receive_authcode', 'authorize_redirect'         , $routing);
+        Controllers\RequestToken::route('/request_token/authorization_code', 'request_token_with_authcode', $routing);
+        Controllers\RequestResource::route(             '/request_resource', 'request_resource'           , $routing);
+        Controllers\Authentication::route(                         '/login', 'login'                      , $routing);
 
         return $routing;
     }
