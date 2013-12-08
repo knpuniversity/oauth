@@ -34,7 +34,7 @@ printf("Received access token: $token\n");
 /* 2. Call the APIs with the Access Token */
 
 // create OAuth2 Authorization header using the Access Token
-$headers = array('Authorization' => sprintf('Bearer %s', $token['access_token']));
+$headers = array('Authorization' => sprintf('Bearer %s', $token));
 
 // make the request
 $response = $http->post($resource_url, $headers)->send();
