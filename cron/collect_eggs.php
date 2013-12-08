@@ -14,6 +14,7 @@ $resource_url = sprintf('http://%s/api/eggs-collect', $endpoint);
 
 // create our http client (Guzzle)
 $http = new Client();
+$http_options = array('exceptions' => false);
 
 /* 1. Get the Access Token */
 
@@ -25,7 +26,10 @@ $parameters = array(
 );
 
 // make a request to the token url
-$response   = $http->post($token_url, null, $parameters)->send();
+$response = $http->post($token_url, null, $parameters, $http_options)->send();
+if ($response->isError()) {
+    die('Error: '.$response->getBody());
+}
 $token_json = json_decode((string) $response->getBody(), true);
 $token      = $token_json['access_token'];
 
@@ -37,7 +41,10 @@ printf("Received access token: $token\n");
 $headers = array('Authorization' => sprintf('Bearer %s', $token));
 
 // make the request
-$response = $http->post($resource_url, $headers)->send();
+$response = $http->post($resource_url, $headers, array(), $http_options)->send();
+if ($response->isError()) {
+    die('Error: '.$response->getBody());
+}
 $api_response = json_decode((string) $response->getBody(), true);
 $message = $api_response['message'];
 
