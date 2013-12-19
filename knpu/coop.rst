@@ -8,7 +8,7 @@ farm. For most people, this is all they need: a website where you can login
 and start commanding your farm from the distance. Never again will you forget
 to feed the chickens!
 
-COOP also has an API. It's pretty simple, consisting of a few POST endpoints.
+COOP also has an API. It's simple, consisting of a few POST endpoints.
 To use it, you need to pass an access token in the API request. Exactly how
 this is sent depends on the API, but the most common method for API's that
 support OAuth is to send it via an Authorization Bearer header.
@@ -24,8 +24,20 @@ one Coop account with limited access to perform certain tasks. OAuth is all
 about exactly *how* we get that token, what it allows us to do, and all the
 workflow around that.
 
+In fact, the API has a little sandbox for each POST endpoint, and as you
+can see, the only thing we need to specify is the Access Token. Now, how
+do we get that access token?
+
 Creating an Application
 -----------------------
+
+Now let's create an application. 
+
+- explain the application
+- create the application
+- set the scope
+- grab an access token
+- try collecting eggs online, then doing something else
 
 # The OAuth Server
 

@@ -18,13 +18,12 @@ But that would be nuts! Our password gives OpenSky access to do *anything*,
 like read our friends, make new friends, post for us, or even change our
 password. And the only way to remove OpenSky's access would be to change
 our password, which would also remove access to every other site that we
-gave access.
+have given access.
 
 Nope, one way or another, giving our password away is *not* the answer. Instead,
 we need something that *acts* like a password, but that only gives OpenSky
 access to do certain things on our behalf. We also need to be able to revoke
-access to OpenSky without removing access to other sites that *should* still
-have access to our account.
+access to OpenSky without removing access to other sites.
 
 The answer to this puzzle is: a token. When we use the web in a browser,
 we login with a username and password. But typically, when you use the API
@@ -53,20 +52,4 @@ The good news? Since OAuth is a standard, once you master it, you've unlocked
 the ability to integrate with many APIs, including Facebook, GitHub, Dropbox,
 Google, Instagram, LinkedIn, Twitter and a lot more.
 
-These days, it's pretty common for you to give one application access to
-your account on some other website. For example, think of your Facebook account.
 Ok, let's go!
-
-NOTES
-
-1. Intro (1:00)
- - The Why: “So you don’t have to give out your password”
- - The What: OAuth 2.0
-
-- we should sell them briefly on why this is going to be awesome to know,
-    such as easily offering Facebook/Google/etc login and integration on their
-    sites and JavaScript integration with at least some of these (e.g. Facebook)
-
-Passwords are a big deal! You don't want to give them out… ever!
-
-The protocol exists to allow a 3rd party access to your protected resources without requiring you to trust that 3rd party with your password
