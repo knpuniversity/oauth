@@ -3,14 +3,14 @@ The Chicken Oversight Operations Platform (COOP)
 
 First, let's take a quick look at the COOP site. You can see the application
 by going to `http://coop.apps.knpuniversity.com`_. It's pretty simple and
-awesome: we can create an account, and then start controlling things on our
+awesome: we can create an account in order to start controlling things on our
 farm. For most people, this is all they need: a website where you can login
-and start commanding your farm from the distance. Never again will you forget
+and start commanding your farm from a distance. Never again will you forget
 to feed the chickens!
 
 COOP also has an API. It's simple, consisting of a few POST endpoints.
-To use it, you need to pass an access token in the API request. Exactly how
-this is sent depends on the API, but the most common method for API's that
+To use it, you need to include an access token in the API request. Exactly how
+this is done depends on the API, but the most common method for APIs that
 support OAuth is to send it via an Authorization Bearer header.
 
 .. code-block:: text
@@ -19,19 +19,17 @@ support OAuth is to send it via an Authorization Bearer header.
     Host: coop.apps.knpuniversity.com
     Authorization: Bearer ACCESSTOKENHERE
 
-This token takes the place of your username and password and is tied to exactly
-one Coop account with limited access to perform certain tasks. OAuth is all
-about exactly *how* we get that token, what it allows us to do, and all the
-workflow around that.
+This token takes the place of your username and password, is tied to exactly
+one COOP account, and is limited to performing certain tasks.
 
-In fact, the API has a little sandbox for each POST endpoint, and as you
+For our convenience, the COOP has a little sandbox for each POST endpoint, and as you
 can see, the only thing we need to specify is the Access Token. Now, how
 do we get that access token?
 
 Creating an Application
 -----------------------
 
-Now let's create an application. 
+Now let's create an application.
 
 - explain the application
 - create the application
