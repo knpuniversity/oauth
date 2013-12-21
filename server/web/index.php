@@ -25,6 +25,16 @@ $app['security.user_provider'] = $app->share(function () use ($app) {
 $app->register(new \Silex\Provider\SessionServiceProvider());
 $app->register(new Silex\Provider\SecurityServiceProvider(), array(
     'security.firewalls' => array(
+        'applications' => array(
+            'pattern' => '^/application',
+            //'http' => true,
+            'form' => true,
+            'users' => $app->share(function () use ($app) {
+                return $app['security.user_provider'];
+            }),
+            'anonymous' => false,
+            'logout' => true,
+        ),
         'main' => array(
             'pattern' => '^/',
             //'http' => true,
