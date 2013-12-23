@@ -1,22 +1,25 @@
 Client Credentials
 ==================
 
-Brent needs more sleep, so his first goal is to create a single-file PHP
+Brent needs mo' sleeps, so his first goal is to create a single-file PHP
 script that will use the COOP API to collect his eggs for him. With a CRON
 job, this will let him sleep in every morning.
 
-To use the COOP API, we just need an access token. In OAuth, there are 4
+To use the COOP API, we just need an access token. In OAuth, there are multiple
 ways to get the access token, based on your situation. These are called grant
 types, and we'll talk about the 3 most important ones. For our CRON script,
-we'll use one called client credentials. This may not *feel* like the OAuth
-flow you're used to, but we'll get there.
+we'll use one called Client Credentials. The Client Credentials grant type is
+the simplest of all the grant types. Because it only involves the client and
+the server, it is perfect for routine service calls like the one in this
+example. This may not *feel* like the OAuth flow you're used to, but we'll get
+there.
 
 OAuth Applications
 ------------------
 
-First, go back to COOP and create an application. For each external app
-or script that you create to interact with the COOP API, you'll create an
-application. Let's give it a name, a description, and check only the box
+First, go back to COOP and create an application. You'll make an
+application for each external app or script that you write to interact with the
+COOP API. Let's give it a name, a description, and check only the box
 for "Collect Eggs from Your Chickens". These checkboxes are called "scopes",
 which are basically permissions. In this case, we're creating an application
 that will only have access to collect eggs on someone's account.
@@ -25,7 +28,7 @@ When we finish, we now have a Client ID, which we created, and an auto-generated
 "Client Secret". You can think of these sort of like the username and password
 for this application.
 
-In this simple client credentials grant type, we simply want to use the application
+In the Client Credentials grant type, we simply want to use the application
 to get an access token that gives us access to collect eggs on *our* account.
 Every OAuth server has an endpoint where you can retrieve an access token.
 In fact, COOP gives us a nice little link to retrieve an access token.
@@ -37,10 +40,14 @@ on *our* account via the API. In fact, let's copy it, go to the sandbox for
 collecting eggs and enter it into the form. And just like that, COOP collects
 our eggs!
 
+Now try to perform the call to put the toilet seat down with the same access
+token. Because we did not give our application this scope, the error "The
+request requires higher privileges than provided by the access token" is shown.
+
 Retrieving an Access Token
 --------------------------
 
-Let's go back and look at the link that gave us this:
+Let's go back and look at the link that gave us the access token:
 
 .. code-block:: text
 
@@ -204,18 +211,18 @@ If we try it again immediately, it still works:
 
 ... but the hens are a little tired.
 
-Ok, our script is done! This is the "client credentials" grant type, which
+Ok, our script is done! This is the Client Credentials grant type, which
 is a way for us to use the Client ID and Client Secret from our application
-to get an access token that allows us to access only the account that created
+to get an access token that can only access the account that created
 the application.
 
 This is probably the simplest OAuth situation and is perfect when you need
-to write something that only has access to *our* account. It's still better
-than using our username and password because we can limit what the application
-can do with the grants. We can also revoke access to only our CRON script
-later by deleting the app.
+to write something that only has access to *your* account. This is way better
+than putting your username and password in the code! And because you've used
+scopes to limit what your application can do, you've made things even safer!
+If necessary, you can always revoke access to just the CRON job later by
+deleting the app.
 
-But ultimately, client credentials is *a way* to get a token that gives your
-application access to take actions on behalf of a COOP user. Let's move on
-now to the grant type that you're probably more familiar with: authorization
-code.
+Ultimately, Client Credentials is *a way* to get a token that gives your
+application access on behalf of a COOP user. Let's move on now to the grant
+type that you're probably more familiar with: Authorization Code.
