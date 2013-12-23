@@ -38,8 +38,11 @@ class Home
         // the API docs will be here and all this functionality will
         // basically be an API playground
 
-        $user    = $app['security']->getToken()->getUser();
-        $clients = $app['storage']->getAllClientDetails($user->getUsername());
+        $clients = array();
+        if ($app['security']->isGranted('IS_AUTHENTICATED_FULLY')) {
+            $user    = $app['security']->getToken()->getUser();
+            $clients = $app['storage']->getAllClientDetails($user->getUsername());
+        }
 
         return $app['twig']->render('apiHome.twig', ['clients' => $clients]);
     }
