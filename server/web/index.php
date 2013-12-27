@@ -25,19 +25,8 @@ $app['security.user_provider'] = $app->share(function () use ($app) {
 $app->register(new \Silex\Provider\SessionServiceProvider());
 $app->register(new Silex\Provider\SecurityServiceProvider(), array(
     'security.firewalls' => array(
-        'applications' => array(
-            'pattern' => '^/application',
-            //'http' => true,
-            'form' => true,
-            'users' => $app->share(function () use ($app) {
-                return $app['security.user_provider'];
-            }),
-            'anonymous' => false,
-            'logout' => true,
-        ),
         'main' => array(
             'pattern' => '^/',
-            //'http' => true,
             'form' => true,
             'users' => $app->share(function () use ($app) {
                 return $app['security.user_provider'];
@@ -47,6 +36,12 @@ $app->register(new Silex\Provider\SecurityServiceProvider(), array(
         ),
     )
 ));
+
+// require login for application management
+$app['security.access_rules'] = array(
+    array('^/application', 'IS_AUTHENTICATED_FULLY'),
+);
+
 // configure the password hashing to be a simple sha1, to match with the OAuthServer
 $app['security.encoder.digest'] = $app->share(function ($app) {
     // use the sha1 algorithm
