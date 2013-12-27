@@ -39,12 +39,12 @@ king of the hipster chicken-farmers!
 
 In this tutorial, we'll play the part of Brent, using OAuth first to gain
 access to his account for a simple script that uses the COOP API to collect
-his eggs. From there, we'll learn all about the most well-known OAuth flow
+his eggs. From there, we'll learn all about the most well-known OAuth grant type, Authorization Code,
 and use it to allow farmers to authorize our Fantasy Chicken League website
 to count their eggs.
 
-We'll also learn about the Implicit flow that's commonly used by JavaScript
-or mobile apps and of course more advanced things like handling refresh tokens.
+We'll also learn about the Implicit grant type that's commonly used by JavaScript
+and mobile apps, and of course more advanced things like handling refresh tokens.
 With all this, we'll show some practical examples of leveraging our expertise
 to connect with Facebook on the server-side and via its JavaScript SDK.
 
