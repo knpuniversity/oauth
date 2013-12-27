@@ -1,18 +1,20 @@
 Client Credentials
 ==================
 
-Brent needs mo' sleeps, so his first goal is to create a single-file PHP
-script that will use the COOP API to collect his eggs for him. With a CRON
-job, this will let him sleep in every morning.
+Brent needs more sleep, so his first goal is to create a single-file PHP
+script that will use the COOP API to collect his eggs for him. He can
+set this script to run as a CRON job, and then sleep in every morning!
 
-To use the COOP API, we just need an access token. In OAuth, there are multiple
-ways to get the access token, based on your situation. These are called grant
-types, and we'll talk about the 3 most important ones. For our CRON script,
-we'll use one called Client Credentials. The Client Credentials grant type is
-the simplest of all the grant types. Because it only involves the client and
-the server, it is perfect for routine service calls like the one in this
-example. This may not *feel* like the OAuth flow you're used to, but we'll get
-there.
+OAuth includes a grant type for this called Client Credentials. Client
+Credentials is the simplest of all the grant types. It involves only two
+parties, the client and the server. The client makes a direct request to the
+server, provides the client identifier and secret, and recieves an access token
+in return. The access token is limited to the resources under the control of
+the client. This is perfect for routine service calls such as the one in this
+example. There is no third party or end user in this grant type, which
+simplifies the exchange.
+
+This may not *feel* like the OAuth flow you're used to, but we'll get there.
 
 OAuth Applications
 ------------------
