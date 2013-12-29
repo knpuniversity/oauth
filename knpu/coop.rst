@@ -37,6 +37,11 @@ Now let's create an application.
 - grab an access token
 - try collecting eggs online, then doing something else
 
+You may notice your application's name appears as "Client ID" on the
+application detail page. The "client" in OAuth terminology represents the
+application intending to access the protected resources. In our examples, it is
+safe to assume "client" is referring to your application.
+
 # The OAuth Server
 
 ## Introduce Existing Server

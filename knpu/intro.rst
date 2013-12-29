@@ -48,8 +48,22 @@ securely. In our case, it defines how we create and give that all-important
 access token to someone like OpenSky.
 
 Because authorization requirements vary between applications, OAuth defines
-multiple ways the creation of access tokens can be done. We will refer to
-these different ways as OAuth flows.
+multiple ways to request an access token. Each of these ways is known as a
+grant type, and each grant type has a unique way of requesting an access token.
+Although the requests look different, a grant type will always resolve to an
+access token. The OAuth server uses grant types for different application
+requirements, and access tokens alone are accepted for requests to protected
+resources.
+
+The Authorization Code grant type is used for authorizing third parties (as in
+our OpenSky example). This is OAuth's most well-known grant type. However, a
+separate grant type is required for applications running in the browser or on a
+mobile device. As the exchange is public, the application cannot include
+sensitive information such as application credentials. For this, OAuth provides
+the Implicit grant type. Another grant type is needed for server-to-server API
+calls, when a third party does not exist. This is known as the Client
+Credentials grant type. We will be taking a look at all three of these grant
+types in this tutorial.
 
 Since OAuth is a standard, once you master it, you've unlocked
 the ability to integrate with many APIs, including Facebook, GitHub, Dropbox,
