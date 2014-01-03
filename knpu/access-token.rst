@@ -1,6 +1,8 @@
 Getting the Access Token
 ========================
 
+TODO - this will be replaced by authorization-code.rst
+
 - Create a new page that matches our redirectURI
 - make a request out to the HouseRobot
 - get back the access token

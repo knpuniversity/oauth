@@ -5,11 +5,8 @@ OAuth 2.0: Episode1
     :hidden:
 
     intro
-    the-farm
-    coop
     client-credentials
-    redirecting-authorize
-    access-token
+	authorization-code
     logging-in
     facebook
     facebook-javascript

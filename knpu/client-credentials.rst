@@ -266,16 +266,15 @@ If we try it again immediately, it still works:
 
 ... but the hens are a little tired.
 
-That's it! This is the Client Credentials grant type, which is a way for
-us to use the Client ID and Client Secret from our application to get an
-access token that can only access the account that created the application.
+That's it! Brent can now set this to run with a CRON job then get some well-deserved
+rest and relaxation!
 
-This is probably the simplest OAuth situation and is perfect when you need
-to write something that only has access to *your* account. This is way better
-than putting your username and password in the code! And because you've used
-scopes to limit what your application can do, you've made things even safer!
-If necessary, you can always revoke access to just the CRON job later by
-deleting the application.
+The Client Credentials grant type is a way for us to use the Client ID and
+Client Secret from our application to get an access token that can only
+access the account that created the application. This is way better than
+putting your username and password in the code in part because the access
+token is scoped to *only* allow us to collect eggs. And if you ever need
+to, you can always revoke access to the CRON job by deleting the application.
 
 Ultimately, Client Credentials is *a way* to get a token that gives your
 application access on behalf of a COOP user. Let's move on now to the grant

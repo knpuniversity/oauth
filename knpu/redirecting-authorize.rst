@@ -1,6 +1,8 @@
 Redirecting and Authorizing your Site
 =====================================
 
+TODO - this will be replaced by authorization-code.rst
+
 The Client Application
 ----------------------
 
