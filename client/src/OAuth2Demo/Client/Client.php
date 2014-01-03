@@ -8,6 +8,9 @@ use Silex\Provider\TwigServiceProvider;
 use Silex\ControllerProviderInterface;
 use Silex\Provider\SessionServiceProvider;
 use Guzzle\Http\Client as GuzzleClient;
+use Silex\Provider\SecurityServiceProvider;
+use OAuth2Demo\Client\Security\UserProvider;
+use OAuth2Demo\Client\Storage\Connection;
 
 class Client implements ControllerProviderInterface
 {
@@ -18,8 +21,11 @@ class Client implements ControllerProviderInterface
         $app->register(new TwigServiceProvider(), array(
             'twig.path' => __DIR__.'/../../../views',
         ));
+
         // sets twig extension for client debug rendering
         $app['twig']->addExtension(new Twig\JsonStringifyExtension());
+
+        $this->configureSecurity($app);
 
         // set up the service container
         $this->setup($app);
@@ -37,12 +43,25 @@ class Client implements ControllerProviderInterface
         // creates a new controller based on the default route
         $routing = $app['controllers_factory'];
 
+        // ensure our Sqlite database exists
+        if (!file_exists($sqliteFile = __DIR__.'/../../../data/oauth.sqlite')) {
+            $this->generateSqliteDb();
+        }
+
+        // create PDO-based sqlite storage
+        $app['pdo'] = $app->share(function() use ($sqliteFile) {
+            return new \PDO('sqlite:'.$sqliteFile, null, null);
+        });
+        $app['connection'] = $app->share(function() use ($sqliteFile, $app) {
+            return new Connection($app['pdo']);
+        });
+
         // Set corresponding endpoints on the controller classes
         Controllers\Homepage::addRoutes($routing);
         Controllers\ReceiveAuthorizationCode::addRoutes($routing);
         Controllers\RequestToken::addRoutes($routing);
         Controllers\RequestResource::addRoutes($routing);
-        Controllers\Authentication::addRoutes($routing);
+        Controllers\UserManagement::addRoutes($routing);
 
         return $routing;
     }
@@ -69,7 +88,7 @@ class Client implements ControllerProviderInterface
         /** load the parameters configuration */
         $parameterFile = __DIR__.'/../../../data/parameters.json';
         if (!$parameters = json_decode(file_get_contents($parameterFile), true)) {
-            throw new Exception('unable to parse parameters file: '.$parameterFile);
+            throw new \Exception('unable to parse parameters file: '.$parameterFile);
         }
 
         return $parameters;
@@ -78,5 +97,31 @@ class Client implements ControllerProviderInterface
     private function generateSqliteDb()
     {
         include_once(__DIR__.'/../../../data/rebuild_db.php');
+    }
+
+    private function configureSecurity(Application $app)
+    {
+        $app['security.user_provider'] = $app->share(function () use ($app) {
+            return new UserProvider($app['connection']);
+        });
+
+        $app->register(new SecurityServiceProvider(), array(
+            'security.firewalls' => array(
+                'main' => array(
+                    'pattern' => '^/',
+                    'form' => true,
+                    'users' => $app->share(function () use ($app) {
+                        return $app['security.user_provider'];
+                    }),
+                    'anonymous' => true,
+                    'logout' => true,
+                ),
+            )
+        ));
+
+        // require login for application management
+        $app['security.access_rules'] = array(
+            array('^/', 'IS_AUTHENTICATED_FULLY'),
+        );
     }
 }

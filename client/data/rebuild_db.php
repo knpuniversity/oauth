@@ -18,6 +18,6 @@ if (!is_writable(__DIR__)) {
 // rebuild the DB
 $db = new PDO(sprintf('sqlite://%s', $dbfile));
 $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-$db->exec('CREATE TABLE users (email TEXT, first_name TEXT, last_name TEXT, house_robot_access_token TEXT)');
+$db->exec('CREATE TABLE users (email TEXT, first_name TEXT, last_name TEXT, house_robot_access_token TEXT, password TEXT)');
 
 chmod($dbfile, 0777);
