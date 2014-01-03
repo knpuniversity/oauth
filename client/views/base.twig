@@ -10,9 +10,13 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
 
-    <script type="text/javascript" src="{{ app.request.basePath }}/js/simpletabs_1.3.packed.js"></script>
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.css" rel="stylesheet">
 
-    <link rel="stylesheet" href="{{ app.request.basePath }}/css/bootstrap.min.css">
+    <!-- Add custom CSS here -->
+    <link rel="stylesheet" href="{{ app.request.basePath }}/css/sb-admin.css">
+    <link rel="stylesheet" href="{{ app.request.basePath }}/font-awesome/css/font-awesome.min.css">
+    <!-- Page Specific CSS -->
     <link rel="stylesheet" href="{{ app.request.basePath }}/css/topcluck.css">
 </head>
 <body>
@@ -34,7 +38,7 @@
                       <li><a href="{{ path('user_login') }}">Login</a></li>
                   {% endif %}
                     <li><a href="http://builtwithbootstrap.com/" target="_blank">Built With Bootstrap</a></li>
-                    <li><a href="http://bootswatch.com/slate/" target="_blank">BootsWatch</a></li>
+                    <li><a href="http://startbootstrap.com/sb-admin" target="_blank">Start Bootstrap</a></li>
                 </ul>
             </div>
         </div>
@@ -54,7 +58,7 @@
                     {% endblock %}
                 </div>
                 <div class="col-lg-2">
-                    <img src="{{ app.request.basePath }}/images/chicken-crop.png" style="position:absolute;right:0" width="150px"/>
+                    <img src="{{ app.request.basePath }}/images/chicken-crop.png" style="position:absolute;right:0" width="100px"/>
                 </div>
             </div>
         </div>
