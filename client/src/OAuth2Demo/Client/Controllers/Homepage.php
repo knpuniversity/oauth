@@ -9,7 +9,7 @@ class Homepage
     // Connects the routes in Silex
     public static function addRoutes($routing)
     {
-        $routing->get('/', array(new self(), 'homepage'))->bind('homepage');
+        $routing->get('/', array(new self(), 'homepage'))->bind('home');
     }
 
     public function homepage(Application $app)
