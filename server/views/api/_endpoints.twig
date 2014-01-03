@@ -1,0 +1,23 @@
+<table class="table">
+    <thead>
+    <tr>
+        <th>Action</th>
+        <th>URL</th>
+        <th>Method</th>
+        <th>Sandbox</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for action,message in app.scopes %}
+        <tr>
+            <td>{{ message }}</td>
+            <td>{{ path('api_call', {'action': action}) }}</td>
+            <td>POST</td>
+            <td>
+                <a href="{{ path('api_call', {'action': action}) }}">try
+                    it</a>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>

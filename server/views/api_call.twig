@@ -10,7 +10,7 @@
     Don't have an access token? Use an <a href="{{ path('token_get', { grant_type: 'authorization_code'}) }}">Authorization Code</a> to get one!
     <br/><br/>
     This value is typically sent on the "Authorization" header. For example:
-<pre>GET {{ endpointUri }} HTTP/1.1
+<pre>POST {{ endpointUri }} HTTP/1.1
 Host: {{ app.request.host }}
 Authorization: Bearer ACCESSTOKENHERE</pre>
 {% endblock %}

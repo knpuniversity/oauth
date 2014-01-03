@@ -7,53 +7,21 @@
             API into your Farm!
         </h3>
         <p>
-            You can do all sorts of cool things using <span class="label label-primary">The Coop</span> APIs.  Here is a complete list of actions:
+            You can do all sorts of cool things using <span class="label label-primary">The Coop</span> APIs.
         </p>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Action</th>
-                    <th>URL</th>
-                    <th>Method</th>
-                    <th>Sandbox</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for action,message in app.scopes %}
-                    <tr>
-                        <td>{{ message }}</td>
-                        <td>{{ path('api_call', {'action': action}) }}</td>
-                        <td>POST</td>
-                        <td>
-                            <a href="{{ path('api_call', {'action': action}) }}">try it</a>
-                        </td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
-    <div class="row">
-        {% if clients|length > 0 %}
-            <p>
-                Here is a list of your applications:
-            </p>
 
-            <ul>
-                {% for client in clients %}
-                    <li><a href="{{ path('app_show', {name: client.client_id|url_encode}) }}">{{ client.client_id }}</a></li>
-                {% endfor %}
-            </ul>
-            <p>
-                <a class="btn btn-default" href="{{ path('app_create') }}">Create another Application</a>
-            </p>
-        {% else %}
-            <h3>
-                You have not registered any Applications!
-            </h3>
-            <p>
-                Well let's not waste any more time... <a href="{{ path('app_create') }}">Create your Application</a>!
-            </p>
-        {% endif %}
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="#endpoints" data-toggle="tab">Endpoints</a></li>
+            <li><a href="#authentication" data-toggle="tab">Authentication</a></li>
+            <li><a href="#applications" data-toggle="tab">Your Applications</a></li>
+        </ul>
+
+        <!-- Tab panes -->
+        <div class="tab-content">
+            <div class="tab-pane fade in active" id="endpoints">{{ include('api/_endpoints.twig') }}</div>
+            <div class="tab-pane fade" id="authentication">{{ include('api/_authentication.twig') }}</div>
+            <div class="tab-pane fade" id="applications">{{ include('api/_applications.twig') }}</div>
+        </div>
     </div>
 <div>
 {% endblock %}

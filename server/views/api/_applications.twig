@@ -1,0 +1,26 @@
+{% if clients|length > 0 %}
+    <h4>
+        Here is a list of your applications:
+    </h4>
+
+    <ul>
+        {% for client in clients %}
+            <li>
+                <a href="{{ path('app_show', {name: client.client_id|url_encode}) }}">{{ client.client_id }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+    <p>
+        <a class="btn btn-default" href="{{ path('app_create') }}">Create
+            another Application</a>
+    </p>
+{% else %}
+    <h4>
+        Here is a list of your applications:
+    </h4>
+    <p>
+        Well let's not waste any more time... <a
+                href="{{ path('app_create') }}">Create your
+            Application</a>!
+    </p>
+{% endif %}
