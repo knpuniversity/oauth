@@ -65,7 +65,7 @@ class UserManagement
 
         $this->autoLogin($app, $email);
 
-        return new RedirectResponse($app['url_generator']->generate('homepage'));
+        return new RedirectResponse($app['url_generator']->generate('home'));
     }
 
     /**

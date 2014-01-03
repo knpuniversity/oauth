@@ -1,0 +1,7 @@
+{% extends "base.twig" %}
+
+{% block content %}
+    <h3>Dashboard!</h3>
+
+    <a class="button" href="{{ authorize_url }}?response_type=code&client_id={{client_id}}&redirect_uri={{ redirect_uri }}&scope={{ scope }}&state={{session_id}}">Authorize</a>
+{% endblock %}
