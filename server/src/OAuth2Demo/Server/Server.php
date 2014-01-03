@@ -28,6 +28,7 @@ class Server implements ControllerProviderInterface
         $storage = new Pdo(array('dsn' => 'sqlite:'.$sqliteFile));
 
         // create array of supported grant types
+        // todo - update the documentation in _authentication.twig when we add more
         $grantTypes = array(
             'authorization_code' => new AuthorizationCode($storage),
             'client_credentials' => new ClientCredentials($storage),

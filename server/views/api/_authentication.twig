@@ -1,1 +1,81 @@
-Authentication TODO
+<h3>Authentication via OAuth</h3>
+
+<p>
+    COOP's API uses OAuth for authentication and supports the following
+    grant types:
+</p>
+
+<ul>
+    <li>Client Credentials</li>
+    <li>Authorization Code</li>
+    <li>Implicit Grant</li>
+</ul>
+
+<p>
+    Here are the important endpoints and their parameters
+</p>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>URL</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>GET {{ path('authorize') }}</td>
+            <td>
+                <p>
+                    When using the authorization code (traditional "web") grant
+                    type, start by redirecting the user to this URL:
+                </p>
+
+                <code>
+                    {{ url('authorize', {
+                        'client_id': 'CLIENT_ID',
+                        'response_type': 'code',
+                        'redirect_uri': 'http://yoursite.com/oauth/handle'
+                    }) }}
+                </code>
+
+                <p style="margin-top: 20px;">
+                    The <code>response_type</code> parameter can be one of
+                    <code>code</code>, <code>token</code>.
+                </p>
+
+                <p style="margin-top: 20px;">
+                    The <code>redirect_uri</code> is the URL that COOP will
+                    redirect the user back to after granting or denying authorization.
+                </p>
+
+                <p style="margin-top: 20px;">
+                    Once the user is redirected back to <code>redirect_uri</code>,
+                    ... TODO - fill in based on response_type stuff
+                </p>
+
+            </td>
+        </tr>
+        <tr>
+            <td>POST {{ path('token_post') }}</td>
+            <th>
+                When using the authorization code grant type, after receiving
+                the authorization code, you'll use this endpoint to exchange
+                it for an access token:
+
+                <code>
+                    {{ url('token', {
+                        'client_id': 'CLIENT_ID',
+                        'client_secret': 'CLIENT_SECRET',
+                        'redirect_uri': 'http://yoursite.com/oauth/handle'
+                    }) }}
+                </code>
+
+                <p style="margin-top: 20px;">
+                    The <code>grant_type</code> parameter can be one of
+                    <code>client_credentials</code>, <code>authorization_code</code>.
+                </p>
+            </th>
+        </tr>
+    </tbody>
+</table>
