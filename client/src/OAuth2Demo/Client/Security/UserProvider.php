@@ -30,7 +30,6 @@ class UserProvider implements UserProviderInterface
         $user->encodedPassword = $userDetails['password'];
         $user->firstName = $userDetails['first_name'];
         $user->lastName = $userDetails['last_name'];
-        $user->address = $userDetails['address'];
 
         return $user;
     }

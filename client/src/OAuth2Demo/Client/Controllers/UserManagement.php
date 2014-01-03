@@ -48,8 +48,8 @@ class UserManagement
         $firstName = $request->request->get('firstName');
         $lastName = $request->request->get('lastName');
 
-        /** @var \OAuth2Demo\Server\Storage\Pdo $storage */
-        $storage = $app['storage'];
+        /** @var \OAuth2Demo\Client\Storage\Connection $storage */
+        $storage = $app['connection'];
 
         // make sure we don't already have this user!
         if ($existingUser = $storage->getUser($email)) {
@@ -65,7 +65,7 @@ class UserManagement
 
         $this->autoLogin($app, $email);
 
-        return new RedirectResponse($app['url_generator']->generate('home'));
+        return new RedirectResponse($app['url_generator']->generate('homepage'));
     }
 
     /**

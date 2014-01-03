@@ -42,9 +42,12 @@
                       <li>
                           <a href="http://twitter.com/knpuniversity">Twitter</a>
                       </li>
-                      <li>
-                          <a href="{{ path('login') }}">Login</a>
-                      </li>
+                      {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                          <li><a href="{{ path('user_logout') }}">Logout</a></li>
+                      {% else %}
+                          <li><a href="{{ path('user_register') }}">Register</a></li>
+                          <li><a href="{{ path('user_login') }}">Login</a></li>
+                      {% endif %}
                   </ul>
               </nav>
               {% endblock %}

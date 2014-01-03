@@ -23,7 +23,11 @@ class Client implements ControllerProviderInterface
         ));
 
         // sets twig extension for client debug rendering
-        $app['twig']->addExtension(new Twig\JsonStringifyExtension());
+        $app->extend('twig', function(\Twig_Environment $twig) {
+            $twig->addExtension(new Twig\JsonStringifyExtension());
+
+            return $twig;
+        });
 
         $this->configureSecurity($app);
 
@@ -48,14 +52,6 @@ class Client implements ControllerProviderInterface
             $this->generateSqliteDb();
         }
 
-        // create PDO-based sqlite storage
-        $app['pdo'] = $app->share(function() use ($sqliteFile) {
-            return new \PDO('sqlite:'.$sqliteFile, null, null);
-        });
-        $app['connection'] = $app->share(function() use ($sqliteFile, $app) {
-            return new Connection($app['pdo']);
-        });
-
         // Set corresponding endpoints on the controller classes
         Controllers\Homepage::addRoutes($routing);
         Controllers\ReceiveAuthorizationCode::addRoutes($routing);
@@ -73,11 +69,14 @@ class Client implements ControllerProviderInterface
         }
 
         $app['pdo'] = $app->share(function () use ($sqliteFile) {
-            return new \PDO('sqlite:'.$sqliteFile);
+            $pdo = new \PDO('sqlite:'.$sqliteFile);
+            $pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+
+            return $pdo;
         });
 
-        $app['db'] = $app->share(function (Application $app) {
-            return new Db($app['pdo']);
+        $app['connection'] = $app->share(function() use ($sqliteFile, $app) {
+            return new Connection($app['pdo'], $app['security.encoder_factory']);
         });
 
         $app['parameters'] = $this->loadParameters();
