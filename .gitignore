@@ -1,6 +1,7 @@
 /client/composer.phar
 /client/vendor
 /client/data/*.sqlite
+/client/data/parameters.json
 /cron/composer.phar
 /cron/vendor
 /server/data/oauth.sqlite

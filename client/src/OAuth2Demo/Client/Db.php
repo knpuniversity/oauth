@@ -10,5 +10,4 @@ class Db
     {
         $this->pdo = $pdo;
     }
-
 }

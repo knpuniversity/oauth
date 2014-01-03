@@ -4,14 +4,9 @@ namespace OAuth2Demo\Client\Controllers;
 
 use Silex\Application;
 
-class RequestToken
+class RequestToken extends ActionableController
 {
-    public static function addRoutes($routing)
-    {
-        $routing->get('/request_token/authorization_code', [new self(), 'requestToken'])->bind('request_token_with_authcode');
-    }
-
-    public function requestToken(Application $app)
+    public function __invoke(Application $app)
     {
         $twig   = $app['twig'];          // used to render twig templates
         $config = $app['parameters'];    // the configuration for the current oauth implementation
@@ -36,11 +31,11 @@ class RequestToken
         $response = $http->post($config['token_url'], null, $params, $config['http_options'])->send();
         $json = json_decode((string) $response->getBody(), true);
 
-        // if it is succesful, display the token in our app
+        // if it is successful, display the token in our app
         if (isset($json['access_token'])) {
             return $twig->render('show_access_token.twig', array('token' => $json['access_token']));
         }
 
-        return $twig->render('failed_token_request.twig', array('response' => $json ? $json : $response));
+        return $twig->render('failed_token_request.twig', array('response' => $json ?: $response));
     }
 }

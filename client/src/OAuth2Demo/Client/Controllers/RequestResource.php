@@ -4,18 +4,12 @@ namespace OAuth2Demo\Client\Controllers;
 
 use Silex\Application;
 
-class RequestResource
+class RequestResource extends ActionableController
 {
-    public static function addRoutes($routing)
-    {
-        $routing->get('/request_resource', array(new self(), 'requestResource'))->bind('request_resource');
-    }
-
-    public function requestResource(Application $app)
+    public function __invoke(Application $app)
     {
         $twig   = $app['twig'];          // used to render twig templates
         $config = $app['parameters'];    // the configuration for the current oauth implementation
-        $urlgen = $app['url_generator']; // generates URLs based on our routing
         $http   = $app['http_client'];   // simple class used to make http requests
 
         // pull the token from the request
