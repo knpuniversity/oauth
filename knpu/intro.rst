@@ -1,72 +1,61 @@
-Introduction!
-=============
+Serious OAuth in 8 Steps
+========================
 
-Hey guys! In this tutorial, we're going to get dirty with OAuth. So what
-is OAuth anyways?
+Hey guys! In this tutorial, we're going to get serious with OAuth by building
+an app with some complex and real-life features, like Facebook authentication,
+dealing with expiration tokens and more. We'll need about 8 steps to turn
+a barebones starting app into a complex, OAuth machine:
 
-These days, it's pretty common for an application or website to ask us to
-give it access to one of our accounts. For example, if I log into OpenSky,
-an e-commerce website, I can invite my Facebook friends. Of course to do
-this, OpenSky needs access to my Facebook account so it can see who all of
-my friends are.
+1) Client Credentials: making API requests for our own account
+2) Authorization Code: Getting a token for another user's account
+3) Logging in via OAuth
+4) OAuth with Facebook
+5) OAuth in JavaScript with Facebook
+6) Handling Expired Tokens
+7) Using Refresh Tokens
+8) Tightening up Security
 
-So how could we give OpenSky access to our account? OpenSky could just ask
-for our Facebook password. With that, it could login on our behalf and grab
-whatever information it needed.
+As we go through these, we'll give you any theory and background you need.
 
-But that would be nuts! Our password gives OpenSky access to do *anything*,
-like read our friends, make new friends, post for us, or even change our
-password. And the only way to remove OpenSky's access would be to change
-our password, which would also remove access to every other site that we
-have given access.
+For now, you just need to understand that OAuth is an Authorization Framework.
+What that *actually* means is that it defines the different ways in which
+two parties - like your neat web site and a user on your website - can exchange
+tokens securely. Each of these ways is known as a grant type, and each has
+a unique way of requesting an access token. Although the requests look different,
+a grant type will always resolve to an access token. 
 
-Nope, one way or another, giving our password away is *not* the answer. Instead,
-we need something that *acts* like a password, but only gives OpenSky
-access to do certain things on our behalf. We also need to be able to revoke
-access to OpenSky without removing access to other sites.
+A token just a unique string that I can give you, which will give you access
+to make API requests on my behalf. It acts like a username and a password
+all rolled into one. For example, if ``ABCD1234`` is a valid token to my
+Facebook account, then an HTTP request that looks like this would post to
+my timeline:
 
-The answer to this puzzle is: a token. When we use the web in a browser,
-we login with a username and password. But typically, when a service uses the API
-of a site, it authenticates by passing a token with the request, often times
-as an HTTP header. The API looks up this token and finds the user account
-that it's attached to. Any action done with the API is now done *as* that
-user. Depending on how the API works, that token may only be allowed certain
-actions on behalf of the user. For example, the token might be able to access
-the list of Facebook friends, but not actually post on the user's wall.
+.. code-block:: text
 
-With this simple idea, everything becomes possible. In our example, we simply
-need to give OpenSky a token which is tied to our Facebook account, and limited
-to the activities we'd like them to perform
-on our behalf. Later, if we need to give another site access to our
-Facebook account, we'll create a different token. This gives us the power
-to *revoke* each token independently and control exactly who does and who does
-not have access to our account.
+    POST /weaverryan/feed HTTP/1.1
+    Host: graph.facebook.com
+    Content-Type: application/x-www-form-urlencoded
+    Content-Length: length
 
-So what is OAuth? OAuth is defined as an Authorization Framework. This means
-it defines the different ways in which the exchanging of tokens can be done
-securely. In our case, it defines how we create and give that all-important
-access token to someone like OpenSky.
+    access_token=ABCD1234&message=Hello
 
-Because authorization requirements vary between applications, OAuth defines
-multiple ways to request an access token. Each of these ways is known as a
-grant type, and each grant type has a unique way of requesting an access token.
-Although the requests look different, a grant type will always resolve to an
-access token. The OAuth server uses grant types for different application
-requirements, and access tokens alone are accepted for requests to protected
-resources.
+Exactly *how* you include the access token in an API request will be different
+between Facebook, Twitter, or any other API. But it's always there.
 
-The Authorization Code grant type is used for authorizing third parties (as in
-our OpenSky example). This is OAuth's most well-known grant type. However, a
-separate grant type is required for applications running in the browser or on a
-mobile device. As the exchange is public, the application cannot include
-sensitive information such as application credentials. For this, OAuth provides
-the Implicit grant type. Another grant type is needed for server-to-server API
-calls, when a third party does not exist. This is known as the Client
-Credentials grant type. We will be taking a look at all three of these grant
-types in this tutorial.
+Of course, I could just give you my username and password. But a token is
+better for a few reasons. First, if I give 10 apps access to my account,
+each app will have its own token, which means I can revoke your access without
+revoking everyone's access.
 
-Since OAuth is a standard, once you master it, you've unlocked
-the ability to integrate with many APIs, including Facebook, GitHub, Dropbox,
-Google, Instagram, LinkedIn, Twitter and a lot more.
+Second, and even more important, tokens can have a limited scope. So unlike
+a password, I can give you a token that gives you access to view my Facebook
+friends, but not post to my wall.
 
-Ok, let's go!
+So going back, OAuth defines different ways that two parties can exchange
+tokens. If I create a website where users give the site access to list their
+Facebook friends, exactly how does those users *give* that token to the site?
+
+The answer to that question, along with token expiration, refresh tokens
+and things called grant types, make this a journey well-worth taking.
+
+Let's go!

@@ -1,28 +1,6 @@
 Life On the Farm
 ================
 
-Meet Brent. He's the hardworking, beard-growing, kale-munching type who
-has a coop of the nicest, smartest, and best egg-laying chickens this side
-o' the Mississippi! But feeding his chickens and doing other things around
-the farm has always taken a lot of time.
-
-  *show Brent being a hero on his farm*
-
-But great news! The brand new "Chicken Oversight Operations Platform", or
-COOP site has just launched! With COOP, you can login to the site and
-collect your chicken eggs, unlock the barn, and do all kinds of other things
-just by clicking a button.
-
-  *show Brent on a computer, and some big robot collecting chicken eggs*
-
-With all his free time, Brent also learns how to program and starts learning
-about COOP's awesome API, which uses OAuth. And as easy as it is now
-to collect his eggs, he wonders if he could write a little script that would
-do it automatically. Yea, if he had a script that made an API request on his
-behalf, he could run it on a CRON job daily and sleep in!
-
-  *show Brent having a Eureka moment or imagining himself sleeping while his computer runs a CRON*
-
 But that's not all Brent can do with the API! Suddenly, Brent is jolted
 from his dreaming to the sound of farmer Scott driving
 his eggs to the market and screaming "Haha, Brent! My chickens lay way more
