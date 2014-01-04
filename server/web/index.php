@@ -23,6 +23,9 @@ $app['security.user_provider'] = $app->share(function () use ($app) {
     return new UserProvider($app['storage']);
 });
 $app->register(new \Silex\Provider\SessionServiceProvider());
+$app['session.storage.options'] = array(
+    'name' => 'oath_server',
+);
 $app->register(new Silex\Provider\SecurityServiceProvider(), array(
     'security.firewalls' => array(
         'main' => array(
