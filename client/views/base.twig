@@ -11,7 +11,7 @@
     <meta name="viewport" content="width=device-width">
 
     <!-- Bootstrap core CSS -->
-    <link href="css/bootstrap.css" rel="stylesheet">
+    <link href="{{ app.request.basePath }}/css/bootstrap.css" rel="stylesheet" />
 
     <!-- Add custom CSS here -->
     <link rel="stylesheet" href="{{ app.request.basePath }}/css/sb-admin.css">
@@ -27,6 +27,7 @@
     <div class="navbar navbar-default navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
+                <p class="navbar-text navbar-right">The Fantasy Chicken League</p>
                 <a href="{{ path('home') }}" class="navbar-brand">Top Cluck</a>
             </div>
             <div class="navbar-collapse collapse" id="navbar-main">
