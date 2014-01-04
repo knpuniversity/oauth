@@ -46,7 +46,7 @@
     </div>
 
     <div class="container">
-        <div class="page-header" id="banner">
+        <div class="page-header{{ block('header') ? '' : ' page-header-empty' }}" id="banner">
             <div class="row">
                 <div class="col-lg-10">
                     {% block header %}

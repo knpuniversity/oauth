@@ -1,7 +1,23 @@
 {% extends "base.twig" %}
 
-{% block content %}
-    <h3>Dashboard!</h3>
+{% block header %}{% endblock %}
 
-    <a class="button" href="{{ authorize_url }}?response_type=code&client_id={{client_id}}&redirect_uri={{ redirect_uri }}&scope={{ scope }}&state={{session_id}}">Authorize</a>
+{% block content %}
+    <div class="row">
+        <div class="col-lg-6">
+            <h3>Your Basket of Eggs</h3>
+
+            <div class="alert alert-info">
+                To start counting your eggs, you need to authorize Top Cluck
+                to use your COOP account!
+            </div>
+
+            <a class="btn btn-primary btn-lg" href="{{ authorize_url }}?response_type=code&client_id={{client_id}}&redirect_uri={{ redirect_uri }}&scope={{ scope }}&state={{session_id}}">Authorize</a>
+
+
+        </div>
+        <div class="col-lg-6">
+            {{ include('_leaderboard.twig') }}
+        </div>
+    </div>
 {% endblock %}
