@@ -39,6 +39,8 @@ class Homepage
             ));
         }
 
-        return $app['twig']->render('index.twig');
+        return $app['twig']->render('index.twig', array(
+            'coopUrl' => $app['parameters']['coop_host'],
+        ));
     }
 }

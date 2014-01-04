@@ -1,5 +1,22 @@
 {% extends "base.twig" %}
 
+{% block header %}{% endblock %}
+
 {% block content %}
-    {{ include('_leaderboard.twig') }}
+    <div class="row">
+        <div class="col-lg-6">
+            <h3>What the cluck is this all about?</h3>
+
+            <h5>
+                Count the eggs that <a href="{{ coopUrl }}">Coop</a> has
+                collected and gain chicken-glory!
+            </h5>
+
+            <a class="btn btn-primary" href="{{ path('user_login') }}">Login</a>
+            <a class="btn btn-success" href="{{ path('user_register') }}">Register</a>
+        </div>
+        <div class="col-lg-6">
+            {{ include('_leaderboard.twig') }}
+        </div>
+    </div>
 {% endblock %}
