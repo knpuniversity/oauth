@@ -30,12 +30,16 @@ class Homepage
                 UrlGeneratorInterface::ABSOLUTE_URL
             );
 
+            /** @var \OAuth2Demo\Client\Security\User $user */
+            $user = $app['security']->getToken()->getUser();
+
             return $app['twig']->render('dashboard.twig', array(
                 'client_id'     => $client_id,
                 'authorize_url' => $authorize_url,
                 'scope'         => $scope,
                 'redirect_uri'  => $redirect_uri,
-                'session_id'    => $app['session']->getId()
+                'session_id'    => $app['session']->getId(),
+                'user'          => $user,
             ));
         }
 

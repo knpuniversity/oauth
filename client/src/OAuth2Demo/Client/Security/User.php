@@ -16,60 +16,30 @@ class User implements UserInterface
 
     public $lastName;
 
+    public $coopAccessToken;
+
+    /**
+     * Start: Security-related stuff
+     */
+
     public function getUsername()
     {
         return $this->email;
     }
-
     public function eraseCredentials()
     {
         $this->encodedPassword = null;
     }
-
     public function getPassword()
     {
         return $this->encodedPassword;
     }
-
     public function getRoles()
     {
         return array('ROLE_USER');
     }
-
     public function getSalt()
     {
         return null;
-    }
-
-    /**
-     * @return string
-     */
-    public function getLastName()
-    {
-        return $this->lastName;
-    }
-
-    /**
-     * @return string
-     */
-    public function getFirstName()
-    {
-        return $this->firstName;
-    }
-
-    /**
-     * @return string
-     */
-    public function getEmail()
-    {
-        return $this->email;
-    }
-
-    /**
-     * @return string
-     */
-    public function getAddress()
-    {
-        return $this->address;
     }
 }
