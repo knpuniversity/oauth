@@ -16,7 +16,7 @@
 
                 <a class="btn btn-primary btn-lg" href="{{ authorize_url }}?response_type=code&client_id={{client_id}}&redirect_uri={{ redirect_uri }}&scope={{ scope }}&state={{session_id}}">Authorize</a>
             {% else %}
-                TODO - put some stuff here to update your egg count!
+                Sweet! Now, <a href="{{ path('home') }}">Count today's eggs</a>
             {% endif %}
 
 

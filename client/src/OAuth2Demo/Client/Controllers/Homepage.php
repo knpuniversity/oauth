@@ -4,7 +4,7 @@ namespace OAuth2Demo\Client\Controllers;
 
 use Silex\Application;
 
-class Homepage
+class Homepage extends BaseController
 {
     // Connects the routes in Silex
     public static function addRoutes($routing)
@@ -15,34 +15,27 @@ class Homepage
     public function homepage(Application $app)
     {
         // homepage when logged in
-        if ($app['security']->isGranted('IS_AUTHENTICATED_FULLY')) {
-            $client_id      = urlencode($app['parameters']['client_id']);
-            $authorize_url  = $app['parameters']['coop_host'].'/authorize';
-            $scope          = 'barn-unlock';
+        if ($this->isUserLoggedIn()) {
+            $clientId      = urlencode($app['parameters']['client_id']);
+            $authorizeUrl  = $app['parameters']['coop_host'].'/authorize';
+            $scope         = 'barn-unlock';
 
             // generates an absolute URL like http://localhost/receive_authcode
             // /receive_authcode is the page that the OAuth server will redirect back to
             // see ReceiveAuthorizationCode.php
-            $redirect_uri   = $app['url_generator']->generate(
-                'authorize_redirect',
-                array(),
-                true
-            );
+            $redirectUri = $this->generateUrl('authorize_redirect', array(), true);
 
-            /** @var \OAuth2Demo\Client\Security\User $user */
-            $user = $app['security']->getToken()->getUser();
-
-            return $app['twig']->render('dashboard.twig', array(
-                'client_id'     => $client_id,
-                'authorize_url' => $authorize_url,
+            return $this->render('dashboard.twig', array(
+                'client_id'     => $clientId,
+                'authorize_url' => $authorizeUrl,
                 'scope'         => $scope,
-                'redirect_uri'  => $redirect_uri,
+                'redirect_uri'  => $redirectUri,
                 'session_id'    => $app['session']->getId(),
-                'user'          => $user,
+                'user'          => $this->getLoggedInUser(),
             ));
         }
 
-        return $app['twig']->render('index.twig', array(
+        return $this->render('index.twig', array(
             'coopUrl' => $app['parameters']['coop_host'],
         ));
     }

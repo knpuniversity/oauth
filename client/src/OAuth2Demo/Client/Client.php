@@ -2,6 +2,7 @@
 
 namespace OAuth2Demo\Client;
 
+use OAuth2Demo\Client\Controllers\BaseController;
 use Silex\Application;
 use Silex\Provider\UrlGeneratorServiceProvider;
 use Silex\Provider\TwigServiceProvider;
@@ -11,6 +12,9 @@ use Guzzle\Http\Client as GuzzleClient;
 use Silex\Provider\SecurityServiceProvider;
 use OAuth2Demo\Client\Security\UserProvider;
 use OAuth2Demo\Client\Storage\Connection;
+use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
+use Symfony\Component\HttpKernel\KernelEvents;
 
 class Client implements ControllerProviderInterface
 {
@@ -57,10 +61,28 @@ class Client implements ControllerProviderInterface
             $this->generateSqliteDb();
         }
 
+        /** @var EventDispatcher $dispatcher */
+        $dispatcher = $app['dispatcher'];
+        // a quick event listener to inject the container into our BaseController
+        $dispatcher->addListener(
+            KernelEvents::CONTROLLER,
+            function(FilterControllerEvent $event) use ($app) {
+                $controller = $event->getController();
+                if (!is_array($controller)) {
+                    return;
+                }
+
+                $controllerObject = $controller[0];
+                if ($controllerObject instanceof BaseController) {
+                    $controllerObject->setContainer($app);
+                }
+            }
+        );
+
         // Set corresponding endpoints on the controller classes
         Controllers\Homepage::addRoutes($routing);
         Controllers\ReceiveAuthorizationCode::addRoutes($routing);
-        Controllers\RequestResource::addRoutes($routing);
+        Controllers\CountEggs::addRoutes($routing);
         Controllers\UserManagement::addRoutes($routing);
 
         return $routing;

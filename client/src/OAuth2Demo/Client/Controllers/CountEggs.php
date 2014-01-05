@@ -4,19 +4,21 @@ namespace OAuth2Demo\Client\Controllers;
 
 use Silex\Application;
 
-class RequestResource
+class CountEggs extends BaseController
 {
     public static function addRoutes($routing)
     {
-        $routing->get('/coop/request_resource', array(new self(), 'requestResource'))->bind('request_resource');
+        $routing->get('/coop/count-eggs', array(new self(), 'countEggs'))->bind('count_eggs');
     }
 
     public function requestResource(Application $app)
     {
+        die('todo');
         $twig   = $app['twig'];          // used to render twig templates
         $config = $app['parameters'];    // the configuration for the current oauth implementation
-        $urlgen = $app['url_generator']; // generates URLs based on our routing
         $http   = $app['http_client'];   // simple class used to make http requests
+
+        // 1) make an API request to count this user's eggs
 
         // pull the token from the request
         $token = $app['request']->get('token');

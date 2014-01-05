@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
-class UserManagement
+class UserManagement extends BaseController
 {
     // Connects the routes in Silex
     public static function addRoutes($routing)
@@ -23,9 +23,9 @@ class UserManagement
     /**
      * Registration page
      */
-    public function register(Application $app)
+    public function register()
     {
-        return $app['twig']->render('user/register.twig');
+        return $this->render('user/register.twig');
     }
 
     /**
@@ -49,20 +49,20 @@ class UserManagement
         $storage = $app['connection'];
 
         // make sure we don't already have this user!
-        if ($existingUser = $storage->getUser($email)) {
+        if ($existingUser = $this->findUserByEmail($email)) {
             $errors[] = 'A user with this email is already registered!';
         }
 
         // errors? Show them!
         if (count($errors) > 0) {
-            return $app['twig']->render('user\register.twig', ['errors' => $errors]);
+            return $this->render('user\register.twig', ['errors' => $errors]);
         }
 
         $storage->createUser($email, $password, $firstName, $lastName);
 
         $this->autoLogin($app, $email);
 
-        return new RedirectResponse($app['url_generator']->generate('home'));
+        return $this->redirect($this->generateUrl('home'));
     }
 
     /**
@@ -72,7 +72,7 @@ class UserManagement
      */
     public function login(Application $app, Request $request)
     {
-        return $app['twig']->render('user/login.twig', array(
+        return $this->render('user/login.twig', array(
             'error'         => $app['security.last_error']($request),
             'last_username' => $app['session']->get('_security.last_username'),
         ));
