@@ -124,8 +124,7 @@ class Client implements ControllerProviderInterface
 
         // require login for application management
         $app['security.access_rules'] = array(
-            // todo - add some things here
-            // array('^/', 'IS_AUTHENTICATED_FULLY'),
+            array('^/coop', 'IS_AUTHENTICATED_FULLY'),
         );
     }
 }

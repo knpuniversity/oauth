@@ -9,7 +9,7 @@ class ReceiveAuthorizationCode
 {
     public static function addRoutes($routing)
     {
-        $routing->get('/receive_authcode', array(new self(), 'receiveAuthorizationCode'))->bind('authorize_redirect');
+        $routing->get('/coop/receive_authcode', array(new self(), 'receiveAuthorizationCode'))->bind('authorize_redirect');
     }
 
     public function receiveAuthorizationCode(Application $app, Request $request)

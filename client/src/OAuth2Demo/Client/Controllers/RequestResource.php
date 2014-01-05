@@ -8,7 +8,7 @@ class RequestResource
 {
     public static function addRoutes($routing)
     {
-        $routing->get('/request_resource', array(new self(), 'requestResource'))->bind('request_resource');
+        $routing->get('/coop/request_resource', array(new self(), 'requestResource'))->bind('request_resource');
     }
 
     public function requestResource(Application $app)
