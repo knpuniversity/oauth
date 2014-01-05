@@ -62,12 +62,12 @@ class Resource
 
         // return a generic API response - not that exciting
         // @TODO return something more valuable, like the name of the logged in user
-        $api_response = [
+        $api_response = array(
             'action'  => $action,
             'success' => true,
             'message' => $message,
             'data'    => $data,
-        ];
+        );
 
         return new Response(json_encode($api_response));
     }

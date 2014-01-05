@@ -44,7 +44,19 @@ class Home
             $clients = $app['storage']->getAllClientDetails($user->getUsername());
         }
 
-        return $app['twig']->render('apiHome.twig', ['clients' => $clients]);
+        return $app['twig']->render('apiHome.twig', array(
+            'clients' => $clients,
+            'exampleSuccessResponse' => array(
+                'action'  => 'The action (e.g. "barn-unlock")',
+                'success' => true,
+                'message' => 'Some summary message',
+                'data'    => 'A raw, related piece of data if applicable',
+            ),
+            'exampleErrorResponse' => array(
+                'error'  => 'A key (e.g. access_denied) for the error',
+                'error_description' => 'A longer description of the error',
+            ),
+        ));
     }
 
     public function resetDb()

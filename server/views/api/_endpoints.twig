@@ -21,3 +21,15 @@
     {% endfor %}
     </tbody>
 </table>
+
+<h3>Success Response</h3>
+
+<pre>
+{{ exampleSuccessResponse|json_encode(constant('JSON_PRETTY_PRINT')) }}
+</pre>
+
+<h3>Error Response</h3>
+
+<pre>
+{{ exampleErrorResponse|json_encode(constant('JSON_PRETTY_PRINT')) }}
+</pre>
