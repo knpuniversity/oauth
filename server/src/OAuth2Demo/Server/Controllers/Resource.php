@@ -76,9 +76,9 @@ class Resource
     {
         $user = $app['security']->getToken()->getUser();
 
-        $message = $this->doAction($app, $user->getUsername(), $action);
+        list($message, $data) = $this->doAction($app, $user->getUsername(), $action);
 
-        return $app['twig']->render('webAction.twig', ['message' => $message]);
+        return $app['twig']->render('webAction.twig', array('message' => $message));
     }
 
     private function doAction($app, $username, $action)

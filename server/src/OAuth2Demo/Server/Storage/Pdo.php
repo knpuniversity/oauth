@@ -87,6 +87,6 @@ class Pdo extends OAuth2Pdo
         $stmt->execute(compact('user_id', 'day'));
         $result = $stmt->fetch();
 
-        return $result ? $result['count'] : null;
+        return $result ? $result['count'] : 0;
     }
 }
