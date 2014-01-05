@@ -84,9 +84,10 @@ class Pdo extends OAuth2Pdo
         $sql = 'SELECT count from egg_count where user_id=:user_id and day=:day';
         $stmt = $this->db->prepare($sql);
 
+
         $stmt->execute(compact('user_id', 'day'));
         $result = $stmt->fetch();
 
-        return $result ? $result['count'] : 0;
+        return $result ? $result['count'] : null;
     }
 }

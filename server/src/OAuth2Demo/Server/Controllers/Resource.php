@@ -121,7 +121,7 @@ class Resource
                 }
                 break;
             case 'eggs-count':
-                $eggCount = $app['storage']->getEggCount($username);
+                $eggCount = (int) $app['storage']->getEggCount($username);
                 $message = sprintf('You have collected a total of %s eggs today', intval($eggCount));
                 $data = $eggCount;
                 $app['storage']->logApiCall($username, $action);
