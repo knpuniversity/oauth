@@ -68,6 +68,39 @@ class Connection
         $this->saveUser($user);
     }
 
+    public function setEggCount(User $user, $egg_count, $day = null)
+    {
+        $day = $day ?: strtotime(date('Y-m-d'));
+        if (is_null($this->getEggCount($user, $day))) {
+            $sql = 'INSERT INTO egg_count (email, day, count) VALUES (:email, :day, :egg_count)';
+        } else {
+            $sql = 'UPDATE egg_count SET count = :egg_count WHERE email=:email and day=:day';
+        }
+
+        $stmt = $this->db->prepare($sql);
+
+        return $stmt->execute(array(
+            'email' => $user->email,
+            'day'   => $day,
+            'egg_count' => $egg_count
+        ));
+    }
+
+    public function getEggCount(User $user, $day = null)
+    {
+        $day = $day ?: strtotime(date('Y-m-d'));
+        $sql = 'SELECT count from egg_count where email=:email and day=:day';
+        $stmt = $this->db->prepare($sql);
+
+        $stmt->execute(array(
+            'email' => $user->email,
+            'day'   => $day,
+        ));
+        $result = $stmt->fetch();
+
+        return $result ? $result['count'] : null;
+    }
+
     private function encodePassword(User $user, $password)
     {
         $encoder = $this->encoderFactory->getEncoder($user);

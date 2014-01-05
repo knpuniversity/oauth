@@ -11,28 +11,39 @@ class CountEggs extends BaseController
         $routing->get('/coop/count-eggs', array(new self(), 'countEggs'))->bind('count_eggs');
     }
 
-    public function requestResource(Application $app)
+    public function countEggs(Application $app)
     {
-        die('todo');
-        $twig   = $app['twig'];          // used to render twig templates
-        $config = $app['parameters'];    // the configuration for the current oauth implementation
-        $http   = $app['http_client'];   // simple class used to make http requests
-
-        // 1) make an API request to count this user's eggs
-
-        // pull the token from the request
-        $token = $app['request']->get('token');
-
-        // make the resource request with the token in the AUTHORIZATION header
-        $headers =  array('Authorization' => sprintf('Bearer %s', $token));
+        // pull the token from the currently-logged-in user
+        $token = $this->getLoggedInUser()->coopAccessToken;
+        if (!$token) {
+            throw new \Exception('Somehow you got here, but without a valid COOP access token! Re-authorize!');
+        }
 
         // make the resource request via http and decode the json response
-        $endpoint = $config['resource_url'].'/barn-unlock';
-        $response = $http->post($endpoint, $headers)->send();
+        $url = $this->getParameter('coop_host').'/api/eggs-count';
+        $response = $this->getCurlClient()->post(
+            $url,
+            // these are the request headers. COOP expects an Authorization header
+            array(
+                'Authorization' => sprintf('Bearer %s', $token)
+            )
+        )->send();
         $json = json_decode((string) $response->getBody(), true);
 
-        $resource_uri = sprintf('%s%saccess_token=%s', $endpoint, false === strpos($endpoint, '?') ? '?' : '&', $token);
+        if (isset($json['error'])) {
+            // there is a problem, let's clear out the access token
+            $user = $this->getLoggedInUser();
+            $user->coopAccessToken = null;
+            $this->saveUser($user);
 
-        return $twig->render('show_resource.twig', array('response' => $json ? $json : $response, 'resource_uri' => $resource_uri));
+            // todo - handle expiration?
+            throw new \Exception($json['error'].' ' .$json['error_description']);
+        }
+
+        $eggCount = $json['data'];
+        var_dump($json);die;
+        $this->setTodaysEggCountForUser($this->getLoggedInUser(), $eggCount);
+
+        return $this->redirect($this->generateUrl('home'));
     }
 }

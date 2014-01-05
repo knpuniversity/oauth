@@ -126,4 +126,30 @@ class BaseController
 
         return $parameters[$name];
     }
+
+    /**
+     * @return \Guzzle\Http\Client
+     */
+    public function getCurlClient()
+    {
+        return $this->container['http_client'];
+    }
+
+    public function getTodaysEggCountForUser(User $user)
+    {
+        return (int) $this->getConnection()->getEggCount($user);
+    }
+
+    public function setTodaysEggCountForUser(User $user, $count)
+    {
+        return $this->getConnection()->setEggCount($user, $count);
+    }
+
+    /**
+     * @return Connection
+     */
+    private function getConnection()
+    {
+        return $this->container['connection'];
+    }
 }

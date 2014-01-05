@@ -18,7 +18,7 @@ class Homepage extends BaseController
         if ($this->isUserLoggedIn()) {
             $clientId      = urlencode($app['parameters']['client_id']);
             $authorizeUrl  = $app['parameters']['coop_host'].'/authorize';
-            $scope         = 'barn-unlock';
+            $scope         = 'eggs-count';
 
             // generates an absolute URL like http://localhost/receive_authcode
             // /receive_authcode is the page that the OAuth server will redirect back to
@@ -32,6 +32,7 @@ class Homepage extends BaseController
                 'redirect_uri'  => $redirectUri,
                 'session_id'    => $app['session']->getId(),
                 'user'          => $this->getLoggedInUser(),
+                'eggCount'      => $this->getTodaysEggCountForUser($this->getLoggedInUser()),
             ));
         }
 

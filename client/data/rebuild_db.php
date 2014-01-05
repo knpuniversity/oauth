@@ -27,4 +27,6 @@ $db->exec('CREATE TABLE users (
     coopAccessExpiresAt DateTime
 )');
 
+$db->exec('CREATE TABLE egg_count (email TEXT, day TIMESTAMP, count INTEGER)');
+
 chmod($dbfile, 0777);
