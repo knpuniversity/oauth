@@ -58,7 +58,7 @@ class Resource
         }
 
         $token = $server->getResourceController()->getToken();
-        $message = $this->doAction($app, $token['user_id'], $action);
+        list($message, $data) = $this->doAction($app, $token['user_id'], $action);
 
         // return a generic API response - not that exciting
         // @TODO return something more valuable, like the name of the logged in user
@@ -66,6 +66,7 @@ class Resource
             'action'  => $action,
             'success' => true,
             'message' => $message,
+            'data'    => $data,
         ];
 
         return new Response(json_encode($api_response));
@@ -82,6 +83,7 @@ class Resource
 
     private function doAction($app, $username, $action)
     {
+        $data = null;
         switch ($action) {
             case 'barn-unlock':
                 if ($app['storage']->wasApiCalledRecently($username, $action, 20)) {
@@ -114,19 +116,21 @@ class Resource
                     $eggCount = rand(2, 5);
                     $app['storage']->addEggCount($username, $eggCount);
                     $message = sprintf('Hey look at that, %s eggs have been collected!', $eggCount);
+                    $data = $eggCount;
                     $app['storage']->logApiCall($username, $action);
                 }
                 break;
             case 'eggs-count':
                 $eggCount = $app['storage']->getEggCount($username);
                 $message = sprintf('You have collected a total of %s eggs today', intval($eggCount));
+                $data = $eggCount;
                 $app['storage']->logApiCall($username, $action);
                 break;
             default:
                 throw new NotFoundHttpException('Unsupported action '.$action);
         }
 
-        return $message;
+        return array($message, $data);
     }
 
     private function markAsCalled($app, $action)
