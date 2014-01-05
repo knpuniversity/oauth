@@ -26,7 +26,7 @@ class RequestResource
 
         // make the resource request via http and decode the json response
         $endpoint = $config['resource_url'].'/barn-unlock';
-        $response = $http->post($endpoint, $headers, $config['http_options'])->send();
+        $response = $http->post($endpoint, $headers)->send();
         $json = json_decode((string) $response->getBody(), true);
 
         $resource_uri = sprintf('%s%saccess_token=%s', $endpoint, false === strpos($endpoint, '?') ? '?' : '&', $token);

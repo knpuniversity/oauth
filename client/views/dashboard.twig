@@ -10,7 +10,8 @@
             {% if user.coopAccessToken == '' %}
                 <div class="alert alert-info">
                     To start counting your eggs, you need to authorize Top Cluck
-                    to use your COOP account!
+                    to use your COOP account! Once you do that, we can count
+                    your eggs!
                 </div>
 
                 <a class="btn btn-primary btn-lg" href="{{ authorize_url }}?response_type=code&client_id={{client_id}}&redirect_uri={{ redirect_uri }}&scope={{ scope }}&state={{session_id}}">Authorize</a>

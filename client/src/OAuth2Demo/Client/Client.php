@@ -35,7 +35,12 @@ class Client implements ControllerProviderInterface
         $this->setup($app);
 
         // create http client
-        $app['http_client'] = new GuzzleClient();
+        $app['http_client'] = new GuzzleClient('', array(
+            // makes 400/500 responses not throw an exception
+            'request.options' => array(
+                'exceptions' => false,
+            )
+        ));
 
         // create the session
         $app->register(new SessionServiceProvider());
@@ -55,7 +60,6 @@ class Client implements ControllerProviderInterface
         // Set corresponding endpoints on the controller classes
         Controllers\Homepage::addRoutes($routing);
         Controllers\ReceiveAuthorizationCode::addRoutes($routing);
-        Controllers\RequestToken::addRoutes($routing);
         Controllers\RequestResource::addRoutes($routing);
         Controllers\UserManagement::addRoutes($routing);
 

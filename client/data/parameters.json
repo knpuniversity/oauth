@@ -2,9 +2,5 @@
   "client_id": "Local Testing App",
   "client_secret": "97044557131093e36288196ebe0ed3a6",
   "resource_url": "http://localhost:9000/api",
-  "token_url": "http://localhost:9000/token",
-  "coop_host": "http://coop.apps.knpuniversity.com",
-  "resource_method": "POST",
-  "resource_params": {},
-  "http_options": { "exceptions": false }
+  "coop_host": "http://coop.apps.knpuniversity.com"
 }

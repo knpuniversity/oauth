@@ -3,7 +3,6 @@
 namespace OAuth2Demo\Client\Controllers;
 
 use Silex\Application;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class Homepage
 {
@@ -27,7 +26,7 @@ class Homepage
             $redirect_uri   = $app['url_generator']->generate(
                 'authorize_redirect',
                 array(),
-                UrlGeneratorInterface::ABSOLUTE_URL
+                true
             );
 
             /** @var \OAuth2Demo\Client\Security\User $user */
