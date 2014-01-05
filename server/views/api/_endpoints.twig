@@ -11,10 +11,10 @@
     {% for action,message in app.scopes %}
         <tr>
             <td>{{ message }}</td>
-            <td>{{ path('api_call', {'action': action}) }}</td>
+            <td>{{ path('api_call_form', {'action': action}) }}</td>
             <td>POST</td>
             <td>
-                <a href="{{ path('api_call', {'action': action}) }}">try
+                <a href="{{ path('api_call_form', {'action': action}) }}">try
                     it</a>
             </td>
         </tr>

@@ -2,6 +2,7 @@
 
 namespace OAuth2Demo\Server\Controllers;
 
+use OAuth2Demo\Server\Security\User;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -11,30 +12,27 @@ class Resource
     // Connects the routes in Silex
     public static function addRoutes($routing)
     {
-        $routing->get('/api/{action}', [new self(), 'get'])->bind('api_call');
-        $routing->post('/api/{action}', [new self(), 'apiAction']);
+        $routing->get('/application/api/{action}', [new self(), 'get'])->bind('api_call_form');
+        $routing->post('/api/{id}/{action}', [new self(), 'apiAction'])->bind('api_call');
         // actions taken on your house using your authenticated account instead of a token
         $routing->post('/house/{action}', [new self(), 'webAction'])->bind('web_call');
     }
 
     /**
-     * This is called by the client app once the client has obtained an access
-     * token for the current user.  If the token is valid, the resource (in this
-     * case, the "friends" of the current user) will be returned to the client
+     * Shows a form where you can test an endpoint
      */
     public function get(Application $app, $action)
     {
         $token = $app['request']->query->get('access_token');
+        $user = $app['security']->getToken()->getUser();
 
-        return $app['twig']->render('api_call.twig', ['action' => $action, 'token' => $token]);
+        return $app['twig']->render('api_call.twig', ['action' => $action, 'token' => $token, 'user' => $user]);
     }
 
     /**
-     * This is called by the client app once the client has obtained an access
-     * token for the current user.  If the token is valid, the resource (in this
-     * case, the "friends" of the current user) will be returned to the client
+     * The actual API endpoint
      */
-    public function apiAction(Application $app, $action)
+    public function apiAction(Application $app, $action, $id)
     {
         // get the oauth server (configured in src/OAuth2Demo/Server/Server.php)
         /** @var \OAuth2\Server $server */
@@ -57,8 +55,9 @@ class Resource
             return $response;
         }
 
-        $token = $server->getResourceController()->getToken();
-        list($message, $data) = $this->doAction($app, $token['user_id'], $action);
+        // get the username from the id in the URL
+        $username = $app['storage']->findUsernameById($id);
+        list($message, $data) = $this->doAction($app, $username, $action);
 
         // return a generic API response - not that exciting
         // @TODO return something more valuable, like the name of the logged in user

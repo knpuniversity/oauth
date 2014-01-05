@@ -6,6 +6,8 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 class User implements UserInterface
 {
+    public $id;
+
     public $email;
 
     public $encodedPassword;

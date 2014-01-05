@@ -3,7 +3,7 @@
 
 {% block header %}<h1>Call "{{ action }}"</h1>{% endblock %}
 
-{% set endpointUri = path('api_call', {action: action}) %}
+{% set endpointUri = path('api_call', {action: action, 'id': user.id}) %}
 
 {# block is used below via block() #}
 {% block token_help %}

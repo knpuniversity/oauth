@@ -27,6 +27,7 @@ class UserProvider implements UserProviderInterface
         }
 
         $user = new User();
+        $user->id = $userDetails['id'];
         $user->email = $userDetails['username'];
         $user->encodedPassword = $userDetails['password'];
         $user->firstName = $userDetails['first_name'];

@@ -90,4 +90,16 @@ class Pdo extends OAuth2Pdo
 
         return $result ? $result['count'] : null;
     }
+
+    public function findUsernameById($id)
+    {
+        $stmt = $this->db->prepare($sql = sprintf('SELECT * from %s where id=:id', $this->config['user_table']));
+        $stmt->execute(array('id' => $id));
+
+        if (!$userInfo = $stmt->fetch()) {
+            return false;
+        }
+
+        return $userInfo['username'];
+    }
 }
