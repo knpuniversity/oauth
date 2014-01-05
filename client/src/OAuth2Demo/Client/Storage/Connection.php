@@ -3,6 +3,7 @@
 namespace OAuth2Demo\Client\Storage;
 
 use OAuth2Demo\Client\Security\User;
+use OAuth2Demo\Client\Security\UserProvider;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 
 class Connection
@@ -11,38 +12,60 @@ class Connection
 
     private $encoderFactory;
 
+    private $container;
+
     const TABLE_USER = 'users';
 
-    public function __construct(\Pdo $pdo, EncoderFactoryInterface $encoderFactory)
+    public function __construct(\Pdo $pdo, EncoderFactoryInterface $encoderFactory, \Pimple $container)
     {
         $this->db = $pdo;
         $this->encoderFactory = $encoderFactory;
+        $this->container = $container;
     }
 
-    public function getUser($username)
+    public function getUser($email)
     {
-        $stmt = $this->db->prepare($sql = sprintf('SELECT * from %s where username=:username', self::TABLE_USER));
-        $stmt->execute(array('username' => $username));
+        $stmt = $this->db->prepare($sql = sprintf('SELECT * from %s where email=:email', self::TABLE_USER));
+        $stmt->execute(array('email' => $email));
 
         if (!$userInfo = $stmt->fetch()) {
             return false;
         }
 
-        return $userInfo;
+        return $this->getUserProvider()->createUser($userInfo);
     }
 
-    public function setUser($username, $password, $firstName = null, $lastName = null)
+    public function saveUser(User $user)
+    {
+        if ($this->getUser($user->email)) {
+            $stmt = $this->db->prepare(sprintf('UPDATE %s SET password=:password, firstName=:firstName, lastName=:lastName, coopAccessToken=:coopAccessToken, coopAccessExpiresAt=:coopAccessExpiresAt where email=:email', self::TABLE_USER));
+        } else {
+            $stmt = $this->db->prepare(sprintf('INSERT INTO %s (email, password, firstName, lastName, coopAccessToken, coopAccessExpiresAt) VALUES (:email, :password, :firstName, :lastName, :coopAccessToken, :coopAccessExpiresAt)', self::TABLE_USER));
+        }
+
+        return $stmt->execute(array(
+            'email' => $user->email,
+            'password' => $user->email,
+            'firstName' => $user->firstName,
+            'lastName' => $user->lastName,
+            'coopAccessToken' => $user->coopAccessToken,
+            'coopAccessExpiresAt' => $user->coopAccessExpiresAt ? $user->coopAccessExpiresAt->format(User::TIMESTAMP_FORMAT) : ''
+        ));
+    }
+
+    public function createUser($email, $password, $firstName = null, $lastName = null)
     {
         // do not store in plaintext
         $password = $this->encodePassword(new User(), $password);
 
-        // if it exists, update it.
-        if ($this->getUser($username)) {
-            $stmt = $this->db->prepare($sql = sprintf('UPDATE %s SET password=:password, first_name=:firstName, last_name=:lastName where username=:username', self::TABLE_USER));
-        } else {
-            $stmt = $this->db->prepare(sprintf('INSERT INTO %s (username, password, first_name, last_name) VALUES (:username, :password, :firstName, :lastName)', self::TABLE_USER));
-        }
-        return $stmt->execute(compact('username', 'password', 'firstName', 'lastName'));
+        $user = $this->getUserProvider()->createUser(array(
+            'email' => $email,
+            'password' => $password,
+            'firstName' => $firstName,
+            'lastName' => $lastName
+        ));
+
+        $this->saveUser($user);
     }
 
     private function encodePassword(User $user, $password)
@@ -51,5 +74,13 @@ class Connection
 
         // compute the encoded password for foo
         return $encoder->encodePassword($password, $user->getSalt());
+    }
+
+    /**
+     * @return UserProvider
+     */
+    private function getUserProvider()
+    {
+        return $this->container['security.user_provider'];
     }
 }

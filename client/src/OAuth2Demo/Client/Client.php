@@ -80,7 +80,12 @@ class Client implements ControllerProviderInterface
         });
 
         $app['connection'] = $app->share(function() use ($sqliteFile, $app) {
-            return new Connection($app['pdo'], $app['security.encoder_factory']);
+            return new Connection(
+                $app['pdo'],
+                $app['security.encoder_factory'],
+                // to avoid a circular reference situation
+                $app
+            );
         });
 
         $app['parameters'] = $this->loadParameters();

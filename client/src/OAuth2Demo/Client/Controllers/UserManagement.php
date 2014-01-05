@@ -41,9 +41,6 @@ class UserManagement
         if (!$password = $request->request->get('password')) {
             $errors[] = '"password" is required';
         }
-        if (!$address = $request->request->get('address')) {
-            $errors[] = '"address" is required';
-        }
 
         $firstName = $request->request->get('firstName');
         $lastName = $request->request->get('lastName');
@@ -53,7 +50,7 @@ class UserManagement
 
         // make sure we don't already have this user!
         if ($existingUser = $storage->getUser($email)) {
-            $errors[] = 'A user with this email address is already registered!';
+            $errors[] = 'A user with this email is already registered!';
         }
 
         // errors? Show them!
@@ -61,7 +58,7 @@ class UserManagement
             return $app['twig']->render('user\register.twig', ['errors' => $errors]);
         }
 
-        $storage->setUser($email, $password, $firstName, $lastName, $address);
+        $storage->createUser($email, $password, $firstName, $lastName);
 
         $this->autoLogin($app, $email);
 

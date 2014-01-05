@@ -6,17 +6,20 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 class User implements UserInterface
 {
+    const TIMESTAMP_FORMAT = 'Y-m-d H:i:s';
+
     public $email;
 
-    public $encodedPassword;
-
-    public $address;
+    public $password;
 
     public $firstName;
 
     public $lastName;
 
     public $coopAccessToken;
+
+    /** @var \DateTime */
+    public $coopAccessExpiresAt;
 
     /**
      * Start: Security-related stuff
@@ -28,11 +31,11 @@ class User implements UserInterface
     }
     public function eraseCredentials()
     {
-        $this->encodedPassword = null;
+        $this->password = null;
     }
     public function getPassword()
     {
-        return $this->encodedPassword;
+        return $this->password;
     }
     public function getRoles()
     {

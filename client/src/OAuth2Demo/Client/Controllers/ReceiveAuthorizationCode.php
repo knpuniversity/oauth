@@ -3,7 +3,10 @@
 namespace OAuth2Demo\Client\Controllers;
 
 use Silex\Application;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use OAuth2Demo\Client\Security\User;
+use OAuth2Demo\Client\Storage\Connection;
 
 class ReceiveAuthorizationCode
 {
@@ -58,6 +61,19 @@ class ReceiveAuthorizationCode
             return $twig->render('failed_token_request.twig', array('response' => $json ? $json : $response));
         }
 
-        return $twig->render('show_access_token.twig', array('token' => $json['access_token']));
+        $token = $json['access_token'];
+        $expiresInSeconds = $json['expires_in'];
+        $expiresAt = new \DateTime('+'.$expiresInSeconds.' seconds');
+
+        /** @var User $user */
+        $user = $app['security']->getToken()->getUser();
+        /** @var Connection $db */
+        $db = $app['connection'];
+        $user->coopAccessToken = $token;
+        $user->coopAccessExpiresAt = $expiresAt;
+
+        $db->saveUser($user);
+
+        return new RedirectResponse($app['url_generator']->generate('home'));
     }
 }

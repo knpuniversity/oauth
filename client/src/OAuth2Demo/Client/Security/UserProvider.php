@@ -19,17 +19,37 @@ class UserProvider implements UserProviderInterface
 
     public function loadUserByUsername($username)
     {
-        $userDetails = $this->connection->getUser($username);
+        $user = $this->connection->getUser($username);
 
-        if (!$userDetails) {
-            throw new UsernameNotFoundException(sprintf('Username "%s" does not exist.', $username));
+        if (!$user) {
+            throw new UsernameNotFoundException(sprintf('Email "%s" does not exist.', $username));
         }
 
+        return $user;
+    }
+
+    /**
+     * Takes data (probably from the database) and create a User object
+     *
+     * @param array $userDetails
+     * @return User
+     */
+    public function createUser(array $userDetails)
+    {
         $user = new User();
-        $user->email = $userDetails['username'];
-        $user->encodedPassword = $userDetails['password'];
-        $user->firstName = $userDetails['first_name'];
-        $user->lastName = $userDetails['last_name'];
+
+        $user->email= isset($userDetails['email']) ? $userDetails['email'] : null;
+        $user->password = isset($userDetails['password']) ? $userDetails['password'] : null;
+        $user->firstName = isset($userDetails['firstName']) ? $userDetails['firstName'] : null;
+        $user->lastName = isset($userDetails['lastName']) ? $userDetails['lastName'] : null;
+        $user->coopAccessToken = isset($userDetails['coopAccessToken']) ? $userDetails['coopAccessToken'] : null;
+
+        // get the coopExpiresAt, but transform the "Y-m-d H:i:s" string into a DateTime object
+        $coopExpiresAt = isset($userDetails['coopExpiresAt']) ? $userDetails['coopExpiresAt'] : null;
+        if ($coopExpiresAt) {
+            $coopExpiresAt = \DateTime::createFromFormat(User::TIMESTAMP_FORMAT, $coopExpiresAt);
+        }
+        $user->coopAccessExpiresAt = $coopExpiresAt;
 
         return $user;
     }
