@@ -81,7 +81,7 @@ class Client implements ControllerProviderInterface
 
         // Set corresponding endpoints on the controller classes
         Controllers\Homepage::addRoutes($routing);
-        Controllers\ReceiveAuthorizationCode::addRoutes($routing);
+        Controllers\OAuthController::addRoutes($routing);
         Controllers\CountEggs::addRoutes($routing);
         Controllers\UserManagement::addRoutes($routing);
 

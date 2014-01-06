@@ -14,7 +14,7 @@
                     your eggs!
                 </div>
 
-                <a class="btn btn-primary btn-lg" href="{{ authorize_url }}?response_type=code&client_id={{client_id}}&redirect_uri={{ redirect_uri }}&scope={{ scope }}&state={{session_id}}">Authorize</a>
+                <a class="btn btn-primary btn-lg" href="{{ path('coop_authorize_start') }}">Authorize</a>
             {% else %}
                 Looks like you've collected <span class="label label-success">{{ eggCount }}</span> eggs today.
 

@@ -6,13 +6,41 @@ use Silex\Application;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 
-class ReceiveAuthorizationCode extends BaseController
+class OAuthController extends BaseController
 {
     public static function addRoutes($routing)
     {
-        $routing->get('/coop/receive_authcode', array(new self(), 'receiveAuthorizationCode'))->bind('authorize_redirect');
+        $routing->get('/coop/authorize/start', array(new self(), 'redirectToCoopAuthorization'))->bind('coop_authorize_start');
+        $routing->get('/coop/authorize/handle', array(new self(), 'receiveAuthorizationCode'))->bind('coop_authorize_redirect');
     }
 
+    public function redirectToCoopAuthorization()
+    {
+        // generates an absolute URL like http://localhost/receive_authcode
+        // /receive_authcode is the page that the OAuth server will redirect back to
+        // see ReceiveAuthorizationCode.php
+        $redirectUri = $this->generateUrl('coop_authorize_redirect', array(), true);
+
+        $url = $this->getParameter('coop_url').'/authorize?'.http_build_query(array(
+            'response_type' => 'code',
+            'client_id' => $this->getParameter('client_id'),
+            'redirect_uri' => $redirectUri,
+            'scope' => 'eggs-count',
+        ));
+
+        return $this->redirect($url);
+    }
+
+    /**
+     * This is the URL that COOP will redirect back to after the user approves/denies access
+     *
+     * Here, we will get the authorization code from the request, exchange
+     * it for an access token, and maybe do some other setup things.
+     *
+     * @param Application $app
+     * @param Request $request
+     * @return string|RedirectResponse
+     */
     public function receiveAuthorizationCode(Application $app, Request $request)
     {
         $code = $request->get('code');
@@ -37,13 +65,13 @@ class ReceiveAuthorizationCode extends BaseController
             'client_id'     => $this->getParameter('client_id'),
             'client_secret' => $this->getParameter('client_secret'),
             // re-create the same redirect URL. COOP needs this for security reasons!
-            'redirect_uri'  => $this->generateUrl('authorize_redirect', array(), true),
+            'redirect_uri'  => $this->generateUrl('coop_authorize_redirect', array(), true),
         );
 
         /** @var \Guzzle\Http\Client $httpClient simple object used to make http requests */
         $httpClient = $app['http_client'];
         $response = $httpClient->post(
-            $this->getParameter('coop_host').'/token',
+            $this->getParameter('coop_url').'/token',
             null,
             $parameters
         )->send();
@@ -62,7 +90,7 @@ class ReceiveAuthorizationCode extends BaseController
         $expiresAt = new \DateTime('+'.$expiresInSeconds.' seconds');
 
         // make an API request to /api/me to get user information
-        $url = $this->getParameter('coop_host').'/api/me';
+        $url = $this->getParameter('coop_url').'/api/me';
         $response = $this->getCurlClient()->get(
             $url,
             // these are the request headers. COOP expects an Authorization header

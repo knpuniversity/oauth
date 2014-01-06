@@ -21,7 +21,7 @@ class CountEggs extends BaseController
 
         // make the resource request via http and decode the json response
         $user = $this->getLoggedInUser();
-        $url = $this->getParameter('coop_host').'/api/'.$user->coopUserId.'/eggs-count';
+        $url = $this->getParameter('coop_url').'/api/'.$user->coopUserId.'/eggs-count';
         $response = $this->getCurlClient()->post(
             $url,
             // these are the request headers. COOP expects an Authorization header
