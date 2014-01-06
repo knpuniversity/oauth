@@ -99,6 +99,7 @@ class Server implements ControllerProviderInterface
     {
         $pdo = new \Pdo('sqlite:'.$sqliteFile);
 
+        // create an application
         $sql = 'INSERT INTO oauth_clients (client_id, client_secret, scope)
             VALUES (:client_id, :client_secret, :scope)';
 
@@ -108,6 +109,19 @@ class Server implements ControllerProviderInterface
             'client_id'     => 'TopCluck',
             'client_secret' => '2e2dfd645da38940b1ff694733cc6be6',
             'scope'         => 'eggs-collect',
+        ));
+
+        // create a dummy user
+        $sql = 'INSERT INTO oauth_users (username, password, first_name, last_name)
+            VALUES (:username, :password, :firstName, :lastName)';
+
+        $stmt = $pdo->prepare($sql);
+
+        $stmt->execute(array(
+            'username'     => 'test@knpuniversity.com',
+            'password' => sha1('test'),
+            'firstName' => 'Edgar',
+            'lastName'  => 'Cat',
         ));
     }
 }
