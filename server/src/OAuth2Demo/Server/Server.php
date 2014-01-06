@@ -8,6 +8,7 @@ use OAuth2\HttpFoundationBridge\Response as BridgeResponse;
 use OAuth2\Server as OAuth2Server;
 use OAuth2\GrantType\AuthorizationCode;
 use OAuth2\GrantType\ClientCredentials;
+use OAuth2\GrantType\RefreshToken;
 use OAuth2\Storage\Memory;
 use OAuth2\Scope;
 use OAuth2Demo\Server\Storage\Pdo;
@@ -33,10 +34,11 @@ class Server implements ControllerProviderInterface
         $grantTypes = array(
             'authorization_code' => new AuthorizationCode($storage),
             'client_credentials' => new ClientCredentials($storage),
+            'refresh_token'      => new RefreshToken($storage, array('always_issue_new_refresh_token' => true)),
         );
 
         // instantiate the oauth server
-        $server = new OAuth2Server($storage, array('enforce_state' => false, 'allow_implicit' => true), $grantTypes);
+        $server = new OAuth2Server($storage, array('enforce_state' => false, 'allow_implicit' => true, 'access_lifetime' => 86400), $grantTypes);
 
         $app['scopes'] = [
             'barn-unlock'     => 'Unlock the Barn',
