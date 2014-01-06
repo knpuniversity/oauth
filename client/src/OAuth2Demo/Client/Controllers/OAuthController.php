@@ -109,6 +109,6 @@ class OAuthController extends BaseController
         $this->saveUser($user);
 
         // redirect to the homepage!
-        return $this->redirect($this->generateUrl('home'));
+        return $this->redirect($this->generateUrl('count_eggs'));
     }
 }
