@@ -106,6 +106,24 @@ class FeatureContext extends MinkContext
         );
     }
 
+    /**
+     * Takes you through the whole COOP authorization process.
+     *
+     * This assumes you are NOT logged in to TopCluck
+     *
+     * @Given /^I am authorized with Coop$/
+     */
+    public function iAmAuthorizedWithCoop()
+    {
+        return array(
+            new Given('I am on "/"'),
+            new Given('I click "Login"'),
+            new Given('I click "Login with COOP"'),
+            new Given('I log into COOP'),
+            new Given('I click "Yes, I Authorize This Request"'),
+        );
+    }
+
     private function createUser($email, $plainPassword)
     {
         /** @var \OAuth2Demo\Client\Storage\Connection $storage */
