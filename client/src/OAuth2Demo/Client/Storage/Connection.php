@@ -118,9 +118,9 @@ class Connection
         return $result ? $result['count'] : null;
     }
 
-    public function getExpiringTokens($day = null)
+    public function getExpiringTokens(\DateTime $date = null)
     {
-        $day = $day ?: strtotime(date('Y-m-d'));
+        $day = $date ? $date->format('Y-m-d') : strtotime(date('Y-m-d'));
         $sql = sprintf('SELECT email, coopRefreshToken from %s where coopAccessExpiresAt<=:day AND coopRefreshToken IS NOT NULL', self::TABLE_USER);
 
         $stmt = $this->db->prepare($sql);

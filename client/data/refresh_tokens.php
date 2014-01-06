@@ -36,6 +36,7 @@ foreach ($expiringTokens as $info) {
     $expires = date('Y-m-d H:i:s', time() + $json['expires_in']);
     $refreshToken = $json['refresh_token'];
 
+    echo sprintf("Refreshing token for user %s: now expires %s\n\n", $info['email'], $expires);
     $app['connection']->saveNewTokens($info['email'], $accessToken, $expires, $refreshToken);
 }
 
