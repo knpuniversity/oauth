@@ -183,6 +183,7 @@ class Client implements ControllerProviderInterface
         // require login for application management
         $app['security.access_rules'] = array(
             array('^/coop/oauth', 'IS_AUTHENTICATED_ANONYMOUSLY'),
+            array('^/facebook/oauth', 'IS_AUTHENTICATED_ANONYMOUSLY'),
             array('^/coop', 'IS_AUTHENTICATED_FULLY'),
         );
     }

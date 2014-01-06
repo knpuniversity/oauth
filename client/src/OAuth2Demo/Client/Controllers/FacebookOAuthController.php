@@ -12,6 +12,8 @@ class FacebookOAuthController extends BaseController
     {
         $routing->get('/facebook/oauth/start', array(new self(), 'redirectToAuthorization'))->bind('facebook_authorize_start');
         $routing->get('/facebook/oauth/handle', array(new self(), 'receiveAuthorizationCode'))->bind('facebook_authorize_redirect');
+
+        $routing->get('/coop/facebook/share', array(new self(), 'sharePlaceOnFacebook'))->bind('facebook_share_place');
     }
 
     public function redirectToAuthorization()
@@ -61,7 +63,6 @@ class FacebookOAuthController extends BaseController
         if (!$user) {
             // hmm, do we have a user with this Facebook ID yet?
             $user = $this->findUserByFacebookId($user_profile['id']);
-            $this->loginUser($user);
         }
         if (!$user) {
             // ok, create a new user
@@ -74,6 +75,9 @@ class FacebookOAuthController extends BaseController
                 $user_profile['first_name'],
                 $user_profile['last_name']
             );
+        }
+
+        if (!$this->isUserLoggedIn()) {
             $this->loginUser($user);
         }
 
@@ -81,7 +85,24 @@ class FacebookOAuthController extends BaseController
         $this->saveUser($user);
 
         // redirect to the homepage!
-        return $this->redirect($this->generateUrl('count_eggs'));
+        return $this->redirect($this->generateUrl('home'));
+    }
+
+    public function sharePlaceOnFacebook()
+    {
+        $facebook = $this->createFacebook();
+        $eggCount = $this->getTodaysEggCountForUser($this->getLoggedInUser());
+
+        try {
+            $facebook->api('/'.$facebook->getUser().'/feed', 'POST', array(
+                'message' => 'Woh! My chickens have laid '.$eggCount.' eggs today!',
+            ));
+        } catch (\FacebookApiException $e) {
+            // todo - potentially send them back to the redirect
+            return $this->render('failed_token_request.twig', array('response' => $e->getMessage()));
+        }
+
+        return $this->redirect($this->generateUrl('home'));
     }
 
     private function createFacebook()
