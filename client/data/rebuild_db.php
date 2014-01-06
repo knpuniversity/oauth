@@ -23,6 +23,7 @@ $db->exec('CREATE TABLE users (
     firstName TEXT,
     lastName TEXT,
     password TEXT,
+    coopUserId TEXT,
     coopAccessToken TEXT,
     coopAccessExpiresAt DateTime
 )');

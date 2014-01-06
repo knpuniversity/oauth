@@ -11,7 +11,7 @@ class CountEggs extends BaseController
         $routing->get('/coop/count-eggs', array(new self(), 'countEggs'))->bind('count_eggs');
     }
 
-    public function countEggs(Application $app)
+    public function countEggs()
     {
         // pull the token from the currently-logged-in user
         $token = $this->getLoggedInUser()->coopAccessToken;
@@ -20,7 +20,8 @@ class CountEggs extends BaseController
         }
 
         // make the resource request via http and decode the json response
-        $url = $this->getParameter('coop_host').'/api/eggs-count';
+        $user = $this->getLoggedInUser();
+        $url = $this->getParameter('coop_host').'/api/'.$user->coopUserId.'/eggs-count';
         $response = $this->getCurlClient()->post(
             $url,
             // these are the request headers. COOP expects an Authorization header
@@ -32,7 +33,6 @@ class CountEggs extends BaseController
 
         if (isset($json['error'])) {
             // there is a problem, let's clear out the access token
-            $user = $this->getLoggedInUser();
             $user->coopAccessToken = null;
             $this->saveUser($user);
 
@@ -41,7 +41,6 @@ class CountEggs extends BaseController
         }
 
         $eggCount = $json['data'];
-        var_dump($json);die;
         $this->setTodaysEggCountForUser($this->getLoggedInUser(), $eggCount);
 
         return $this->redirect($this->generateUrl('home'));

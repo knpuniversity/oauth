@@ -16,6 +16,8 @@ class User implements UserInterface
 
     public $lastName;
 
+    public $coopUserId;
+
     public $coopAccessToken;
 
     /** @var \DateTime */

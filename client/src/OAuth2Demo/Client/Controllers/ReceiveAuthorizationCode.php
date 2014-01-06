@@ -56,12 +56,26 @@ class ReceiveAuthorizationCode extends BaseController
             return $this->render('failed_token_request.twig', array('response' => $json ? $json : $response));
         }
 
+        // yay! the all-important access token and its expiration date
         $token = $json['access_token'];
         $expiresInSeconds = $json['expires_in'];
         $expiresAt = new \DateTime('+'.$expiresInSeconds.' seconds');
 
-        // get the current User object, set the data on it, and save it back to the database
+        // make an API request to /api/me to get user information
+        $url = $this->getParameter('coop_host').'/api/me';
+        $response = $this->getCurlClient()->get(
+            $url,
+            // these are the request headers. COOP expects an Authorization header
+            array(
+                'Authorization' => sprintf('Bearer %s', $token)
+            )
+        )->send();
+        $json = json_decode((string) $response->getBody(), true);
+        $coopUserId = $json['id'];
+
+        // finally, get the current User object, set the data on it, and save it back to the database
         $user = $this->getLoggedInUser();
+        $user->coopUserId = $coopUserId;
         $user->coopAccessToken = $token;
         $user->coopAccessExpiresAt = $expiresAt;
         $this->saveUser($user);
