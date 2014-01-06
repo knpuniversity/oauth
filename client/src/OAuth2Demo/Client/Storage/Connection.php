@@ -38,9 +38,9 @@ class Connection
     public function saveUser(User $user)
     {
         if ($this->getUser($user->email)) {
-            $stmt = $this->db->prepare(sprintf('UPDATE %s SET password=:password, firstName=:firstName, lastName=:lastName, coopUserId=:coopUserId, coopAccessToken=:coopAccessToken, coopAccessExpiresAt=:coopAccessExpiresAt where email=:email', self::TABLE_USER));
+            $stmt = $this->db->prepare(sprintf('UPDATE %s SET password=:password, firstName=:firstName, lastName=:lastName, coopUserId=:coopUserId, coopAccessToken=:coopAccessToken, coopAccessExpiresAt=:coopAccessExpiresAt, coopRefreshToken=:coopRefreshToken where email=:email', self::TABLE_USER));
         } else {
-            $stmt = $this->db->prepare(sprintf('INSERT INTO %s (email, password, firstName, lastName, coopUserId, coopAccessToken, coopAccessExpiresAt) VALUES (:email, :password, :firstName, :lastName, :coopUserId, :coopAccessToken, :coopAccessExpiresAt)', self::TABLE_USER));
+            $stmt = $this->db->prepare(sprintf('INSERT INTO %s (email, password, firstName, lastName, coopUserId, coopAccessToken, coopAccessExpiresAt, coopRefreshToken) VALUES (:email, :password, :firstName, :lastName, :coopUserId, :coopAccessToken, :coopAccessExpiresAt, :coopRefreshToken)', self::TABLE_USER));
         }
 
         return $stmt->execute(array(
@@ -50,7 +50,8 @@ class Connection
             'lastName' => $user->lastName,
             'coopUserId' => $user->coopUserId,
             'coopAccessToken' => $user->coopAccessToken,
-            'coopAccessExpiresAt' => $user->coopAccessExpiresAt ? $user->coopAccessExpiresAt->format(User::TIMESTAMP_FORMAT) : ''
+            'coopAccessExpiresAt' => $user->coopAccessExpiresAt ? $user->coopAccessExpiresAt->format(User::TIMESTAMP_FORMAT) : '',
+            'coopRefreshToken' => $user->coopRefreshToken,
         ));
     }
 

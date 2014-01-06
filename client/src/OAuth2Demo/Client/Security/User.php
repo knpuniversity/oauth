@@ -23,6 +23,8 @@ class User implements UserInterface
     /** @var \DateTime */
     public $coopAccessExpiresAt;
 
+    public $coopRefreshToken;
+
     /**
      * Start: Security-related stuff
      */
