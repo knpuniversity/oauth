@@ -14,7 +14,7 @@ class CoopOAuthController extends BaseController
         $routing->get('/coop/oauth/handle', array(new self(), 'receiveAuthorizationCode'))->bind('coop_authorize_redirect');
     }
 
-    public function redirectToAuthorization()
+    public function redirectToAuthorization(Request $request)
     {
         // generates an absolute URL like http://localhost/coop/oauth/handle
         // this is the page that the OAuth server will redirect back to
@@ -26,6 +26,7 @@ class CoopOAuthController extends BaseController
             'client_id' => $this->getParameter('client_id'),
             'redirect_uri' => $redirectUrl,
             'scope' => 'eggs-count',
+            'state' => $request->getSession()->getId()
         ));
 
         return $this->redirect($url);
@@ -49,13 +50,10 @@ class CoopOAuthController extends BaseController
             return $this->render('failed_authorization.twig', array('response' => $request->query->all()));
         }
 
-        /*
-         * TODO - put back later
         // verify the "state" parameter matches this user's session (this is like CSRF - very important!!)
-        if ($request->get('state') !== $session->getId()) {
+        if ($request->get('state') !== $request->getSession()->getId()) {
             return $this->render('failed_authorization.twig', array('response' => array('error_description' => 'Your session has expired.  Please try again.')));
         }
-        */
 
         // make the token request via http to /token
         // here are all the POST parameters we need to send to /token
@@ -107,6 +105,7 @@ class CoopOAuthController extends BaseController
             $user = $this->getLoggedInUser();
         } else {
             // todo - what if a user with this email already exists?
+            // todo - what if the coopUserId already exists?
 
             $user = $this->createUser(
                 $json['email'],
