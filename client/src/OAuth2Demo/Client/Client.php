@@ -3,6 +3,7 @@
 namespace OAuth2Demo\Client;
 
 use OAuth2Demo\Client\Controllers\BaseController;
+use OAuth2Demo\Client\Storage\FixturesManager;
 use Silex\Application;
 use Silex\Provider\UrlGeneratorServiceProvider;
 use Silex\Provider\TwigServiceProvider;
@@ -105,12 +106,16 @@ class Client implements ControllerProviderInterface
             );
         });
 
+        $app['fixtures_manager'] = $app->share(function() use ($app) {
+            return new FixturesManager($app);
+        });
+
         // ensure our Sqlite database exists
         $app['parameters'] = $this->loadParameters();
 
         if (!file_exists($sqliteFile)) {
-            $this->generateSqliteDb();
-            $this->populateSqliteDb($app);
+            $app['fixtures_manager']->resetDatabase();
+            $app['fixtures_manager']->populateSqliteDb($app);
         }
     }
 
@@ -125,40 +130,7 @@ class Client implements ControllerProviderInterface
         return $parameters;
     }
 
-    private function generateSqliteDb()
-    {
-        include_once(__DIR__.'/../../../data/rebuild_db.php');
-    }
 
-    private function populateSqliteDb($app)
-    {
-        $conn = new Connection(
-            $app['pdo'],
-            $app['security.encoder_factory'],
-            // to avoid a circular reference situation
-            $app
-        );
-
-        // user emails
-        $leanna = 'everydayimcluckin@coop.com';
-        $ryan = 'eggman@coop.com';
-        $paige = 'loveandchickenpoop@coop.com';
-        $brent = '99chickens@coop.com';
-
-        // create stock users
-        $conn->createUser($leanna, rand(), 'Leanna', 'Pelham');
-        $conn->createUser($ryan, rand(), 'Ryan', 'Weaver');
-        $conn->createUser($paige, rand(), 'Paige', 'Collett');
-        $conn->createUser($brent, rand(), 'Brent', 'Shaffer');
-
-        // create fake egg counts
-        $conn->setEggCount($conn->getUser($brent), rand(1, 5), date('Y-m-d', strtotime('-10 days')));
-        $conn->setEggCount($conn->getUser($ryan), rand(1, 2), date('Y-m-d', strtotime('-2 days')));
-        $conn->setEggCount($conn->getUser($ryan), rand(1, 10), date('Y-m-d', strtotime('-12 days')));
-        $conn->setEggCount($conn->getUser($leanna), rand(1, 20), date('Y-m-d', strtotime('-1 days')));
-        $conn->setEggCount($conn->getUser($paige), rand(1, 10), date('Y-m-d', strtotime('-1 days')));
-        $conn->setEggCount($conn->getUser($paige), rand(1, 20), date('Y-m-d', strtotime('-11 days')));
-    }
 
     private function configureSecurity(Application $app)
     {
