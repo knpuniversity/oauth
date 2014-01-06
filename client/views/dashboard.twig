@@ -43,6 +43,7 @@
                 data-scope="https://www.googleapis.com/auth/plus.login">
               </span>
             </span>
+            <div id="google-plus-people"></div>
 
         </div>
         <div class="col-lg-6">
@@ -65,11 +66,15 @@
         })();
 
         function signinCallback(authResult) {
-            console.log(authResult);
             if (authResult['status']['signed_in']) {
                 // Update the app to reflect a signed in user
                 // Hide the sign-in button now that the user is authorized, for example:
                 document.getElementById('signinButton').setAttribute('style', 'display: none');
+
+                // loads the gapi.client.plus JavaScript object
+                gapi.client.load('plus','v1', function() {
+                    loadCirclesPeople();
+                });
             } else {
                 // Update the app to reflect a signed out user
                 // Possible error values:
@@ -78,6 +83,22 @@
                 //   "immediate_failed" - Could not automatically log in the user
                 console.log('Sign-in state: ' + authResult['error']);
             }
+        }
+
+        function loadCirclesPeople() {
+            console.log(gapi, gapi.client);
+            var request = gapi.client.plus.people.list({
+                'userId': 'me',
+                'collection': 'visible'
+            });
+            request.execute(function (people) {
+                var $people = $('#google-plus-people');
+                $people.empty();
+                for (var personIndex in people.items) {
+                    var person = people.items[personIndex];
+                    $people.append('<img src="' + person.image.url + '">');
+                }
+            });
         }
     </script>
 {% endblock %}
