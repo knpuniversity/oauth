@@ -86,6 +86,7 @@ class OAuthController extends BaseController
 
         // yay! the all-important access token and its expiration date
         $token = $json['access_token'];
+        $refreshToken = $json['refresh_token'];
         $expiresInSeconds = $json['expires_in'];
         $expiresAt = new \DateTime('+'.$expiresInSeconds.' seconds');
 
@@ -106,6 +107,7 @@ class OAuthController extends BaseController
         $user->coopUserId = $coopUserId;
         $user->coopAccessToken = $token;
         $user->coopAccessExpiresAt = $expiresAt;
+        $user->coopRefreshToken = $refreshToken;
         $this->saveUser($user);
 
         // redirect to the homepage!

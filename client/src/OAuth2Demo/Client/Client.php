@@ -88,7 +88,8 @@ class Client implements ControllerProviderInterface
         $sqliteFile = __DIR__.'/../../../data/topcluck.sqlite';
 
         $app['pdo'] = $app->share(function () use ($sqliteFile) {
-            $pdo = new \PDO('sqlite:'.$sqliteFile);
+            // $pdo = new \PDO('sqlite:'.$sqliteFile);
+             $pdo = new \PDO('mysql:dbname=top_cluck;host=localhost', 'root', '');
             $pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
 
             return $pdo;

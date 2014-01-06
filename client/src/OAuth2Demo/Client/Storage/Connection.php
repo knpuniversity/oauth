@@ -103,6 +103,34 @@ class Connection
         return $result ? $result['count'] : null;
     }
 
+    public function getExpiringTokens($day = null)
+    {
+        $day = $day ?: strtotime(date('Y-m-d'));
+        $sql = sprintf('SELECT email, coopRefreshToken from %s where coopAccessExpiresAt<=:day AND coopRefreshToken IS NOT NULL', self::TABLE_USER);
+
+        $stmt = $this->db->prepare($sql);
+
+        $stmt->execute(array(
+            'day'   => $day,
+        ));
+        $result = $stmt->fetchAll();
+
+        return $result;
+    }
+
+    public function saveNewTokens($email, $accessToken, $accessTokenExpires, $refreshToken)
+    {
+        $sql = sprintf('UPDATE %s SET coopAccessToken=:accessToken, coopAccessExpiresAt=:accessTokenExpires, coopRefreshToken=:refreshToken WHERE email=:email', self::TABLE_USER);
+        $stmt = $this->db->prepare($sql);
+
+        $stmt->execute(array(
+            'email'              => $email,
+            'accessToken'        => $accessToken,
+            'accessTokenExpires' => $accessTokenExpires,
+            'refreshToken'       => $refreshToken,
+        ));
+    }
+
     public function getLeaderboardEggCounts()
     {
         $weekly   = $this->getWeeklyEggCounts();
