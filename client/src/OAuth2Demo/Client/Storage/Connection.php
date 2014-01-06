@@ -57,7 +57,7 @@ class Connection
 
         return $stmt->execute(array(
             'email' => $user->email,
-            'password' => $user->email,
+            'password' => $user->password,
             'firstName' => $user->firstName,
             'lastName' => $user->lastName,
             'coopUserId' => $user->coopUserId,
