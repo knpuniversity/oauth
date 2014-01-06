@@ -8,10 +8,18 @@
     </tr>
     </thead>
     <tbody>
+        <tr>
+            <td>Retrieves user that's tied to the access token</td>
+            <td>
+                {{ path('api_user_information') }}
+            </td>
+            <td>GET</td>
+            <td>&nbsp;</td>
+        </tr>
     {% for action,message in app.scopes %}
         <tr>
             <td>{{ message }}</td>
-            <td>{{ path('api_call_form', {'action': action}) }}</td>
+            <td>{{ path('api_call', {'action': action, 'id': 'USER_ID'}) }}</td>
             <td>POST</td>
             <td>
                 <a href="{{ path('api_call_form', {'action': action}) }}">try

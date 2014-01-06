@@ -20,10 +20,19 @@ class UserProvider implements UserProviderInterface
 
     public function loadUserByUsername($username)
     {
+        if (!$user = $this->findUser($username)) {
+            throw new UsernameNotFoundException(sprintf('Username "%s" does not exist.', $username));
+        }
+
+        return $user;
+    }
+
+    public function findUser($username)
+    {
         $userDetails = $this->storage->getUser($username);
 
         if (!$userDetails) {
-            throw new UsernameNotFoundException(sprintf('Username "%s" does not exist.', $username));
+            return false;
         }
 
         $user = new User();

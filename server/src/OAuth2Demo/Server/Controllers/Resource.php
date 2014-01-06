@@ -4,6 +4,7 @@ namespace OAuth2Demo\Server\Controllers;
 
 use OAuth2Demo\Server\Security\User;
 use Silex\Application;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -13,7 +14,9 @@ class Resource
     public static function addRoutes($routing)
     {
         $routing->get('/application/api/{action}', [new self(), 'get'])->bind('api_call_form');
+        $routing->get('/api/me', [new self(), 'userInformationAction'])->bind('api_user_information');
         $routing->post('/api/{id}/{action}', [new self(), 'apiAction'])->bind('api_call');
+
         // actions taken on your house using your authenticated account instead of a token
         $routing->post('/house/{action}', [new self(), 'webAction'])->bind('web_call');
     }
@@ -34,24 +37,12 @@ class Resource
      */
     public function apiAction(Application $app, $action, $id)
     {
-        // get the oauth server (configured in src/OAuth2Demo/Server/Server.php)
-        /** @var \OAuth2\Server $server */
-        $server = $app['oauth_server'];
-
-        // get the oauth response (configured in src/OAuth2Demo/Server/Server.php)
-        $response = $app['oauth_response'];
-
         // the name of the action, i.e. "barn-unlock" is also the name of the scope
         $scope = $action;
 
-        if (!$server->verifyResourceRequest($app['request'], $response, $scope)) {
-            if ($response->getContent() === '{}') {
-                return new Response(json_encode(array(
-                    'error' => 'access_denied',
-                    'error_description' => 'an access token is required')
-                ));
-            }
-
+        // test all the OAuth stuffs!
+        $response = $this->verifyResourceRequest($app, $scope);
+        if ($response) {
             return $response;
         }
 
@@ -61,14 +52,47 @@ class Resource
 
         // return a generic API response - not that exciting
         // @TODO return something more valuable, like the name of the logged in user
-        $api_response = array(
+        $apiResponse = array(
             'action'  => $action,
             'success' => true,
             'message' => $message,
             'data'    => $data,
         );
 
-        return new Response(json_encode($api_response));
+        return new JsonResponse($apiResponse);
+    }
+
+    /**
+     * Retrieves user information
+     *
+     * @param Application $app
+     * @param $id
+     * @return Response
+     */
+    public function userInformationAction(Application $app)
+    {
+        $response = $this->verifyResourceRequest($app);
+        if ($response) {
+            return $response;
+        }
+
+        /** @var \OAuth2\Server $server */
+        $server = $app['oauth_server'];
+        $token = $server->getResourceController()->getToken();
+        $username = $token['user_id'];
+
+        // an abuse of the UserProvider... but that's ok :)
+        /** @var User $user */
+        $user = $app['security.user_provider']->findUser($username);
+
+        $apiResponse = array(
+            'id'    => $user->id,
+            'email' => $user->email,
+            'firstName' => $user->firstName,
+            'lastName' => $user->lastName,
+        );
+
+        return new JsonResponse($apiResponse);
     }
 
     public function webAction(Application $app, $action)
@@ -145,4 +169,37 @@ class Resource
 
         return false;
     }
+
+    /**
+     * Verifies if all the token, scope things are in order!
+     *
+     * If this returns a Response, it's an error Response and should be returned
+     *
+     * @param Application $app
+     * @param null $scope
+     * @return Response
+     */
+    private function verifyResourceRequest(Application $app, $scope = null)
+    {
+        // get the oauth server (configured in src/OAuth2Demo/Server/Server.php)
+        /** @var \OAuth2\Server $server */
+        $server = $app['oauth_server'];
+
+        // get the oauth response (configured in src/OAuth2Demo/Server/Server.php)
+        $response = $app['oauth_response'];
+
+        if (!$server->verifyResourceRequest($app['request'], $response, $scope)) {
+            if ($response->getContent() === '{}') {
+                return new Response(json_encode(array(
+                    'error' => 'access_denied',
+                    'error_description' => 'an access token is required')
+                ));
+            }
+
+            return $response;
+        }
+
+        return false;
+    }
+
 }
