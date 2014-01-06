@@ -98,8 +98,8 @@ class FacebookOAuthController extends BaseController
                 'message' => 'Woh! My chickens have laid '.$eggCount.' eggs today!',
             ));
         } catch (\FacebookApiException $e) {
-            // todo - potentially send them back to the redirect
-            return $this->render('failed_token_request.twig', array('response' => $e->getMessage()));
+            // maybe the token has expired! No problem, we'll re-auth :)
+            return $this->redirect($this->generateUrl('facebook_authorize_start'));
         }
 
         return $this->redirect($this->generateUrl('home'));
