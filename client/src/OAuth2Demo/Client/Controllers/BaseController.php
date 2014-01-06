@@ -5,6 +5,7 @@ namespace OAuth2Demo\Client\Controllers;
 use OAuth2Demo\Client\Security\User;
 use OAuth2Demo\Client\Storage\Connection;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 /**
  * Base controller class to hide Silex-related implementation details
@@ -143,6 +144,33 @@ class BaseController
     public function setTodaysEggCountForUser(User $user, $count)
     {
         return $this->getConnection()->setEggCount($user, $count);
+    }
+
+    /**
+     * Creates a brand new User, saves it to the database, then returns the
+     * new User object.
+     *
+     * @param string $email
+     * @param string $password
+     * @param string $firstName
+     * @param string $lastName
+     * @return User
+     */
+    public function createUser($email, $password, $firstName = null, $lastName = null)
+    {
+        return $this->getConnection()->createUser($email, $password, $firstName, $lastName);
+    }
+
+    /**
+     * Logs this user into the system
+     *
+     * @param User $user
+     */
+    public function loginUser(User $user)
+    {
+        $token = new UsernamePasswordToken($user, $user->getPassword(), 'main', $user->getRoles());
+
+        $this->container['security']->setToken($token);
     }
 
     /**

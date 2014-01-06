@@ -68,6 +68,8 @@ class Connection
         ));
 
         $this->saveUser($user);
+
+        return $user;
     }
 
     public function setEggCount(User $user, $egg_count, $day = null)

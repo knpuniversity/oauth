@@ -58,9 +58,9 @@ class UserManagement extends BaseController
             return $this->render('user\register.twig', ['errors' => $errors]);
         }
 
-        $storage->createUser($email, $password, $firstName, $lastName);
+        $user = $storage->createUser($email, $password, $firstName, $lastName);
 
-        $this->autoLogin($app, $email);
+        $this->loginUser($user);
 
         return $this->redirect($this->generateUrl('home'));
     }
@@ -86,18 +86,5 @@ class UserManagement extends BaseController
     public function logout(Application $app)
     {
         throw new \Exception('Should not get here - this should be handled magically by the security system!');
-    }
-
-    private function autoLogin($app, $email)
-    {
-        $provider = $app['security.user_provider'];
-
-        if (!$user = $provider->loadUserByUsername($email)) {
-            throw new \Exception('Unable to login user - something went terribly wrong');
-        }
-
-        $token = new UsernamePasswordToken($user, $user->getPassword(), 'main', $user->getRoles());
-
-        $app['security']->setToken($token);
     }
 }

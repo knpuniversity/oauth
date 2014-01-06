@@ -10,8 +10,8 @@ class OAuthController extends BaseController
 {
     public static function addRoutes($routing)
     {
-        $routing->get('/coop/authorize/start', array(new self(), 'redirectToCoopAuthorization'))->bind('coop_authorize_start');
-        $routing->get('/coop/authorize/handle', array(new self(), 'receiveAuthorizationCode'))->bind('coop_authorize_redirect');
+        $routing->get('/coop/oauth/handle', array(new self(), 'receiveAuthorizationCode'))->bind('coop_authorize_redirect');
+        $routing->get('/coop/oauth/start', array(new self(), 'redirectToCoopAuthorization'))->bind('coop_authorize_start');
     }
 
     public function redirectToCoopAuthorization()
@@ -103,7 +103,22 @@ class OAuthController extends BaseController
         $coopUserId = $json['id'];
 
         // finally, get the current User object, set the data on it, and save it back to the database
-        $user = $this->getLoggedInUser();
+        if ($this->isUserLoggedIn()) {
+            $user = $this->getLoggedInUser();
+        } else {
+            // todo - what if a user with this email already exists?
+
+            $user = $this->createUser(
+                $json['email'],
+                // a blank password - this user hasn't created a password yet!
+                '',
+                $json['firstName'],
+                $json['lastName']
+            );
+
+            $this->loginUser($user);
+        }
+
         $user->coopUserId = $coopUserId;
         $user->coopAccessToken = $token;
         $user->coopAccessExpiresAt = $expiresAt;
