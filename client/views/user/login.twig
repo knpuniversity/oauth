@@ -32,8 +32,11 @@
                 <div class="form-group">
                     <div class="col-lg-10 col-lg-offset-2">
                         <button type="submit" class="btn btn-primary">Login!</button>
-                        <a href="{{ path('coop_authorize_start') }}">Login with COOP</a>
-                        <a href="{{ path('facebook_authorize_start') }}">Login with Facebook</a>
+                        OR
+                        <div class="btn-group">
+                            <a href="{{ path('coop_authorize_start') }}" class="btn btn-default">Login with COOP</a>
+                            <a href="{{ path('facebook_authorize_start') }}" class="btn btn-default">Login with Facebook</a>
+                        </div>
                     </div>
                 </div>
             </fieldset>
