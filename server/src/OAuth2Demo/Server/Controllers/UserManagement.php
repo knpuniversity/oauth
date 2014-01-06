@@ -45,8 +45,8 @@ class UserManagement
             $errors[] = '"address" is required';
         }
 
-        $firstName = $request->request->get('firstName');
-        $lastName = $request->request->get('lastName');
+        $firstName = $request->request->get('first_name');
+        $lastName = $request->request->get('last_name');
 
         /** @var \OAuth2Demo\Server\Storage\Pdo $storage */
         $storage = $app['storage'];

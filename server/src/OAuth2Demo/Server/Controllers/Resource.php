@@ -63,11 +63,10 @@ class Resource
     }
 
     /**
-     * Retrieves user information
+     * Retrieves user information tied to the token
      *
      * @param Application $app
-     * @param $id
-     * @return Response
+     * @return JsonResponse|Response
      */
     public function userInformationAction(Application $app)
     {
