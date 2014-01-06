@@ -9,26 +9,16 @@ it out on your own!):
 
     php composer.phar install
 
-2) Setup a virtualhost that points to the web/ directory and a hosts entry
-   for your fake domain
+2) Start a web server. The easiest way to do this is to use the built-in
+   PHP web-server (assuming you have PHP 5.4 or higher). From the command line,
+   move into this directory and then run:
 
 ```
-#
-# Knp OAuth Client
-#
-<VirtualHost *:80>
-    ServerName knp-oauth-client
-
-    DocumentRoot "/Library/WebServer/knpuniversity/oauth/client-finish/web"
-    <Directory "/Library/WebServer/knpuniversity/oauth/client-finish/web">
-        AllowOverride All
-        Allow from All
-    </Directory>
-</VirtualHost>
+    cd web
+    php -S localhost:8000
 ```
 
-3) (Optional) Copy your parameters.yml.dist file to parameters.yml and customize it
+This process will just sit there forever. Press `ctrl+c` later when you're
+done with it. You can access the site by going to `http://localhost:8000`.
 
-    cp app/config/parameters.yml.dist app/config/parameters.yml
-
-4) Pop it open in your browser!
+3) Pop it open in your browser! `http://localhost:8000`
