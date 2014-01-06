@@ -14,16 +14,20 @@ class Homepage extends BaseController
 
     public function homepage(Application $app)
     {
+        $egg_counts = $app['connection']->getLeaderboardEggCounts();
+
         // homepage when logged in
         if ($this->isUserLoggedIn()) {
             return $this->render('dashboard.twig', array(
                 'user'          => $this->getLoggedInUser(),
                 'eggCount'      => $this->getTodaysEggCountForUser($this->getLoggedInUser()),
+                'egg_counts'    => $egg_counts,
             ));
         }
 
         return $this->render('index.twig', array(
             'coopUrl' => $app['parameters']['coop_url'],
+            'egg_counts' => $egg_counts,
         ));
     }
 }

@@ -56,11 +56,6 @@ class Client implements ControllerProviderInterface
         // creates a new controller based on the default route
         $routing = $app['controllers_factory'];
 
-        // ensure our Sqlite database exists
-        if (!file_exists($sqliteFile = __DIR__.'/../../../data/oauth.sqlite')) {
-            $this->generateSqliteDb();
-        }
-
         /** @var EventDispatcher $dispatcher */
         $dispatcher = $app['dispatcher'];
         // a quick event listener to inject the container into our BaseController
@@ -90,9 +85,7 @@ class Client implements ControllerProviderInterface
 
     private function setup(Application $app)
     {
-        if (!file_exists($sqliteFile = __DIR__.'/../../../data/oauth.sqlite')) {
-            $this->generateSqliteDb();
-        }
+        $sqliteFile = __DIR__.'/../../../data/topcluck.sqlite';
 
         $app['pdo'] = $app->share(function () use ($sqliteFile) {
             $pdo = new \PDO('sqlite:'.$sqliteFile);
@@ -110,7 +103,13 @@ class Client implements ControllerProviderInterface
             );
         });
 
+        // ensure our Sqlite database exists
         $app['parameters'] = $this->loadParameters();
+
+        if (!file_exists($sqliteFile)) {
+            $this->generateSqliteDb();
+            $this->populateSqliteDb($app);
+        }
     }
 
     public function loadParameters()
@@ -127,6 +126,36 @@ class Client implements ControllerProviderInterface
     private function generateSqliteDb()
     {
         include_once(__DIR__.'/../../../data/rebuild_db.php');
+    }
+
+    private function populateSqliteDb($app)
+    {
+        $conn = new Connection(
+            $app['pdo'],
+            $app['security.encoder_factory'],
+            // to avoid a circular reference situation
+            $app
+        );
+
+        // user emails
+        $leanna = 'everydayimcluckin@coop.com';
+        $ryan = 'eggman@coop.com';
+        $paige = 'loveandchickenpoop@coop.com';
+        $brent = '99chickens@coop.com';
+
+        // create stock users
+        $conn->createUser($leanna, rand(), 'Leanna', 'Pelham');
+        $conn->createUser($ryan, rand(), 'Ryan', 'Weaver');
+        $conn->createUser($paige, rand(), 'Paige', 'Collett');
+        $conn->createUser($brent, rand(), 'Brent', 'Shaffer');
+
+        // create fake egg counts
+        $conn->setEggCount($conn->getUser($brent), rand(1, 5), date('Y-m-d', strtotime('-10 days')));
+        $conn->setEggCount($conn->getUser($ryan), rand(1, 2), date('Y-m-d', strtotime('-2 days')));
+        $conn->setEggCount($conn->getUser($ryan), rand(1, 10), date('Y-m-d', strtotime('-12 days')));
+        $conn->setEggCount($conn->getUser($leanna), rand(1, 20), date('Y-m-d', strtotime('-1 days')));
+        $conn->setEggCount($conn->getUser($paige), rand(1, 10), date('Y-m-d', strtotime('-1 days')));
+        $conn->setEggCount($conn->getUser($paige), rand(1, 20), date('Y-m-d', strtotime('-11 days')));
     }
 
     private function configureSecurity(Application $app)

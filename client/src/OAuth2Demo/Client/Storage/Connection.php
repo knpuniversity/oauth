@@ -103,6 +103,69 @@ class Connection
         return $result ? $result['count'] : null;
     }
 
+    public function getLeaderboardEggCounts()
+    {
+        $weekly   = $this->getWeeklyEggCounts();
+        $all_time = $this->getAllTimeEggCounts();
+
+        foreach ($all_time as $email => $count) {
+            if (isset($weekly[$email])) {
+                $weekly[$email]['all_time'] = $count['all_time'];
+            } else {
+                $weekly[$email] = array(
+                    'weekly' => 0,
+                    'all_time' => $count['all_time'],
+                );
+            }
+        }
+
+        return $weekly;
+    }
+
+    private function getWeeklyEggCounts()
+    {
+        $sql = 'SELECT email, SUM(count) AS weekly
+            FROM egg_count
+            WHERE day >= :last_week AND day < :tomorrow
+            GROUP BY email
+            ORDER BY weekly DESC';
+
+        $stmt = $this->db->prepare($sql);
+
+        $stmt->execute(array(
+            'tomorrow' => date('Y-m-d', strtotime('+1 day')),
+            'last_week' => date('Y-m-d', strtotime('-1 week')),
+        ));
+
+        $result = $stmt->fetchAll();
+
+        $counts = array();
+        foreach ($result as $row) {
+            $counts[$row['email']] = $row;
+        }
+
+        return $counts;
+    }
+
+    private function getAllTimeEggCounts()
+    {
+        $sql = 'SELECT email, SUM(count) AS all_time FROM egg_count
+            GROUP BY email
+            ORDER BY all_time DESC';
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute();
+
+        $result = $stmt->fetchAll();
+
+        $counts = array();
+        foreach ($result as $row) {
+            $counts[$row['email']] = $row;
+        }
+
+        return $counts;
+    }
+
     private function encodePassword(User $user, $password)
     {
         $encoder = $this->encoderFactory->getEncoder($user);
