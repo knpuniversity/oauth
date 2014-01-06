@@ -33,11 +33,6 @@ class Home
 
     public function apiHome(Application $app)
     {
-        // this was the old homepage - it's being moved to an API area
-        // not much work has been done on this yet, but the idea is that
-        // the API docs will be here and all this functionality will
-        // basically be an API playground
-
         $clients = array();
         if ($app['security']->isGranted('IS_AUTHENTICATED_FULLY')) {
             $user    = $app['security']->getToken()->getUser();
