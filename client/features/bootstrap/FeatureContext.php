@@ -73,8 +73,44 @@ class FeatureContext extends MinkContext
      */
     public function thereIsAUserWithPassword($email, $plainPassword)
     {
+        $this->createUser($email, $plainPassword);
+    }
+
+    /**
+     * @Given /^I am logged in$/
+     */
+    public function iAmLoggedIn()
+    {
+        $this->createUser('ryan@knplabs.com', 'foo');
+
+        return array(
+            new Given('I am on "/login"'),
+            new Given('I fill in "Email" with "ryan@knplabs.com"'),
+            new Given('I fill in "Password" with "foo"'),
+            new Given('I press "Login!"'),
+        );
+    }
+
+    /**
+     * Call this when you've just redirected to COOP and need to login
+     *
+     * @Given /^I log into COOP$/
+     */
+    public function iLogIntoCoop()
+    {
+        return array(
+            // a fixtures user on the server
+            new Given('I fill in "Email" with "test@knpuniversity.com"'),
+            new Given('I fill in "Password" with "test"'),
+            new Given('I press "Login!"'),
+        );
+    }
+
+    private function createUser($email, $plainPassword)
+    {
         /** @var \OAuth2Demo\Client\Storage\Connection $storage */
         $storage = self::$app['connection'];
-        $user = $storage->createUser($email, $plainPassword, 'John'.rand(1, 999), 'Doe'.rand(1, 999));
+
+        return $storage->createUser($email, $plainPassword, 'John'.rand(1, 999), 'Doe'.rand(1, 999));
     }
 }
