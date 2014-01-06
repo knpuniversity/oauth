@@ -15,36 +15,15 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>Paige Collett</td>
-                        <td>7</td>
-                        <td>100</td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>Leanna Pelham</td>
-                        <td>6</td>
-                        <td>50</td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td>Hyrum Tanner</td>
-                        <td>4</td>
-                        <td>100</td>
-                    </tr>
-                    <tr class="success">
-                        <td>4</td>
-                        <td>Ryan Weaver</td>
-                        <td>4</td>
-                        <td>4</td>
-                    </tr>
-                    <tr>
-                        <td>5</td>
-                        <td>Brent Shaffer</td>
-                        <td>3</td>
-                        <td>100000</td>
-                    </tr>
+                    {% for email,counts in egg_counts %}
+                        <tr>
+                            {% set someuser = app.connection.getUser(email) %}
+                            <td>{{ loop.index }}</td>
+                            <td>{{ someuser.firstName }} {{someuser.lastName }}</td>
+                            <td>{{ counts.weekly }}</td>
+                            <td>{{ counts.all_time }}</td>
+                        </tr>
+                    {% endfor %}
                     </tbody>
                 </table>
             </div>

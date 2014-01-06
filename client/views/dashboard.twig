@@ -24,7 +24,7 @@
 
         </div>
         <div class="col-lg-6">
-            {{ include('_leaderboard.twig') }}
+            {{ include('_leaderboard.twig', { 'egg_counts': egg_counts }) }}
         </div>
     </div>
 {% endblock %}

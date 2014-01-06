@@ -1,7 +1,7 @@
 <?php
 
 // determine where the sqlite DB will go
-$dbfile = __DIR__.'/oauth.sqlite';
+$dbfile = __DIR__.'/topcluck.sqlite';
 
 // remove sqlite file if it exists
 if (file_exists($dbfile)) {
