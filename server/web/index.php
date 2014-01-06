@@ -43,6 +43,7 @@ $app->register(new Silex\Provider\SecurityServiceProvider(), array(
 // require login for application management
 $app['security.access_rules'] = array(
     array('^/application', 'IS_AUTHENTICATED_FULLY'),
+    array('^/authorize', 'IS_AUTHENTICATED_FULLY'),
 );
 
 // configure the password hashing to be a simple sha1, to match with the OAuthServer

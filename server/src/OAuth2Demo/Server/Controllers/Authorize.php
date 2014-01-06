@@ -3,6 +3,7 @@
 namespace OAuth2Demo\Server\Controllers;
 
 use Silex\Application;
+use OAuth2Demo\Server\Security\User;
 
 class Authorize
 {
@@ -53,6 +54,7 @@ class Authorize
     public function authorizeSubmit(Application $app)
     {
         // get the oauth server (configured in src/OAuth2Demo/Server/Server.php)
+        /** @var \OAuth2\Server $server */
         $server = $app['oauth_server'];
 
          // get the oauth response (configured in src/OAuth2Demo/Server/Server.php)
@@ -61,7 +63,10 @@ class Authorize
         // check the form data to see if the user authorized the request
         $authorized = (bool) $app['request']->query->get('authorize');
 
+        /** @var User $user */
+        $user = $app['security']->getToken()->getUser();
+
         // call the oauth server and return the response
-        return $server->handleAuthorizeRequest($app['request'], $response, $authorized);
+        return $server->handleAuthorizeRequest($app['request'], $response, $authorized, $user->getUsername());
     }
 }
