@@ -26,7 +26,8 @@ $db->exec('CREATE TABLE users (
     coopUserId TEXT,
     coopAccessToken TEXT,
     coopAccessExpiresAt DateTime,
-    coopRefreshToken TEXT
+    coopRefreshToken TEXT,
+    facebookUserId TEXT
 )');
 
 $db->exec('CREATE TABLE egg_count (email TEXT, day TIMESTAMP, count INTEGER)');

@@ -6,25 +6,25 @@ use Silex\Application;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 
-class OAuthController extends BaseController
+class CoopOAuthController extends BaseController
 {
     public static function addRoutes($routing)
     {
+        $routing->get('/coop/oauth/start', array(new self(), 'redirectToAuthorization'))->bind('coop_authorize_start');
         $routing->get('/coop/oauth/handle', array(new self(), 'receiveAuthorizationCode'))->bind('coop_authorize_redirect');
-        $routing->get('/coop/oauth/start', array(new self(), 'redirectToCoopAuthorization'))->bind('coop_authorize_start');
     }
 
-    public function redirectToCoopAuthorization()
+    public function redirectToAuthorization()
     {
-        // generates an absolute URL like http://localhost/receive_authcode
-        // /receive_authcode is the page that the OAuth server will redirect back to
+        // generates an absolute URL like http://localhost/coop/oauth/handle
+        // this is the page that the OAuth server will redirect back to
         // see ReceiveAuthorizationCode.php
-        $redirectUri = $this->generateUrl('coop_authorize_redirect', array(), true);
+        $redirectUrl = $this->generateUrl('coop_authorize_redirect', array(), true);
 
         $url = $this->getParameter('coop_url').'/authorize?'.http_build_query(array(
             'response_type' => 'code',
             'client_id' => $this->getParameter('client_id'),
-            'redirect_uri' => $redirectUri,
+            'redirect_uri' => $redirectUrl,
             'scope' => 'eggs-count',
         ));
 

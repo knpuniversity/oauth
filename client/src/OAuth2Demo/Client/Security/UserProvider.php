@@ -45,6 +45,7 @@ class UserProvider implements UserProviderInterface
         $user->coopUserId = isset($userDetails['coopUserId']) ? $userDetails['coopUserId'] : null;
         $user->coopAccessToken = isset($userDetails['coopAccessToken']) ? $userDetails['coopAccessToken'] : null;
         $user->coopRefreshToken = isset($userDetails['coopRefreshToken']) ? $userDetails['coopRefreshToken'] : null;
+        $user->facebookUserId = isset($userDetails['facebookUserId']) ? $userDetails['facebookUserId'] : null;
 
         // get the coopExpiresAt, but transform the "Y-m-d H:i:s" string into a DateTime object
         $coopExpiresAt = isset($userDetails['coopExpiresAt']) ? $userDetails['coopExpiresAt'] : null;

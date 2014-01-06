@@ -10,3 +10,10 @@ h1 {
 .page-header-empty {
     border-bottom: none;
 }
+table.table.user-information th {
+    white-space: nowrap;
+    border-top: none;
+}
+table.table.user-information td {
+    border-top: none;
+}

@@ -4,12 +4,13 @@
         {% if response.error_uri is defined %}
             (<a href="{{response.error_uri}}">more information</a>)
         {% endif %}
-    {% elseif response is iterable %}
-        <pre>{{ response|json_stringify }}<pre>
+    {% endif %}
+    {% if response is iterable %}
+        <pre>{{ response|json_stringify }}</pre>
     {% else %}
         <p>
             Unable to parse response:
         </p>
-        <pre>{{ dump(response) }}<pre>
+        <pre>{{ dump(response) }}</pre>
     {% endif %}
 </p>

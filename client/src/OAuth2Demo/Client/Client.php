@@ -15,6 +15,7 @@ use OAuth2Demo\Client\Storage\Connection;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
+use Symfony\Component\HttpKernel\Tests\Controller;
 
 class Client implements ControllerProviderInterface
 {
@@ -76,9 +77,10 @@ class Client implements ControllerProviderInterface
 
         // Set corresponding endpoints on the controller classes
         Controllers\Homepage::addRoutes($routing);
-        Controllers\OAuthController::addRoutes($routing);
+        Controllers\CoopOAuthController::addRoutes($routing);
         Controllers\CountEggs::addRoutes($routing);
         Controllers\UserManagement::addRoutes($routing);
+        Controllers\FacebookOAuthController::addRoutes($routing);
 
         return $routing;
     }

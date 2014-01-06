@@ -25,6 +25,8 @@ class User implements UserInterface
 
     public $coopRefreshToken;
 
+    public $facebookUserId;
+
     /**
      * Start: Security-related stuff
      */

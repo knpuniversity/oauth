@@ -86,6 +86,20 @@ class BaseController
     }
 
     /**
+     * Finds a User in the database for this email
+     *
+     * @param $facebookId
+     * @return bool|User
+     */
+    public function findUserByFacebookId($facebookId)
+    {
+        /** @var \OAuth2Demo\Client\Storage\Connection $storage */
+        $storage = $this->container['connection'];
+
+        return $storage->findUserByFacebookId($facebookId);
+    }
+
+    /**
      * @param string $routeName The name of the route
      * @param array $parameters Route variables
      * @param bool $absolute

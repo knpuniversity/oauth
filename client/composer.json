@@ -3,7 +3,8 @@
         "silex/silex": "~1.0",
         "symfony/twig-bridge": "~2.1.0",
         "guzzle/guzzle": "~3.7",
-        "symfony/security": "~2.3"
+        "symfony/security": "~2.3",
+        "facebook/php-sdk": "~3.2.3"
     },
     "autoload" : {
         "psr-0": {

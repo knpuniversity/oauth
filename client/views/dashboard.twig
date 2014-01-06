@@ -21,6 +21,17 @@
                 <a href="{{ path('count_eggs') }}" class="btn btn-primary">Update today's egg count</a>
             {% endif %}
 
+            <div class="panel panel-default" style="margin-top: 10px;">
+                <div class="panel-body">
+                    {% if user.facebookUserId %}
+                        TODO - use your FB informations!
+                    {% else %}
+                        Share your status on Facebook!
+                        <a href="{{ path('facebook_authorize_start') }}">Connect with Facebook</a>
+                    {% endif %}
+                </div>
+            </div>
+
 
         </div>
         <div class="col-lg-6">
