@@ -20,8 +20,9 @@ class Server implements ControllerProviderInterface
     public function setup(Application $app)
     {
         // ensure our Sqlite database exists
-        if (!file_exists($sqliteFile = __DIR__.'/../../../data/oauth.sqlite')) {
+        if (!file_exists($sqliteFile = __DIR__.'/../../../data/coop.sqlite')) {
             $this->generateSqliteDb();
+            $this->populateSqliteDb($sqliteFile);
         }
 
         // create PDO-based sqlite storage
@@ -90,5 +91,21 @@ class Server implements ControllerProviderInterface
     private function generateSqliteDb()
     {
         include_once(__DIR__.'/../../../data/rebuild_db.php');
+    }
+
+    private function populateSqliteDb($sqliteFile)
+    {
+        $pdo = new \Pdo('sqlite:'.$sqliteFile);
+
+        $sql = 'INSERT INTO oauth_clients (client_id, client_secret, scope)
+            VALUES (:client_id, :client_secret, :scope)';
+
+        $stmt = $pdo->prepare($sql);
+
+        $stmt->execute(array(
+            'client_id'     => 'TopCluck',
+            'client_secret' => '2e2dfd645da38940b1ff694733cc6be6',
+            'scope'         => 'eggs-collect',
+        ));
     }
 }

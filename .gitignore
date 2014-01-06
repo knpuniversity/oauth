@@ -3,7 +3,7 @@
 /client/data/*.sqlite
 /cron/composer.phar
 /cron/vendor
-/server/data/oauth.sqlite
+/server/data/*.sqlite
 /server/composer.phar
 /server/vendor
 
