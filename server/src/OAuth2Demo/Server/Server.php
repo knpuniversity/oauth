@@ -40,13 +40,17 @@ class Server implements ControllerProviderInterface
         // instantiate the oauth server
         $server = new OAuth2Server($storage, array('enforce_state' => false, 'allow_implicit' => true, 'access_lifetime' => 86400), $grantTypes);
 
-        $app['scopes'] = [
+        $app['api_actions']   =  [
             'barn-unlock'     => 'Unlock the Barn',
             'toiletseat-down' => 'Put the Toilet Seat Down',
             'chickens-feed'   => 'Feed Your Chickens',
             'eggs-collect'    => 'Collect Eggs from Your Chickens',
             'eggs-count'      => 'Get the Number of Eggs Collected Today',
         ];
+
+        $app['scopes'] = array_merge($app['api_actions'], [
+            'profile'         => 'Access Your Profile Data',
+        ]);
 
         // add scopes
         $memory = new Memory(array(
@@ -108,7 +112,7 @@ class Server implements ControllerProviderInterface
         $stmt->execute(array(
             'client_id'     => 'TopCluck',
             'client_secret' => '2e2dfd645da38940b1ff694733cc6be6',
-            'scope'         => 'eggs-collect',
+            'scope'         => 'eggs-collect profile',
         ));
 
         // create a dummy user

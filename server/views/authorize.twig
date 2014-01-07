@@ -23,7 +23,7 @@
 
               <ul>
                 {% for single_scope in scope|split(' ') %}
-                  <li>{{ single_scope }}</li>
+                  <li>{{ app.scopes[single_scope] }} ({{ single_scope }})</li>
                 {% endfor %}
               </ul>
             {% endif %}
