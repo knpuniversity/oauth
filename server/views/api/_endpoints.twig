@@ -16,7 +16,7 @@
             <td>GET</td>
             <td>&nbsp;</td>
         </tr>
-    {% for action,message in app.scopes %}
+    {% for action,message in app.api_actions %}
         <tr>
             <td>{{ message }}</td>
             <td>{{ path('api_call', {'action': action, 'id': 'USER_ID'}) }}</td>

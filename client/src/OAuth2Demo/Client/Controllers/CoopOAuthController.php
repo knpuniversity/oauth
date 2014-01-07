@@ -25,7 +25,7 @@ class CoopOAuthController extends BaseController
             'response_type' => 'code',
             'client_id' => $this->getParameter('client_id'),
             'redirect_uri' => $redirectUrl,
-            'scope' => 'eggs-count',
+            'scope' => 'eggs-count profile',
             'state' => $request->getSession()->getId()
         ));
 

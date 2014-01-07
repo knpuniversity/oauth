@@ -70,7 +70,7 @@ class Resource
      */
     public function userInformationAction(Application $app)
     {
-        $response = $this->verifyResourceRequest($app);
+        $response = $this->verifyResourceRequest($app, 'profile');
         if ($response) {
             return $response;
         }
