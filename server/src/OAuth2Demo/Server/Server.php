@@ -112,7 +112,7 @@ class Server implements ControllerProviderInterface
         $stmt->execute(array(
             'client_id'     => 'TopCluck',
             'client_secret' => '2e2dfd645da38940b1ff694733cc6be6',
-            'scope'         => 'eggs-collect profile',
+            'scope'         => 'eggs-count profile',
         ));
 
         // create a dummy user
