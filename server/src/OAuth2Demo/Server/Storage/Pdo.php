@@ -84,7 +84,6 @@ class Pdo extends OAuth2Pdo
         $sql = 'SELECT count from egg_count where user_id=:user_id and day=:day';
         $stmt = $this->db->prepare($sql);
 
-
         $stmt->execute(compact('user_id', 'day'));
         $result = $stmt->fetch();
 
@@ -101,5 +100,16 @@ class Pdo extends OAuth2Pdo
         }
 
         return $userInfo['username'];
+    }
+
+    public function getExistingAccessToken($client_id, $user_id, $scope)
+    {
+        $stmt = $this->db->prepare(sprintf('SELECT * from %s where client_id=:client_id AND user_id=:user_id AND scope=:scope AND expires > :now', $this->config['access_token_table']));
+
+        $now = date('Y-m-d H:i:s', strtotime('+30 seconds'));
+
+        $stmt->execute(compact('client_id', 'user_id', 'scope', 'now'));
+
+        return $stmt->fetch();
     }
 }

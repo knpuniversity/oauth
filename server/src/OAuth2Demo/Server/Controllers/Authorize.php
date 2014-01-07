@@ -37,11 +37,21 @@ class Authorize
             $error = $response->getParameter('error_description');
         }
 
+        /** @var User $user */
+        $user = $app['security']->getToken()->getUser();
+
+        $client_id = $app['request']->query->get('client_id');
         $scope = $server->getAuthorizeController()->getScope();
+
+        if ($app['storage']->getExistingAccessToken($client_id, $user->getUsername(), $scope)) {
+            $app['request']->query->set('authorize', true);
+
+            return $this->authorizeSubmit($app);
+        }
 
         // dispaly the "do you want to authorize?" form
         return $app['twig']->render('authorize.twig', [
-            'client_id' => $app['request']->query->get('client_id'),
+            'client_id' => $client_id,
             'scope'     => $scope,
             'error'     => $error,
         ]);
