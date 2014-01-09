@@ -11,7 +11,6 @@ use Behat\MinkExtension\Context\MinkContext;
 
 use Behat\Behat\Context\Step\Given;
 use Behat\Behat\Context\Step\When;
-use Behat\Behat\Context\Step\Then;
 //
 // Require 3rd-party libraries here:
 //
@@ -55,7 +54,7 @@ class FeatureContext extends MinkContext
     /**
      * @BeforeSuite
      */
-    static public function bootstrapApp()
+    public static function bootstrapApp()
     {
         self::$app = require __DIR__.'/../../bootstrap.php';
     }

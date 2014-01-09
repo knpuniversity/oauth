@@ -3,10 +3,7 @@
 namespace OAuth2Demo\Client\Controllers;
 
 use Silex\Application;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Core\SecurityContextInterface;
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 class UserManagement extends BaseController
 {

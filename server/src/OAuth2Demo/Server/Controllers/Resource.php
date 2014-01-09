@@ -65,7 +65,7 @@ class Resource
     /**
      * Retrieves user information tied to the token
      *
-     * @param Application $app
+     * @param  Application           $app
      * @return JsonResponse|Response
      */
     public function userInformationAction(Application $app)
@@ -174,8 +174,8 @@ class Resource
      *
      * If this returns a Response, it's an error Response and should be returned
      *
-     * @param Application $app
-     * @param null $scope
+     * @param  Application $app
+     * @param  null        $scope
      * @return Response
      */
     private function verifyResourceRequest(Application $app, $scope = null)

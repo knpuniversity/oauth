@@ -12,4 +12,3 @@ $request = $client->post('/token', null, array(
     'client_secret' => '',
     'grant_type'    => '',
 ));
-

@@ -2,8 +2,6 @@
 
 namespace OAuth2Demo\Client\Controllers;
 
-use Silex\Application;
-
 class CountEggs extends BaseController
 {
     public static function addRoutes($routing)

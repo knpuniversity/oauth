@@ -27,8 +27,8 @@ class BaseController
     /**
      * Render a twig template
      *
-     * @param string $template The template filename
-     * @param array $variables
+     * @param  string $template  The template filename
+     * @param  array  $variables
      * @return string
      */
     public function render($template, array $variables = array())
@@ -100,9 +100,9 @@ class BaseController
     }
 
     /**
-     * @param string $routeName The name of the route
-     * @param array $parameters Route variables
-     * @param bool $absolute
+     * @param  string $routeName  The name of the route
+     * @param  array  $parameters Route variables
+     * @param  bool   $absolute
      * @return string A URL!
      */
     public function generateUrl($routeName, array $parameters = array(), $absolute = false)
@@ -115,8 +115,8 @@ class BaseController
     }
 
     /**
-     * @param string $url
-     * @param int $status
+     * @param  string           $url
+     * @param  int              $status
      * @return RedirectResponse
      */
     public function redirect($url, $status = 302)
@@ -127,7 +127,7 @@ class BaseController
     /**
      * Returns a value from the parameters.json file
      *
-     * @param string $name
+     * @param  string                    $name
      * @return string
      * @throws \InvalidArgumentException
      */
@@ -164,10 +164,10 @@ class BaseController
      * Creates a brand new User, saves it to the database, then returns the
      * new User object.
      *
-     * @param string $email
-     * @param string $password
-     * @param string $firstName
-     * @param string $lastName
+     * @param  string $email
+     * @param  string $password
+     * @param  string $firstName
+     * @param  string $lastName
      * @return User
      */
     public function createUser($email, $password, $firstName = null, $lastName = null)

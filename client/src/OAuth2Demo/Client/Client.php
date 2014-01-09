@@ -29,7 +29,7 @@ class Client implements ControllerProviderInterface
         ));
 
         // sets twig extension for client debug rendering
-        $app->extend('twig', function(\Twig_Environment $twig) {
+        $app->extend('twig', function (\Twig_Environment $twig) {
             $twig->addExtension(new Twig\JsonStringifyExtension());
 
             return $twig;
@@ -63,7 +63,7 @@ class Client implements ControllerProviderInterface
         // a quick event listener to inject the container into our BaseController
         $dispatcher->addListener(
             KernelEvents::CONTROLLER,
-            function(FilterControllerEvent $event) use ($app) {
+            function (FilterControllerEvent $event) use ($app) {
                 $controller = $event->getController();
                 if (!is_array($controller)) {
                     return;
@@ -97,7 +97,7 @@ class Client implements ControllerProviderInterface
             return $pdo;
         });
 
-        $app['connection'] = $app->share(function() use ($sqliteFile, $app) {
+        $app['connection'] = $app->share(function () use ($sqliteFile, $app) {
             return new Connection(
                 $app['pdo'],
                 $app['security.encoder_factory'],
@@ -106,7 +106,7 @@ class Client implements ControllerProviderInterface
             );
         });
 
-        $app['fixtures_manager'] = $app->share(function() use ($app) {
+        $app['fixtures_manager'] = $app->share(function () use ($app) {
             return new FixturesManager($app);
         });
 
@@ -129,8 +129,6 @@ class Client implements ControllerProviderInterface
 
         return $parameters;
     }
-
-
 
     private function configureSecurity(Application $app)
     {

@@ -31,7 +31,7 @@ class UserProvider implements UserProviderInterface
     /**
      * Takes data (probably from the database) and create a User object
      *
-     * @param array $userDetails
+     * @param  array $userDetails
      * @return User
      */
     public function createUser(array $userDetails)

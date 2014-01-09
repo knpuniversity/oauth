@@ -39,8 +39,8 @@ class FacebookOAuthController extends BaseController
      * Here, we will get the authorization code from the request, exchange
      * it for an access token, and maybe do some other setup things.
      *
-     * @param Application $app
-     * @param Request $request
+     * @param  Application             $app
+     * @param  Request                 $request
      * @return string|RedirectResponse
      */
     public function receiveAuthorizationCode(Application $app, Request $request)
