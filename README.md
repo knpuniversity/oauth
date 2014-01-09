@@ -1,6 +1,8 @@
 OAuth2.0 - Episode 1
 ====================
 
+[![Build Status](https://secure.travis-ci.org/knpuniversity/oauth.png)](https://travis-ci.org/knpuniversity/oauth)
+
 Sir or madam,
 Inside this fine repository, you'll find a few things:
 
