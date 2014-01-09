@@ -6,6 +6,7 @@ Feature: Coop Authorization
   Scenario: Authorizing
     Given I am logged in
     And I am on "/"
+    And print last response
     When I click "Authorize"
     And I log into COOP
     And I click "Yes, I Authorize This Request"

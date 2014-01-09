@@ -6,6 +6,8 @@ use Symfony\Component\HttpFoundation\Request;
 $app = require_once __DIR__.'/../bootstrap.php';
 
 /*
+ * Repeated in the server
+ *
  * A big hack. In Behat, I was seeing that Guzzle was making requests to
  * localhost:9002 (the host I was using locally). But when it hit the application,
  * the HTTP_HOST header was "localhost" instead of "localhost:9002", which
