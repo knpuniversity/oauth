@@ -15,7 +15,7 @@ before_script:
   - cd client
   - nohup php -S localhost:8000 -t web/ > /dev/null 2>&1 &
 
-  - travis_retry composer install --dev --prefer-source
+  - travis_retry composer install --dev --prefer-dist --no-interaction
   # make sure the sqlite dir is readable
   - chmod 777 -R data
 
