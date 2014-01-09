@@ -13,7 +13,7 @@ before_script:
 
   # setup the server
   - cd server
-  - travis_retry composer install --dev --prefer-dist --no-interaction
+  - travis_retry composer install --dev --prefer-source --no-interaction
   - nohup php -S localhost:8001 -t web/ > /dev/null 2>&1 &
   - chmod 777 -R data
 
