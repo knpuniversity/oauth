@@ -24,7 +24,6 @@ before_script:
   - cd client
   # tweak the URL to the server to look locally
   - sed -i -e 's,coop\.apps\.knpuniversity\.com,localhost:8001,g' data/parameters.json
-  - cat data/parameters.json
   - travis_retry composer install --dev --prefer-dist --no-interaction
   - nohup php -S localhost:8000 -t web/ > /dev/null 2>&1 &
   - chmod 777 -R data
