@@ -109,7 +109,7 @@ class Resource
         switch ($action) {
             case 'barn-unlock':
                 if ($app['storage']->wasApiCalledRecently($username, $action, 20)) {
-                    $message = 'The barn is now locked.  Just to be safe.';
+                    $message = 'The barn is already wide open! Let\'s throw a party!';
                 } else {
                     $message = 'You just unlocked your barn! Watch out for strangers!';
                     $app['storage']->logApiCall($username, $action);
@@ -117,7 +117,7 @@ class Resource
                 break;
             case 'toiletseat-down':
                 if ($app['storage']->wasApiCalledRecently($username, $action, 20)) {
-                    $message = 'You put the toilet seat back up, for no good reason';
+                    $message = 'Yea, the toilet seat is already down... you slob!';
                 } else {
                     $message = 'You just put the toilet seat down. You\'re a wonderful roommate!';
                     $app['storage']->logApiCall($username, $action);
