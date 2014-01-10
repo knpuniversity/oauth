@@ -20,9 +20,8 @@ $request = $http->post('/token', null, array(
 // make a request to the token url
 $response = $request->send();
 $responseBody = $response->getBody(true);
-var_dump($responseBody);die;
-
-$accessToken = 'GET THIS FROM YOUR APPLICATION FOR NOW';
+$responseArr = json_decode($responseBody, true);
+$accessToken = $responseArr['access_token'];
 
 $request = $http->post('/api/2/eggs-collect');
 $request->addHeader('Authorization', 'Bearer '.$accessToken);
