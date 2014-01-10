@@ -1,0 +1,33 @@
+<div class="bs-docs-section">
+
+    <div class="row">
+        <div class="col-lg-12">
+            <h3 id="leaderboard">Leaderboard</h3>
+
+            <div class="bs-example table-responsive">
+                <table class="table table table-bordered table-hover">
+                    <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Username</th>
+                        <th>Weekly Eggs</th>
+                        <th>Egg Count To Date</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for email,counts in egg_counts %}
+                        <tr>
+                            {% set someuser = app.connection.getUser(email) %}
+                            <td>{{ loop.index }}</td>
+                            <td>{{ someuser.firstName }} {{someuser.lastName }}</td>
+                            <td>{{ counts.weekly }}</td>
+                            <td>{{ counts.all_time }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <!-- /example -->
+        </div>
+    </div>
+</div>

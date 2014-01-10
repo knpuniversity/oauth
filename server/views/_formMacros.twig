@@ -1,0 +1,13 @@
+{% macro row_input(name, value, options) %}
+<div class="form-group">
+    <label for="{{ name }}" class="col-lg-2 control-label">{{ options.label|default(name) }}</label>
+    <div class="col-lg-10">
+        <input type="text" class="form-control" id="{{ name }}" name="{{ name }}" placeholder="{{ options.placeholder|default }}" value="{{ value }}" {{ options.disabled|default ? 'disabled="disabled"' }} />
+        {% if options.help is defined %}
+        <span class="help-block">
+            {{ options.help|raw }}
+        </span>
+        {% endif %}
+    </div>
+</div>
+{% endmacro %}
