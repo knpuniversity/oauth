@@ -1,0 +1,43 @@
+<table class="table">
+    <thead>
+    <tr>
+        <th>Action</th>
+        <th>URL</th>
+        <th>Method</th>
+        <th>Sandbox</th>
+    </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Retrieves user that's tied to the access token</td>
+            <td>
+                {{ path('api_user_information') }}
+            </td>
+            <td>GET</td>
+            <td>&nbsp;</td>
+        </tr>
+    {% for action,message in app.api_actions %}
+        <tr>
+            <td>{{ message }}</td>
+            <td>{{ path('api_call', {'action': action, 'id': 'USER_ID'}) }}</td>
+            <td>POST</td>
+            <td>
+                <a href="{{ path('api_call_form', {'action': action}) }}">try
+                    it</a>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+<h3>Success Response</h3>
+
+<pre>
+{{ exampleSuccessResponse|json_encode(constant('JSON_PRETTY_PRINT')) }}
+</pre>
+
+<h3>Error Response</h3>
+
+<pre>
+{{ exampleErrorResponse|json_encode(constant('JSON_PRETTY_PRINT')) }}
+</pre>

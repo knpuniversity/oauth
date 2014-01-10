@@ -1,0 +1,13 @@
+{#
+    The template that is rendered after the user is redirected to COOP,
+    but they denied our application access.
+#}
+{% extends "base.twig" %}
+
+{% block header %}
+    <h1>Authorization Failed!</h1>
+{% endblock %}
+
+{% block content %}
+    {% include '_error.twig' %}
+{% endblock %}

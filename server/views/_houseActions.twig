@@ -1,0 +1,9 @@
+<ul>
+    {% for action, message in app.api_actions %}
+        <li style="margin-bottom: 10px;">
+            <form action="{{ path('web_call', {'action': action}) }}" method="POST">
+                <button type="submit" class="btn btn-primary btn-xs">{{ message }}</button>
+            </form>
+        </li>
+    {% endfor %}
+</ul>

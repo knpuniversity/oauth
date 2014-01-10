@@ -1,0 +1,32 @@
+language: php
+
+php:
+  - 5.5
+
+branches:
+  only:
+    - master
+
+before_script:
+  - sudo apt-get update 
+  - sudo apt-get install -y --force-yes libcurl4-openssl-dev php5-curl php5-sqlite php5-intl
+
+  # setup the server
+  - cd server
+  - travis_retry composer install --dev --prefer-source --no-interaction
+  - nohup php -S localhost:8001 -t web/ > /dev/null 2>&1 &
+  - chmod 777 -R data
+
+  # go back!
+  - cd ..
+
+  # the client
+  - cd client
+  # tweak the URL to the server to look locally
+  - sed -i -e 's,coop\.apps\.knpuniversity\.com,localhost:8001,g' data/parameters.json
+  - travis_retry composer install --dev --prefer-dist --no-interaction
+  - nohup php -S localhost:8000 -t web/ > /dev/null 2>&1 &
+  - chmod 777 -R data
+
+script:
+    - ./vendor/bin/behat --verbose
