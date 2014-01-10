@@ -10,4 +10,9 @@ $client = new Client('http://coop.apps.knpuniversity.com', array(
     )
 ));
 
+/* 2. Call the APIs with the Access Token */
+$request = $client->post('/api/2/eggs-collect');
+$response = $request->send();
+echo $response->getBody();
 
+echo "\n\n";
