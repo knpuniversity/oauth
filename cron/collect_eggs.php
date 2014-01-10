@@ -10,7 +10,10 @@ $http = new Client('http://coop.apps.knpuniversity.com', array(
     )
 ));
 
+$accessToken = 'GET THIS FROM YOUR APPLICATION FOR NOW';
+
 $request = $http->post('/api/2/eggs-collect');
+$request->addHeader('Authorization', 'Bearer '.$accessToken);
 $response = $request->send();
 echo $response->getBody();
 
