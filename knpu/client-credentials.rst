@@ -26,6 +26,12 @@ So COOP is real, sort of. You can find this make-believe website by going
 to `http://coop.apps.knpuniversity.com`_. Go ahead and create an account,
 and start controlling your virtual farm. It's the future!
 
+Building our Command-line App
+-----------------------------
+
+COOP's API is simple, with just a few POST endpoints, include the one we
+want for our little command-line script: feeding the chickens.
+
 Access Tokens in the API
 ------------------------
 
@@ -40,25 +46,21 @@ send it via an Authorization Bearer header.
     Host: coop.apps.knpuniversity.com
     Authorization: Bearer ACCESSTOKENHERE
 
-This token takes the place of your username and password, is tied to exactly
-one COOP account, and is limited to performing certain tasks.
-
-For our convenience, the COOP has a little sandbox for each POST endpoint, and as you
-can see, the only thing we need to specify is the Access Token. Now, how
-do we get that access token?
-
-Fortunately, the COOP API supports OAuth, which means that it follows
-a standard for how this is done. What's a little confusing is that there
-isn't just one strategy for exchanging access tokens with OAuth, there
-are several. These strategies are called *grant types*, and each is
-perfect for different situations, like web apps versus desktop apps.
+COOP has a little sandbox to play with each POST endpoint, and as you can
+see, the only thing we need to specify is the Access Token. How do we get
+that?
 
 OAuth Applications
 ------------------
 
-But first, we need to register an application on COOP. The application represents
-the third-party app or website that will attempt to get access to a user's
-account. Let's give it a name like "Brent's Lazy CRON Job", a description,
+Before we worry about that, we need to register an application on COOP. The
+application represents the external app or website that we want to build.
+In OAuth-speak, it's this application that will actually ask for access to
+a user's account.
+
+Our external app will just be a little command-line script
+
+Give it a name like "Brent's Lazy CRON Job", a description,
 and check only the box for "Collect Eggs from Your Chickens". These checkboxes
 are called "scopes", which are basically permissions. In this case, if a
 user grants this application access to their account, the access token we
