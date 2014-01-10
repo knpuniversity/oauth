@@ -6,6 +6,11 @@
         <h3>
             API into your Farm!
         </h3>
+        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+        <p class="alert alert-info">
+            Your User Id is: <strong>{{ app.security.token.user.id }}</strong>
+        </p>
+        {% endif %}
         <p>
             You can do all sorts of cool things using <span class="label label-primary">The Coop</span> APIs.
         </p>
