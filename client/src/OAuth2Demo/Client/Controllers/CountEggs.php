@@ -9,6 +9,14 @@ class CountEggs extends BaseController
         $routing->get('/coop/count-eggs', array(new self(), 'countEggs'))->bind('count_eggs');
     }
 
+    /**
+     * A page that updates the egg count by making an API request to COOP.
+     *
+     * When it's finished, it just redirects back to the homepage.
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @throws \Exception
+     */
     public function countEggs()
     {
         // pull the token from the currently-logged-in user

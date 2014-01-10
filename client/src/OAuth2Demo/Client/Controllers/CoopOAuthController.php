@@ -14,6 +14,13 @@ class CoopOAuthController extends BaseController
         $routing->get('/coop/oauth/handle', array(new self(), 'receiveAuthorizationCode'))->bind('coop_authorize_redirect');
     }
 
+    /**
+     * This page actually redirects to the COOP authorize page and begins
+     * the typical, "auth code" OAuth grant type flow.
+     *
+     * @param Request $request
+     * @return RedirectResponse
+     */
     public function redirectToAuthorization(Request $request)
     {
         // generates an absolute URL like http://localhost/coop/oauth/handle
@@ -55,7 +62,7 @@ class CoopOAuthController extends BaseController
             return $this->render('failed_authorization.twig', array('response' => array('error_description' => 'Your session has expired.  Please try again.')));
         }
 
-        // make the token request via http to /token
+        // make the token request via http to /token to exchange the auth code for an access token
         // here are all the POST parameters we need to send to /token
         $parameters = array(
             'grant_type'    => 'authorization_code',
@@ -104,9 +111,20 @@ class CoopOAuthController extends BaseController
         if ($this->isUserLoggedIn()) {
             $user = $this->getLoggedInUser();
         } else {
-            // todo - what if a user with this email already exists?
-            // todo - what if the coopUserId already exists?
-
+            /*
+             * There are a few more things you might need to worry about:
+             *  1) What if there is already a user with this email address?
+             *      This probably means that this person already has a TopCluck
+             *      account, but isn't logged in. A nice solution would be
+             *      to ask the user if this is true and have them type in
+             *      their password to prove it. Then, instead of creating
+             *      a new user, we'll update the existing user.
+             *
+             *  2) What if the coopUserId already exists? This would mean
+             *      that 2 different accounts have authorized the same
+             *      Coop user. That might be because 1 person has 2 TopCluck
+             *      accounts. Maybe this is ok, or maybe it's a problem.
+             */
             $user = $this->createUser(
                 $json['email'],
                 // a blank password - this user hasn't created a password yet!
