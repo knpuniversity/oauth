@@ -31,6 +31,10 @@ class AppManagement
             return $app['twig']->render('app\create.twig', ['error' => '"name" is required']);
         }
 
+        if ($app['storage']->getClientDetails($name)) {
+            return $app['twig']->render('app\create.twig', ['error' => 'the application "name" you requested is already in use']);
+        }
+
         // get the requested client scope
         $scope = implode(' ', $app['request']->request->get('scope', []));
 
