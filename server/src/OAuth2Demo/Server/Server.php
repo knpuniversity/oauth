@@ -55,6 +55,7 @@ class Server implements ControllerProviderInterface
         // add scopes
         $memory = new Memory(array(
           'supported_scopes' => array_keys($app['scopes']),
+          'default_scope'    => 'profile',
         ));
 
         $server->setScopeUtil(new Scope($memory));

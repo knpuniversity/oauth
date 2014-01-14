@@ -40,6 +40,7 @@
                         <span class="help-block"><em>What is it you want to do?</em></span>
                     </label>
                     <div class="col-lg-10">
+			<input type="hidden" name="scope[]" value="profile" />
                         {% for action,message in app.scopes %}
                             <div class="checkbox">
                                 <label>
