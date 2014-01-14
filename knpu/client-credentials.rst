@@ -26,19 +26,111 @@ So COOP is real, sort of. You can find this make-believe website by going
 to `http://coop.apps.knpuniversity.com`_. Go ahead and create an account,
 and start controlling your virtual farm. It's the future!
 
-Building our Command-line App
------------------------------
+Starting our Command-line Script
+--------------------------------
 
 COOP's API is simple, with just a few POST endpoints, include the one we
 want for our little command-line script: feeding the chickens.
 
+I've already made a ``cron/`` directory with a script called ``collect_eggs.php``
+that'll get us started::
+
+    CODE-TODO
+
+.. tip::
+
+    Code along with us! Click the Download link on this page to get the starting
+    point of the project.
+
+It doesn't do anything except create a ``Client`` object that's pointing
+at the COOP website. Since we'll need to make HTTP requests to the COOP API,
+we'll use a really nice PHP library called `Guzzle`_. Don't worry if you've
+never used it, it's really easy.
+
+Before we start, we need to use `Composer`_ to download Guzzle. `Download Composer`_
+into the ``cron/`` directory and then install the vendor libraries:
+
+.. code-block:: bash
+
+    php composer.phar install
+
+.. note::
+
+    New to Composer? Do yourself a favor and master it for free:
+    `The Wonderful World of Composer`_. 
+
+Let's try making our first API request to ``/api/2/eggs-collect``. The ``2``
+is our COOP user ID, since we want to collect eggs from *our* farm. Your
+number will be different::
+
+    CODE-TODO
+
+Try it by executing the script from the command line:
+
+.. code-block:: bash
+
+    php collect_eggs.php
+
+Not surprisingly, this blows up!
+
+.. code-block:: json
+
+    {
+      "error": "access_denied",
+      "error_description": "an access token is required"
+    }
+
+OAuth Applications
+------------------
+
+But before we think about getting a token, we need to create an application
+on COOP. The application represents the external app or website that we want
+to build. In our case, it's the little command-line script. In OAuth-speak,
+it's this application that will actually ask for access to a user's account.
+
+Give it a name like "Brent's Lazy CRON Job", a description, and check only
+the box for "Collect Eggs from Your Chickens". These are "scopes", or basically
+the permissions that tokens granted to the application will have.
+
+When we finish, we now have a Client ID and an auto-generated "Client Secret".
+These are a sort of username and password for the application. One tricky
+thing is that the terms "application" and "client" are used interchangeably
+in OAuth. And both are used to refer to the application we just registered
+and the actual app you're building, like the CRON script or your website.
+I'll try to clarify along the way.
+
+Now, let's get an access token!
+
+Client Credentials Grant Type
+-----------------------------
+
+The first OAuth grant type is called Client Credentials, which is the simplest
+of all the types. It involves only two parties, the client and the server.
+For us, this is our command-line script and the COOP API.
+
+Using this grant type, there is no "user", and the access token we get will
+only let us access resources under the control of the application. When we
+make API using this access token, it's almost like we're logging in as the
+*application* itself, not any individual user. I'll explain more in a second.
+
+If you visit the application you created earlier, you'll see a nice
+"Get an Access Token" link that will fetch an access token. Behind the scenes,
+this uses client credentials, which we'll see more closely in a second.
+
+    http://coop.apps.knpuniversity.com/token
+        ?client_id=Your+Client+Name
+        &client_secret=abcdefg
+        &grant_type=client_credentials
+
+But for now, we can celebrate by using this token immediately to take actions
+on behalf of the application!
+
 Access Tokens in the API
 ------------------------
 
-COOP's API is simple, with just a few POST endpoints. To use it, you need
-to include an access token in the API request. Exactly how this is done depends
-on the API, but the most common method for APIs that support OAuth is to
-send it via an Authorization Bearer header.
+Now that we have an access token, let's send it with our API request! Exactly
+how to do this depends on the API you're making requests to. One common method,
+and the one COOP users, is to send it via an Authorization Bearer header.
 
 .. code-block:: text
 
@@ -46,240 +138,103 @@ send it via an Authorization Bearer header.
     Host: coop.apps.knpuniversity.com
     Authorization: Bearer ACCESSTOKENHERE
 
-COOP has a little sandbox to play with each POST endpoint, and as you can
-see, the only thing we need to specify is the Access Token. How do we get
-that?
+Update the script to send this header::
 
-OAuth Applications
-------------------
+    CODE-TODO
 
-Before we worry about that, we need to register an application on COOP. The
-application represents the external app or website that we want to build.
-In OAuth-speak, it's this application that will actually ask for access to
-a user's account.
+When we run the script again, start celebrating, because it works!
 
-Our external app will just be a little command-line script
+.. code-block:: json
 
-Give it a name like "Brent's Lazy CRON Job", a description,
-and check only the box for "Collect Eggs from Your Chickens". These checkboxes
-are called "scopes", which are basically permissions. In this case, if a
-user grants this application access to their account, the access token we
-receive will only let us collect eggs from their account.
+    {
+      "action": "eggs-collect",
+      "success": true,
+      "message": "Hey look at that, 3 eggs have been collected!",
+      "data": 3
+    }
 
-When we finish, we now have a Client ID and an auto-generated "Client Secret".
-These are a sort of username and password for the application.
+Trying to Collect Someone Else's Eggs
+-------------------------------------
 
-When we finish, the applicaiton's name appears as the "Client ID" and we
-have an auto-generated "Client Secret". The "client" in OAuth terminology
-represents the application intending to access the protected resources. In
-our examples, it is safe to assume "client" is referring to your application.
+Notice that this collects the eggs for *our* user becase we're including
+our user ID in the URL. What happens if we change id to be for a different user?
 
-Client Credentials Grant Type
------------------------------
+    /api/3/eggs-collect
 
-The first OAuth grant type is called Client Credentials, which is the simplest
-of all the types. It involves only two parties, the client and the server.
-The client makes a direct request to the server, provides the client ID
-and secret, and recieves an access token in return. The access token is limited
-to the resources under the control of the client. This is perfect for routine
-service calls such as the one in this example. There is no third party or
-end user in this grant type, which simplifies the exchange.
+If you try it, it fails!
 
-Every OAuth server has an API endpoint where you can retrieve an access token
-for this use-case. In fact, COOP gives us a nice little link to retrieve an
-access token.
+.. code-block:: json
 
-    Click the "Get an Access Token!" link on your application page
+    {
+      "error": "access_denied",
+      "error_description": "You do not have access to take this action"
+    }
 
-This token can be used immediately to take actions on *our* account via the API.
-In fact, let's copy it, go to the sandbox for collecting eggs and enter it into
-the form. And just like that, COOP collects our eggs!
+Technically, with a token from client credentials, we're making API requests
+not on behalf of a user, but on behalf of an application. This makes client
+credentials perfect for making API calls that edit or get information about
+the application itself, like a count of how many uses it has.
 
-Now try to perform the call to put the toilet seat down with the same access
-token. Because we did not give our application this scope, the error "The
-request requires higher privileges than provided by the access token" is shown.
+We decided to build COOP so that the application *also* has access to modify
+the user that created it. That's why we *are* able to collect our user's
+eggs, but not our neighbor's.
 
-Retrieving an Access Token
---------------------------
+Getting the Token via Client Credentials
+----------------------------------------
 
-Let's go back and look at the link that gave us the access token:
+Put the champagne away: we're not done yet. Typically, access tokens don't
+last forever. COOP tokens last for 24 hours, which means that tomorrow, our
+script will break.
 
-.. code-block:: text
+Letting the website do the client-credentials work for us was nice for testing,
+but we need do it ourselves inside the script. Every OAuth server has an
+API endpoint used to request access tokens. If we look at the COOP API Authentication
+docs, we can see the URL and the POST parameters it needs:
 
     http://coop.apps.knpuniversity.com/token
-        ?client_id=CRON+Job+App
-        &client_secret=4000ffca850007e43faffc81dda09942
-        &grant_type=client_credentials
+    
+    Parameters:
+        client_id
+        client_secret
+        grant_type
 
-This is the all-important endpoint for retrieving tokens. The URL and parameters
-may differ across OAuth implementations, but there are always just 3 important pieces:
+Let's update our script to first make *this* API request::
 
-1. The ``grant_type`` says that we're using the client_credentials. This
-   says that we want to simply access *our* account: the account associated
-   with the application. Later, we'll use other grant types to access other
-   people's accounts.
+    CODE-TODO: initial-client-credentials-token-request
 
-2/3. The ``client_id`` and ``client_secret`` parameters identify and authenticate
-   us as owners of the application.
+    Ends with a die on the JSON
 
-Retrieving an Access Token in PHP
----------------------------------
-
-Let's use this URL to get the access token from a PHP script.
-
-Start by downloading the code from this repository and going to the ``start/``
-directory. We've already prepared a ``cron/`` folder with a ``collect_eggs.php``
-script to get us started.
-
-We'll use a PHP library called `Guzzle`_ to help make API requests, instead
-of PHP's native curl functions directly. If you haven't used Guzzle, it's
-ok, it's easy! But first, `get Composer`_ and then use it to download the
-Guzzle:
-
-.. code-block:: text
-
-    $ curl -sS https://getcomposer.org/installer | php
-    $ php composer.phar install
-
-.. note::
-
-    Never heard of Composer or not comfortable with it? Watch our `free screencast`_.
-
-Open up the ``collect_eggs.php`` file. As you can see, it uses a Guzzle Client
-object, which is all setup and ready to make a POST request to the ``/token``
-URL of COOP. All we need to do is fill in the ``client_id``, ``client_secret``
-and ``grant_type``::
-
-    // collect_eggs.php
-    include __DIR__.'/vendor/autoload.php';
-    use Guzzle\Http\Client;
-
-    // create our http client (Guzzle)
-    $client = new Client('http://coop.apps.knpuniversity.com');
-
-    $request = $client->post('/token', null, array(
-        'client_id'     => '',
-        'client_secret' => '',
-        'grant_type'    => '',
-    ));
-
-.. note::
-
-    In OAuth, the token endpoint responds only to POST requests, since it
-    creates a new token. In COOP, a GET request technically also works, but
-    that's only to make the API demo easier to play with.
-
-Let's copy the ``client_id`` and ``client_secret`` and set the ``grant_type``
-to ``client_credentials``::
-
-    // ...
-    $request = $client->post('/token', null, array(
-        'client_id'     => 'CRON Job App',
-        'client_secret' => 'SECRET',
-        'grant_type'    => 'client_credentials',
-    ));
-
-Send the request with the ``send()`` method, set its return value to a ``$response``
-variable, and print its body so we can see what we get back::
-
-    // ...
-    $response = $request->send();
-    echo $response->getBody(true);die("\n\n");
-
-Try this by running ``collect_eggs.php`` from the command line:
-
-.. code-block:: text
-
-    $ php collect_eggs.php
-
-With any luck, you should see an output that looks like this:
+With any luck, when you run it, you should see a JSON response with an access
+token and a few other details:
 
 .. code-block:: json
 
     {
-        "access_token": "75083959437f054e0f67f39c02d5d2d9485a890b",
-        "expires_in": 3600,
-        "token_type": "Bearer",
-        "scope": "eggs-collect"
+      "access_token": "fa3b4e29d8df9900816547b8e53f87034893d84c",
+      "expires_in": 86400,
+      "token_type": "Bearer",
+      "scope": "chickens-feed"
     }
 
-Success! That access token should allow us to collect eggs on behalf of
-our user account. Use ``json_decode`` on the response body to set the ``access_token``
-to a variable::
+Let's use *this* access token instead of the one we pasted in there::
 
-    // ...
-    $response = $request->send();
-    $responseBody = $response->getBody(true);
-    $responseArr = json_decode($responseBody, true);
-    $accessToken = $responseArr['access_token'];
+    CODE-TODO: use-access-token-from-client-credentials
 
-Using the Access Token to make API Requests
--------------------------------------------
+Now, it still works *and* since we're getting a fresh token each time, we'll
+never have an expiration problem. Once Brent sets up a CRON job to run our
+script, he'll be sleeping in 'til noon!
 
-Each grant type in OAuth represents a different strategy for getting
-an access token. But no matter what grant type you use, once we have
-an access token, we're dangerous! Let's use Guzzle again to make a
-request to the ``/api/eggs-collect`` endpoint::
+Why, What and When: Client Credentials
+--------------------------------------
 
-    // ...
-    $accessToken = $responseArr['access_token'];
+Every grant type eventually uses the ``/token`` endpoint to get a token, but
+the details before that differ. Client Credentials is *a way* to get a token
+directly. One limitation is that it requires your client secret, which is
+ok now because our script is hidden away on some server.
 
-    $request = $client->post('/api/eggs-collect');
-    $response = $request->send();
-    echo $response->getBody(true);die("\n\n");
-
-When we execute the script from the command line, we get an error, which
-shouldn't be very surprising:
-
-.. code-block:: json
-
-    {
-        "error": "access_denied",
-        "error_description": "an access token is required"
-    }
-
-We have the ``access_token``, but we're not sending it with this new request.
-Remember, the API expects us to add an ``Authorization: Bearer`` header::
-
-    $request = $client->post('/api/eggs-collect');
-    $request->addHeader('Authorization', 'Bearer '.$accessToken);
-    $response = $request->send();
-    echo $response->getBody(true);die("\n\n");
-
-And just like that, it works:
-
-.. code-block:: json
-
-    {
-        "action": "eggs-collect",
-        "success": true,
-        "message": "Hey look at that, 2 eggs have been collected!"
-    }
-
-If we try it again immediately, it still works:
-
-.. code-block:: json
-
-    {
-        "action": "eggs-collect",
-        "success": true,
-        "message": "Hey, give the ladies a break. Makin' eggs ain't easy!"
-    }
-
-... but the hens are a little tired.
-
-That's it! Brent can now set this to run with a CRON job then get some well-deserved
-rest and relaxation!
-
-The Client Credentials grant type is a way for us to use the Client ID and
-Client Secret from our application to get an access token that can only
-access the account that created the application. This is way better than
-putting your username and password in the code in part because the access
-token is scoped to *only* allow us to collect eggs. And if you ever need
-to, you can always revoke access to the CRON job by deleting the application.
-
-Ultimately, Client Credentials is *a way* to get a token that gives your
-application access on behalf of a COOP user. Let's move on now to the grant
-type that you're probably more familiar with: Authorization Code.
+But on the web, we won't be able to expose the client secret. And that's
+where the next two grant types become important.
 
 .. _`http://coop.apps.knpuniversity.com`: http://coop.apps.knpuniversity.com
+.. _`Download Composer`: http://getcomposer.org/download/
+.. _`The Wonderful World of Composer`: http://knpuniversity.com/screencast/composer

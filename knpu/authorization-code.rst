@@ -22,3 +22,4 @@ allows it to count the user's eggs on the user's behalf?
 - download the starting app
 - register, login,
 - take (or fail to take) some sort of action on behalf of the user?
+- add a note about how less scopes in your app is better
