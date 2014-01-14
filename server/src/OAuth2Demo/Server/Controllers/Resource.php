@@ -41,7 +41,7 @@ class Resource
         $scope = $action;
 
         // test all the OAuth stuffs!
-        $response = $this->verifyResourceRequest($app, $scope);
+        $response = $this->verifyResourceRequest($app, $scope, $id);
         if ($response) {
             return $response;
         }
@@ -178,7 +178,7 @@ class Resource
      * @param  null        $scope
      * @return Response
      */
-    private function verifyResourceRequest(Application $app, $scope = null)
+    private function verifyResourceRequest(Application $app, $scope = null, $id = null)
     {
         // get the oauth server (configured in src/OAuth2Demo/Server/Server.php)
         /** @var \OAuth2\Server $server */
@@ -196,6 +196,17 @@ class Resource
             }
 
             return $response;
+        }
+
+        $token = $server->getResourceController()->getToken();
+        if (!empty($id)) {
+            $username = $app['storage']->findUsernameById($id);
+            if (!$username || $token['user_id'] != $username) {
+                return new Response(json_encode(array(
+                    'error' => 'access_denied',
+                    'error_description' => 'this token is not valid for the requested user')
+                ));
+            }
         }
 
         return false;
