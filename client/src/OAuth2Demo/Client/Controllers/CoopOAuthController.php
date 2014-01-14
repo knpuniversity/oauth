@@ -23,7 +23,7 @@ class CoopOAuthController extends BaseController
      */
     public function redirectToAuthorization(Request $request)
     {
-        die('todo');
+        die('Implement this in CoopOAuthController::redirectToAuthorization');
     }
 
     /**
@@ -40,6 +40,6 @@ class CoopOAuthController extends BaseController
     {
         $code = $request->get('code');
 
-        die('todo');
+        die('Implement this in CoopOAuthController::receiveAuthorizationCode');
     }
 }
