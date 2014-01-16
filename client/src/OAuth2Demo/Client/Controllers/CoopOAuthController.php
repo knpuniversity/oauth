@@ -23,10 +23,12 @@ class CoopOAuthController extends BaseController
      */
     public function redirectToAuthorization(Request $request)
     {
+        $redirectUrl = $this->generateUrl('coop_authorize_redirect', array(), true);
+
         $url = 'http://coop.apps.knpuniversity.com/authorize?'.http_build_query(array(
             'response_type' => 'code',
-            'client_id' => '?',
-            'redirect_uri' => '?',
+            'client_id' => '2e2dfd645da38940b1ff694733cc6be6',
+            'redirect_uri' => $redirectUrl,
             'scope' => 'eggs-count profile'
         ));
 
