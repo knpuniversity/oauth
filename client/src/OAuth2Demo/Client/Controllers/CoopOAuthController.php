@@ -41,10 +41,6 @@ class CoopOAuthController extends BaseController
         // equivalent to $_GET['code']
         $code = $request->get('code');
 
-        /** @var \Guzzle\Http\Client $http */
-        // the Guzzle client object, already prepared for us!
-        $http = $app['http_client'];
-
         die('Implement this in CoopOAuthController::receiveAuthorizationCode');
     }
 }
