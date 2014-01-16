@@ -38,6 +38,7 @@ class CoopOAuthController extends BaseController
      */
     public function receiveAuthorizationCode(Application $app, Request $request)
     {
+        // equivalent to $_GET['code']
         $code = $request->get('code');
 
         /** @var \Guzzle\Http\Client $http */
