@@ -5,6 +5,7 @@ namespace OAuth2Demo\Client\Controllers;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Guzzle\Http\Client;
 
 class CoopOAuthController extends BaseController
 {
