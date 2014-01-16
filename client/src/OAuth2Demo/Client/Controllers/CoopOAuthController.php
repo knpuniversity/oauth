@@ -5,6 +5,7 @@ namespace OAuth2Demo\Client\Controllers;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Guzzle\Http\Client;
 
 class CoopOAuthController extends BaseController
 {
@@ -52,7 +53,11 @@ class CoopOAuthController extends BaseController
 
         /** @var \Guzzle\Http\Client $http */
         // the Guzzle client object, already prepared for us!
-        $http = $app['http_client'];
+        $http = new Client('http://coop.apps.knpuniversity.com', array(
+            'request.options' => array(
+                'exceptions' => false,
+            )
+        ));
 
         $request = $http->post('/token', null, array(
             'client_id'     => 'TopCluck',
