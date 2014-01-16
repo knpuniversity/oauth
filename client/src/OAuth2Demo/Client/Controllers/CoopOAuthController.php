@@ -32,7 +32,7 @@ class CoopOAuthController extends BaseController
             'scope' => 'eggs-count profile'
         ));
 
-        var_dump($url);die;
+        return new RedirectResponse($url);
     }
 
     /**
