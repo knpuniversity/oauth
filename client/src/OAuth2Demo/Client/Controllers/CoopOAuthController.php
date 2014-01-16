@@ -27,7 +27,7 @@ class CoopOAuthController extends BaseController
 
         $url = 'http://coop.apps.knpuniversity.com/authorize?'.http_build_query(array(
             'response_type' => 'code',
-            'client_id' => '2e2dfd645da38940b1ff694733cc6be6',
+            'client_id' => 'TopCluck',
             'redirect_uri' => $redirectUrl,
             'scope' => 'eggs-count profile'
         ));
