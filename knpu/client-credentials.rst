@@ -198,8 +198,8 @@ docs, we can see the URL and the POST parameters it needs:
         client_secret
         grant_type
 
-Let's update our script to first make *this* API request. Fill in the client_id,
-client_secret and grant type POST parameters::
+Let's update our script to first make *this* API request. Fill in the ``client_id``,
+``client_secret`` and ``grant_type`` POST parameters::
 
     CODE-TODO: initial-client-credentials-token-request
 
