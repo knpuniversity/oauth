@@ -2,6 +2,8 @@
 
 namespace OAuth2Demo\Client\Controllers;
 
+use Guzzle\Http\Client;
+
 class CountEggs extends BaseController
 {
     public static function addRoutes($routing)
