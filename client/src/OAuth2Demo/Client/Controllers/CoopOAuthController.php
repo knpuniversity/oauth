@@ -100,6 +100,6 @@ class CoopOAuthController extends BaseController
         $user->coopAccessExpiresAt = $expiresAt;
         $this->saveUser($user);
 
-        die('Implement this in CoopOAuthController::receiveAuthorizationCode');
+        return $this->redirect($this->generateUrl('home'));
     }
 }
