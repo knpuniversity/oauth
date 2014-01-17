@@ -19,7 +19,7 @@ class CountEggs extends BaseController
      */
     public function countEggs()
     {
-        die('todo');
+        die('Implement this in CountEggs::countEggs');
 
         return $this->redirect($this->generateUrl('home'));
     }
