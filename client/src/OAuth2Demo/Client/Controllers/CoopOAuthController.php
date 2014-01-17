@@ -5,6 +5,7 @@ namespace OAuth2Demo\Client\Controllers;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Guzzle\Http\Client;
 
 class CoopOAuthController extends BaseController
 {
@@ -23,7 +24,7 @@ class CoopOAuthController extends BaseController
      */
     public function redirectToAuthorization(Request $request)
     {
-        die('todo');
+        die('Implement this in CoopOAuthController::redirectToAuthorization');
     }
 
     /**
@@ -38,8 +39,9 @@ class CoopOAuthController extends BaseController
      */
     public function receiveAuthorizationCode(Application $app, Request $request)
     {
+        // equivalent to $_GET['code']
         $code = $request->get('code');
 
-        die('todo');
+        die('Implement this in CoopOAuthController::receiveAuthorizationCode');
     }
 }
