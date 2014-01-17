@@ -77,6 +77,14 @@ class CoopOAuthController extends BaseController
         $response = $request->send();
         $responseBody = $response->getBody(true);
         $responseArr = json_decode($responseBody, true);
+
+        // if there is no access_token, we have a problem!!!
+        if (!isset($responseArr['access_token'])) {
+            return $this->render('failed_token_request.twig', array(
+                'response' => $responseArr ? $responseArr : $response
+            ));
+        }
+
         $accessToken = $responseArr['access_token'];
         $expiresIn = $responseArr['expires_in'];
         $expiresAt = new \DateTime('+'.$expiresIn.' seconds');
