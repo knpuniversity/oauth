@@ -19,6 +19,19 @@ class CountEggs extends BaseController
      */
     public function countEggs()
     {
+        /** @var \Guzzle\Http\Client $http */
+        // the Guzzle client object, already prepared for us!
+        $http = new Client('http://coop.apps.knpuniversity.com', array(
+            'request.options' => array(
+                'exceptions' => false,
+            )
+        ));
+
+        $request = $http->get('/api/me');
+        $request->addHeader('Authorization', 'Bearer '.$accessToken);
+        $response = $request->send();
+        $meData = json_decode($response->getBody(), true);
+
         die('Implement this in CountEggs::countEggs');
 
         return $this->redirect($this->generateUrl('home'));
