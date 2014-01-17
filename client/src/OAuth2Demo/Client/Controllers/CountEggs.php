@@ -23,6 +23,10 @@ class CountEggs extends BaseController
     {
         $user = $this->getLoggedInUser();
 
+        if (!$user->coopAccessToken || !$user->coopUserId) {
+            throw new \Exception('Somehow you got here, but without a valid COOP access token! Re-authorize!');
+        }
+
         /** @var \Guzzle\Http\Client $http */
         // the Guzzle client object, already prepared for us!
         $http = new Client('http://coop.apps.knpuniversity.com', array(
