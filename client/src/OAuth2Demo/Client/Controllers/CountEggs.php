@@ -21,6 +21,8 @@ class CountEggs extends BaseController
      */
     public function countEggs()
     {
+        $user = $this->getLoggedInUser();
+
         /** @var \Guzzle\Http\Client $http */
         // the Guzzle client object, already prepared for us!
         $http = new Client('http://coop.apps.knpuniversity.com', array(
@@ -29,8 +31,8 @@ class CountEggs extends BaseController
             )
         ));
 
-        $request = $http->get('/api/me');
-        $request->addHeader('Authorization', 'Bearer '.$accessToken);
+        $request = $http->get('/api/'.$user->coopUserId.'/eggs-count');
+        $request->addHeader('Authorization', 'Bearer '.$user->coopAccessToken);
         $response = $request->send();
         $meData = json_decode($response->getBody(), true);
 
