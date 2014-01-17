@@ -72,6 +72,7 @@ class CoopOAuthController extends BaseController
         $responseBody = $response->getBody(true);
         $responseArr = json_decode($responseBody, true);
         $accessToken = $responseArr['access_token'];
+        $expiresIn = $responseArr['expires_in'];
 
         $request = $http->get('/api/me');
         $request->addHeader('Authorization', 'Bearer '.$accessToken);
