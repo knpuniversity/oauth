@@ -51,6 +51,10 @@ class CoopOAuthController extends BaseController
         // equivalent to $_GET['code']
         $code = $request->get('code');
 
+        if (!$code) {
+            return $this->render('failed_authorization.twig', array('response' => $request->query->all()));
+        }
+
         /** @var \Guzzle\Http\Client $http */
         // the Guzzle client object, already prepared for us!
         $http = new Client('http://coop.apps.knpuniversity.com', array(
