@@ -51,4 +51,19 @@ class User implements UserInterface
     {
         return null;
     }
+
+    /**
+     * Has the COOP access token expired?
+     *
+     * @return bool
+     */
+    public function hasCoopAccessTokenExpired()
+    {
+        if (!$this->coopAccessExpiresAt) {
+            return true;
+        }
+
+        $now = new \DateTime('now');
+        return ($now > $this->coopAccessExpiresAt);
+    }
 }
