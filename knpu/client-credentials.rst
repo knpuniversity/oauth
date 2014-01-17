@@ -29,8 +29,8 @@ and start controlling your virtual farm. It's the future!
 Starting our Command-line Script
 --------------------------------
 
-COOP's API is simple, with just a few POST endpoints, include the one we
-want for our little command-line script: feeding the chickens.
+COOP's API is simple, with just a few endpoints, including the one we
+want for our little command-line script: eggs-collect.
 
 I've already made a ``cron/`` directory with a script called ``collect_eggs.php``
 that'll get us started::
@@ -39,8 +39,8 @@ that'll get us started::
 
 .. tip::
 
-    Code along with us! Click the Download link on this page to get the starting
-    point of the project.
+    Code along with us! Click the Download button on this page to get the starting
+    point of the project, and follow the readme to get things setup.
 
 It doesn't do anything except create a ``Client`` object that's pointing
 at the COOP website. Since we'll need to make HTTP requests to the COOP API,
