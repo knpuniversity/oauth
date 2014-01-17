@@ -1,7 +1,7 @@
 Serious OAuth in 8 Steps
 ========================
 
-Hey guys! In this tutorial, we're going to get serious with OAuth by building
+Hey guys and gals! In this tutorial, we're going to get serious with OAuth by building
 an app with some complex and real-life features, like Facebook authentication,
 dealing with refresh tokens and more. We'll need about 8 steps to turn
 a barebones starting app into a complex, OAuth machine:
@@ -21,7 +21,7 @@ Tiny Crash Course in OAuth
 --------------------------
 
 For now, you just need to understand that OAuth is an Authorization Framework.
-In human-speak, it means is that it defines the different ways two parties,
+In human-speak, it means that it defines the different ways two parties,
 like your cool web site and a *user* on your website, can exchange tokens
 securely. Each of these ways is known as a grant type and though they look
 different, each grant type will always deliver an access token. 
@@ -60,7 +60,7 @@ exchange tokens. If I create a website where I want to access my users' Facebook
 friends, exactly how does a user *give* me an access token?
 
 Let's answer that question, along with the thrilling topic of token expiration,
-the hopeful story of refresh tokens, the inspirational tale of single-sign
+the hopeful story of refresh tokens, the inspirational tale of single-sign on
 and all kinds of other things.
 
 Let's go!
