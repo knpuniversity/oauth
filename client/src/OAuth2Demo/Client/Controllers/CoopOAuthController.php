@@ -33,7 +33,7 @@ class CoopOAuthController extends BaseController
             'scope' => 'eggs-count profile'
         ));
 
-        var_dump($url);die;
+        return new RedirectResponse($url);
     }
 
     /**
@@ -50,6 +50,29 @@ class CoopOAuthController extends BaseController
     {
         // equivalent to $_GET['code']
         $code = $request->get('code');
+
+        /** @var \Guzzle\Http\Client $http */
+        // the Guzzle client object, already prepared for us!
+        $http = new Client('http://coop.apps.knpuniversity.com', array(
+            'request.options' => array(
+                'exceptions' => false,
+            )
+        ));
+
+        $request = $http->post('/token', null, array(
+            'client_id'     => 'TopCluck',
+            'client_secret' => '2e2dfd645da38940b1ff694733cc6be6',
+            'grant_type'    => 'authorization_code',
+            'code'          => $code,
+            'redirect_uri'  => $this->generateUrl('coop_authorize_redirect', array(), true),
+        ));
+
+        // make a request to the token url
+        $response = $request->send();
+        $responseBody = $response->getBody(true);
+        var_dump($responseBody);die;
+        $responseArr = json_decode($responseBody, true);
+        $accessToken = $responseArr['access_token'];
 
         die('Implement this in CoopOAuthController::receiveAuthorizationCode');
     }
