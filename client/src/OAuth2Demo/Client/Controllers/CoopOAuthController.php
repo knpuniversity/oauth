@@ -51,6 +51,27 @@ class CoopOAuthController extends BaseController
         // equivalent to $_GET['code']
         $code = $request->get('code');
 
+        /** @var \Guzzle\Http\Client $http */
+        // the Guzzle client object, already prepared for us!
+        $http = new Client('http://coop.apps.knpuniversity.com', array(
+            'request.options' => array(
+                'exceptions' => false,
+            )
+        ));
+
+        $request = $http->post('/token', null, array(
+            'client_id'     => 'TopCluck',
+            'client_secret' => '2e2dfd645da38940b1ff694733cc6be6',
+            'grant_type'    => 'authorization_code',
+        ));
+
+        // make a request to the token url
+        $response = $request->send();
+        $responseBody = $response->getBody(true);
+        var_dump($responseBody);die;
+        $responseArr = json_decode($responseBody, true);
+        $accessToken = $responseArr['access_token'];
+
         die('Implement this in CoopOAuthController::receiveAuthorizationCode');
     }
 }
