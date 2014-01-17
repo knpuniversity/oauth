@@ -55,10 +55,9 @@ Tokens can have a limited scope, which is *huge*. Unlike a password which
 gives you access to do *anything* on my account, I can give you a token that
 lets you view my Facebook friends, but not post to my wall.
 
-So OAuth is really just a big set of rules that describe different rules
-for how two parties can exchange tokens. If I create a website where I want
-to access my users' Facebook friends, exactly how does a user *give* me a
-an access token?
+So OAuth is really just a big set of rules that describe how two parties can 
+exchange tokens. If I create a website where I want to access my users' Facebook 
+friends, exactly how does a user *give* me an access token?
 
 Let's answer that question, along with the thrilling topic of token expiration,
 the hopeful story of refresh tokens, the inspirational tale of single-sign
