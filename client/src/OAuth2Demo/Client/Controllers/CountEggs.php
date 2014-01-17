@@ -34,8 +34,10 @@ class CountEggs extends BaseController
         $request = $http->post('/api/'.$user->coopUserId.'/eggs-count');
         $request->addHeader('Authorization', 'Bearer '.$user->coopAccessToken);
         $response = $request->send();
-        echo ($response->getBody(true));die;
         $countEggsData = json_decode($response->getBody(), true);
+
+        $eggCount = $countEggsData['data'];
+        $this->setTodaysEggCountForUser($this->getLoggedInUser(), $eggCount);
 
         die('Implement this in CountEggs::countEggs');
 
