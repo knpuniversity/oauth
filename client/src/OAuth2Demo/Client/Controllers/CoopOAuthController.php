@@ -73,6 +73,7 @@ class CoopOAuthController extends BaseController
         var_dump($responseBody);die;
         $responseArr = json_decode($responseBody, true);
         $accessToken = $responseArr['access_token'];
+        $expiresIn = $responseArr['expires_in'];
 
         die('Implement this in CoopOAuthController::receiveAuthorizationCode');
     }
