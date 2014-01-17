@@ -39,8 +39,6 @@ class CountEggs extends BaseController
         $eggCount = $countEggsData['data'];
         $this->setTodaysEggCountForUser($this->getLoggedInUser(), $eggCount);
 
-        die('Implement this in CountEggs::countEggs');
-
         return $this->redirect($this->generateUrl('home'));
     }
 }
