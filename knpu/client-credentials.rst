@@ -173,10 +173,10 @@ If you try it, it fails!
 Technically, with a token from client credentials, we're making API requests
 not on behalf of a user, but on behalf of an application. This makes client
 credentials perfect for making API calls that edit or get information about
-the application itself, like a count of how many uses it has.
+the application itself, like a count of how many users it has.
 
 We decided to build COOP so that the application *also* has access to modify
-the user that created it. That's why we *are* able to collect our user's
+the user that created the application. That's why we *are* able to collect our user's
 eggs, but not our neighbor's.
 
 Getting the Token via Client Credentials
@@ -187,7 +187,7 @@ last forever. COOP tokens last for 24 hours, which means that tomorrow, our
 script will break.
 
 Letting the website do the client-credentials work for us was nice for testing,
-but we need do it ourselves inside the script. Every OAuth server has an
+but we need to do it ourselves inside the script. Every OAuth server has an
 API endpoint used to request access tokens. If we look at the COOP API Authentication
 docs, we can see the URL and the POST parameters it needs:
 
@@ -198,7 +198,8 @@ docs, we can see the URL and the POST parameters it needs:
         client_secret
         grant_type
 
-Let's update our script to first make *this* API request::
+Let's update our script to first make *this* API request. Fill in the client_id,
+client_secret and grant type POST parameters::
 
     CODE-TODO: initial-client-credentials-token-request
 
