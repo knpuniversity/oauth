@@ -15,7 +15,7 @@ just by clicking a button.
 
   *show Brent on a computer, and some big robot collecting chicken eggs*
 
-Noticing that COOP has an API, he wonders if he could write a little script
+Noticing that COOP has an API, Brent wonders if he could write a little script
 that would collect his eggs automatically. Yea, if he had a script that made
 an API request on his behalf, he could run it on a CRON job daily and sleep
 in!
