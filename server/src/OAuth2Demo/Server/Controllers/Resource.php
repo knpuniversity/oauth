@@ -48,6 +48,11 @@ class Resource
 
         // get the username from the id in the URL
         $username = $app['storage']->findUsernameById($id);
+
+        if ($response = $this->enforceSecurity($username, $app)) {
+            return $response;
+        }
+
         list($message, $data) = $this->doAction($app, $username, $action);
 
         // return a generic API response - not that exciting
@@ -201,4 +206,39 @@ class Resource
         return false;
     }
 
+    /**
+     * Prevents you from making API requests to a user other than the user
+     * represented by the token.
+     *
+     * @param $requestingUserId
+     * @param Application $app
+     * @return bool|JsonResponse
+     * @throws \Exception
+     */
+    private function enforceSecurity($requestingUserId, Application $app)
+    {
+        /** @var \OAuth2\Server $server */
+        $server = $app['oauth_server'];
+
+        // get the oauth response (configured in src/OAuth2Demo/Server/Server.php)
+        $response = $app['oauth_response'];
+
+        $token = $server->getResourceController()->getAccessTokenData(
+            $app['request'],
+            $response
+        );
+
+        if (!$token) {
+            throw new \Exception('You should verify the access token before checking security!');
+        }
+
+        if ($token['user_id'] != $requestingUserId) {
+            return new JsonResponse(array(
+                'error' => 'access_denied',
+                'error_message' => 'You do not have access to take this action on behalf of this user'
+            ), 401);
+        }
+
+        return false;
+    }
 }
