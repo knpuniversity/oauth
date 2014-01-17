@@ -29,7 +29,7 @@ class CountEggs extends BaseController
             )
         ));
 
-        $request = $http->get('/api/me');
+        $request = $http->post('/api/me');
         $request->addHeader('Authorization', 'Bearer '.$accessToken);
         $response = $request->send();
         $meData = json_decode($response->getBody(), true);
