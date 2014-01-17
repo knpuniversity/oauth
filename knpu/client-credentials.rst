@@ -86,11 +86,11 @@ OAuth Applications
 But before we think about getting a token, we need to create an application
 on COOP. The application represents the external app or website that we want
 to build. In our case, it's the little command-line script. In OAuth-speak,
-it's this application that will actually ask for access to a user's account.
+it's this application that will actually ask for access to a user's COOP account.
 
 Give it a name like "Brent's Lazy CRON Job", a description, and check only
 the box for "Collect Eggs from Your Chickens". These are "scopes", or basically
-the permissions that tokens granted to the application will have.
+the permissions that your app will have if a token is granted from COOP.
 
 When we finish, we now have a Client ID and an auto-generated "Client Secret".
 These are a sort of username and password for the application. One tricky
@@ -110,11 +110,11 @@ For us, this is our command-line script and the COOP API.
 
 Using this grant type, there is no "user", and the access token we get will
 only let us access resources under the control of the application. When we
-make API using this access token, it's almost like we're logging in as the
-*application* itself, not any individual user. I'll explain more in a second.
+make API requests using this access token, it's almost like we're logging in 
+as the *application* itself, not any individual user. I'll explain more in a second.
 
 If you visit the application you created earlier, you'll see a nice
-"Get an Access Token" link that will fetch an access token. Behind the scenes,
+"Generate a Token" link that when clicked will fetch one. Behind the scenes,
 this uses client credentials, which we'll see more closely in a second.
 
     http://coop.apps.knpuniversity.com/token
@@ -128,9 +128,8 @@ on behalf of the application!
 Access Tokens in the API
 ------------------------
 
-Now that we have an access token, let's send it with our API request! Exactly
-how to do this depends on the API you're making requests to. One common method,
-and the one COOP users, is to send it via an Authorization Bearer header.
+Exactly how to do this depends on the API you're making requests to. One common method,
+and the one COOP uses, is to send it via an Authorization Bearer header.
 
 .. code-block:: text
 
@@ -143,6 +142,7 @@ Update the script to send this header::
     CODE-TODO
 
 When we run the script again, start celebrating, because it works!
+And now we have enough eggs to make an omlette :)
 
 .. code-block:: json
 
