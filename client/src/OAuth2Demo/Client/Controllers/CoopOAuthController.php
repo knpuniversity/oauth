@@ -63,8 +63,6 @@ class CoopOAuthController extends BaseController
             'client_id'     => 'TopCluck',
             'client_secret' => '2e2dfd645da38940b1ff694733cc6be6',
             'grant_type'    => 'authorization_code',
-            'code'          => $code,
-            'redirect_uri'  => $this->generateUrl('coop_authorize_redirect', array(), true),
         ));
 
         // make a request to the token url
