@@ -45,9 +45,9 @@ install to download some outside libraries the project uses.
     If this doesn't work and PHP simply shows you its command-line options,
     check your PHP version. The built-in web server requires PHP 5.4 or higher.
 
-Copy the URL into your browser and load it up. Welcome to Top Cluck! We already
-have a leaderboard and a basic registration. Go ahead and create an account,
-which automatically logs us on.
+Put the URL to the site into your browser and load it up. Welcome to Top Cluck!
+We already have a leaderboard and a basic registration. Go ahead and create an
+account, which automatically logs us on.
 
 The site is fully-functional, with database tables ready to keep track of
 how many eggs each farmer has collected. The only missing pieces is OAuth:
