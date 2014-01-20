@@ -114,7 +114,7 @@ authorize URL to COOP, let's redirect the user to it::
 
     TODO: Code: Auth Code: Redirecting the user
 
-That ``redirect`` function is special to my app, so your code my differ. As
+That ``redirect`` function is special to my app, so your code may differ. As
 long as you somehow redirect the user, you're good.
 
 .. tip::
@@ -132,31 +132,28 @@ scopes that we included in the URL are clearly communicated. Let's authorize
 the app. Later, we'll see what happens if you don't.
 
 When we click the authorization button, we're sent back to the ``redirect_uri``
-on TopCluck! Nothing has really happened yet. TopCluck didn't set a cookie
-we're supposed to read or anything else. But the URL *does* include a ``code``
-query parameter.
+on TopCluck! Nothing has really happened yet. TopCluck didn't set any cookies
+or anything else. But the URL *does* include a ``code`` query parameter.
 
 Exchanging the Authorization Code for an Access Token
 -----------------------------------------------------
 
-The ``code`` query parameter is called the authorization code, and it's unique
+This query parameter is called the authorization code, and it's unique
 to this grant type. It's not an access token, which is really want we want,
 but it's the key to getting that. The authorization code is our temporary
-proof that the user said that our application can have an access token that
-allows us to make API requests on their behalf.
+proof that the user said that our application can have an access token.
 
-Let's start by copying the code from the ``collect_eggs.php`` script that
-made the request to ``/token`` and pasting it here. Go ahead and change the
-``client_id`` and ``client_secret`` to be from the new client or application
-we created for TopCluck::
+Let's start by copying the code from the ``collect_eggs.php`` script and 
+pasting it here. Go ahead and change the ``client_id`` and ``client_secret`` 
+to be from the new client or application we created for TopCluck::
 
     TODO: Code: Auth Code: Starting Token API request
 
 If we look back at the COOP API Authentication docs, we'll see that ``/token``
 has 2 other parameters that are used with the authorization grant type: ``code``
-and ``redirect_uri``. I already have some code that gets the ``code`` query
-parameter, so let's fill these in. Make sure to also change the ``grant_type``
-to ``authorization_code`` like it describes in the docs. Finally, dump the
+and ``redirect_uri``. I'm already retrieving the ``code`` query parameter, so 
+let's fill these in. Make sure to also change the ``grant_type`` to 
+``authorization_code`` like it describes in the docs. Finally, dump the
 ``$responseBody`` to see if this request works::
 
     TODO: Code: Auth Code: Adding code and redirect_uri parameters
