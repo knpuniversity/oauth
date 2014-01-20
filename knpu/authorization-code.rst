@@ -11,7 +11,7 @@ better egg-making hens than Scott's... but how to prove it?
 Then it hits him! The COOP API has an endpoint to see how many eggs have
 been collected from a user's farm each day. Brent decides to create a new
 website that will use this endpoint to count how many total eggs a COOP user's
-farm has collected. He'll call it: Fantasy Chicken League, or FCL for short.
+farm has collected. He'll call it: Top Cluck! Fantasy Chicken League, or FCL for short.
 To call the ``/api/eggs-count`` endpoint on behalf of each user, the site
 will use OAuth to collect an access token for every farmer that signs up.
 
