@@ -16,7 +16,7 @@ To call the ``/api/eggs-count`` endpoint on behalf of each user, the site
 will use OAuth to collect an access token for every farmer that signs up.
 
 Once again, the question is: how can each user give FCL an access token that
-allows it to count the user's eggs on the user's behalf?
+allows it to count eggs on their behalf?
 
 Starting up FCL
 ---------------
