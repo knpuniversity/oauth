@@ -1,0 +1,139 @@
+{
+    "steps": [
+        {
+            "id": "start",
+            "name": "start",
+            "description": null
+        },
+        {
+            "id": "cron-trying-a-request-without-a-token",
+            "name": "CRON: Trying a request without a token",
+            "description": null
+        },
+        {
+            "id": "using-a-temporary-token",
+            "name": "Using a temporary token",
+            "description": null
+        },
+        {
+            "id": "initial-client-credentials-token-request",
+            "name": "Initial client credentials token request",
+            "description": null
+        },
+        {
+            "id": "use-access-token-from-client-credentials",
+            "name": "Use access token from client credentials",
+            "description": null
+        },
+        {
+            "id": "auth-code-debugging-code",
+            "name": "Auth Code: Debugging code",
+            "description": null
+        },
+        {
+            "id": "auth-code-building-redirect-url",
+            "name": "Auth Code: Building redirect URL",
+            "description": null
+        },
+        {
+            "id": "auth-code-generate-the-redirect-uri-parameter",
+            "name": "Auth Code: Generate the redirect_uri parameter",
+            "description": null
+        },
+        {
+            "id": "auth-code-redirecting-the-user",
+            "name": "Auth Code: Redirecting the user",
+            "description": null
+        },
+        {
+            "id": "auth-code-starting-token-api-request",
+            "name": "Auth Code: Starting Token API request",
+            "description": null
+        },
+        {
+            "id": "auth-code-adding-code-and-redirect-uri-parameters",
+            "name": "Auth Code: Adding code and redirect_uri parameters",
+            "description": null
+        },
+        {
+            "id": "auth-code-setting-access-token-variable",
+            "name": "Auth Code: Setting Access token variable",
+            "description": null
+        },
+        {
+            "id": "auth-code-requesting-api-me",
+            "name": "Auth Code: Requesting \/api\/me",
+            "description": null
+        },
+        {
+            "id": "auth-code-saving-access-token-and-id-to-db",
+            "name": "Auth Code: Saving access token and id to db",
+            "description": null
+        },
+        {
+            "id": "auth-code-storing-expiration",
+            "name": "Auth Code: Storing expiration",
+            "description": null
+        },
+        {
+            "id": "auth-code-authorization-declined",
+            "name": "Auth Code: Authorization Declined",
+            "description": null
+        },
+        {
+            "id": "auth-code-access-token-request-fails",
+            "name": "Auth Code: Access Token Request Fails",
+            "description": null
+        },
+        {
+            "id": "auth-code-redirecting-after-success",
+            "name": "Auth Code: Redirecting after success",
+            "description": null
+        },
+        {
+            "id": "api-hiding-authorize-button",
+            "name": "API: Hiding Authorize button",
+            "description": null
+        },
+        {
+            "id": "api-adding-count-eggs-link",
+            "name": "API: Adding Count Eggs link",
+            "description": null
+        },
+        {
+            "id": "api-copy-api-me-code-for-count-eggs",
+            "name": "API: Copy \/api\/me code for count eggs",
+            "description": null
+        },
+        {
+            "id": "api-fill-in-user-id-and-access-token",
+            "name": "API: Fill in USER_ID and access_token",
+            "description": null
+        },
+        {
+            "id": "api-debug-code",
+            "name": "API: Debug code",
+            "description": null
+        },
+        {
+            "id": "api-saving-daily-egg-count",
+            "name": "API: Saving Daily Egg Count",
+            "description": null
+        },
+        {
+            "id": "api-check-for-no-access-token",
+            "name": "API: Check for no access token",
+            "description": null
+        },
+        {
+            "id": "api-check-for-token-expiration",
+            "name": "API: Check for token expiration",
+            "description": null
+        },
+        {
+            "id": "api-check-for-api-call-fail",
+            "name": "API: Check for API call fail",
+            "description": null
+        }
+    ]
+}
