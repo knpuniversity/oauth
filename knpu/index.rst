@@ -7,6 +7,7 @@ OAuth 2.0: Episode1
     intro
     client-credentials
 	authorization-code
+    authorization-code2
     logging-in
     facebook
     facebook-javascript
