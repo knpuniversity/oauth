@@ -7,5 +7,4 @@
 /server/data/*.sqlite
 /server/composer.phar
 /server/vendor
-/tuts.json
 
