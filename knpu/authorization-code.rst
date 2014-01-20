@@ -60,7 +60,7 @@ Redirecting to Authorize
 ------------------------
 
 Before TopCluck can make an API request to COOP to count my eggs, I need
-to authorize it. On the homepage, there's already and Authorize link, which
+to authorize it. On the homepage, there's already an Authorize link, which
 just prints a message right now.
 
 The code behind this URL lives in the ``src/OAuth2Demo/Client/Controllers/CoopOAuthController.php``
@@ -70,11 +70,9 @@ we do here, shows up::
     TODO-code: Auth Code: Debugging code
 
 The first step of the authorization code grant type is to redirect the user
-to a specific URL on COOP where the user will authorize our app. This endpoint
-*always* exists in a server that supports the authorization code OAuth grant
-type. And accoring to `COOP's API Authentication page`_, we need to redirect
-the user to ``/authorize`` and send ``client_id``, ``response_type`` and
-``redirect_uri`` as query parameters.
+to a specific URL on COOP. From here the user will authorize our app. 
+According to `COOP's API Authentication page`_, we need to redirect
+the user to ``/authorize`` and send several query parameters.
 
 In our code, let's start building the URL::
 
@@ -82,7 +80,7 @@ In our code, let's start building the URL::
 
 The ``response_type`` type is ``code`` because we're using the Authorization
 Code flow. The other valid value is ``token``, which is for a grant type
-called implicit flow. We'll see that in a second.
+called implicit flow. We'll see that later.
 
 For ``scopes``, we're using ``profile`` and ``eggs-count`` so that once we're
 authorized, we can get some profile data about the COOP user and, of course,
@@ -111,14 +109,18 @@ a little further down::
 Instead of hardcoding the URL, I'll use the URL generator that's part of
 Silex::
 
-However you make your URL, just make sure it's absolute. Ok, we've got our
-full URL, let's redirect the user to it::
+However you make your URL, just make sure it's absolute. Ok, we've built our
+authorize URL to COOP, let's redirect the user to it::
 
     TODO: Code: Auth Code: Redirecting the user
 
-The ``RedirectReponse`` is just the way that our app redirects users. You
-may do it differently in your app. As long as you somehow redirect the user,
-you're good.
+That ``redirect`` function is special to my app, so your code my differ. As
+long as you somehow redirect the user, you're good.
+
+.. tip::
+
+    Since we're using Silex, the ``redirect`` function is actually a shortcut
+    I created to create a new ``RedirectResponse`` object.
 
 Authorizing on COOP
 -------------------
