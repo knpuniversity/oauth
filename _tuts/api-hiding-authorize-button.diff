@@ -1,0 +1,17 @@
+diff --git a/client/views/dashboard.twig b/client/views/dashboard.twig
+index afcb46f..b55d7a9 100644
+--- a/client/views/dashboard.twig
++++ b/client/views/dashboard.twig
+@@ -13,7 +13,11 @@
+                 your eggs!
+             </div>
+ 
+-            <a class="btn btn-primary btn-lg" href="{{ path('coop_authorize_start') }}">Authorize</a>
++            {% if user.coopUserId %}
++
++            {% else %}
++                <a class="btn btn-primary btn-lg" href="{{ path('coop_authorize_start') }}">Authorize</a>
++            {% endif %}
+ 
+             {#
+             <div class="panel panel-default" style="margin-top: 10px;">

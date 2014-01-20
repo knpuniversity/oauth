@@ -1,0 +1,13 @@
+diff --git a/client/src/OAuth2Demo/Client/Controllers/CoopOAuthController.php b/client/src/OAuth2Demo/Client/Controllers/CoopOAuthController.php
+index 6fc4ab5..528aca5 100644
+--- a/client/src/OAuth2Demo/Client/Controllers/CoopOAuthController.php
++++ b/client/src/OAuth2Demo/Client/Controllers/CoopOAuthController.php
+@@ -33,7 +33,7 @@ class CoopOAuthController extends BaseController
+             'scope' => 'eggs-count profile'
+         ));
+ 
+-        var_dump($url);die;
++        return new RedirectResponse($url);
+     }
+ 
+     /**

@@ -1,0 +1,13 @@
+diff --git a/client/views/dashboard.twig b/client/views/dashboard.twig
+index b55d7a9..8bfd0ff 100644
+--- a/client/views/dashboard.twig
++++ b/client/views/dashboard.twig
+@@ -14,7 +14,7 @@
+             </div>
+ 
+             {% if user.coopUserId %}
+-
++                <a class="btn btn-primary btn-lg" href="{{ path('count_eggs') }}">Count Eggs</a>
+             {% else %}
+                 <a class="btn btn-primary btn-lg" href="{{ path('coop_authorize_start') }}">Authorize</a>
+             {% endif %}

@@ -1,0 +1,13 @@
+diff --git a/client/src/OAuth2Demo/Client/Controllers/CoopOAuthController.php b/client/src/OAuth2Demo/Client/Controllers/CoopOAuthController.php
+index e930814..a672ec5 100644
+--- a/client/src/OAuth2Demo/Client/Controllers/CoopOAuthController.php
++++ b/client/src/OAuth2Demo/Client/Controllers/CoopOAuthController.php
+@@ -63,6 +63,8 @@ class CoopOAuthController extends BaseController
+             'client_id'     => 'TopCluck',
+             'client_secret' => '2e2dfd645da38940b1ff694733cc6be6',
+             'grant_type'    => 'authorization_code',
++            'code'          => $code,
++            'redirect_uri'  => $this->generateUrl('coop_authorize_redirect', array(), true),
+         ));
+ 
+         // make a request to the token url

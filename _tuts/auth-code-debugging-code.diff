@@ -1,0 +1,13 @@
+diff --git a/client/src/OAuth2Demo/Client/Controllers/CoopOAuthController.php b/client/src/OAuth2Demo/Client/Controllers/CoopOAuthController.php
+index 12e8361..64b5e2f 100644
+--- a/client/src/OAuth2Demo/Client/Controllers/CoopOAuthController.php
++++ b/client/src/OAuth2Demo/Client/Controllers/CoopOAuthController.php
+@@ -24,7 +24,7 @@ class CoopOAuthController extends BaseController
+      */
+     public function redirectToAuthorization(Request $request)
+     {
+-        die('Implement this in CoopOAuthController::redirectToAuthorization');
++        die('Hallo world!');
+     }
+ 
+     /**

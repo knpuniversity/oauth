@@ -1,0 +1,15 @@
+diff --git a/cron/collect_eggs.php b/cron/collect_eggs.php
+index d53a567..0d3b983 100644
+--- a/cron/collect_eggs.php
++++ b/cron/collect_eggs.php
+@@ -10,7 +10,10 @@ $http = new Client('http://coop.apps.knpuniversity.com', array(
+     )
+ ));
+ 
++$accessToken = 'GET THIS FROM YOUR APPLICATION FOR NOW';
++
+ $request = $http->post('/api/2/eggs-collect');
++$request->addHeader('Authorization', 'Bearer '.$accessToken);
+ $response = $request->send();
+ echo $response->getBody();
+ 

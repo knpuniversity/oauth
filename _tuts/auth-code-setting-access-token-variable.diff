@@ -1,0 +1,12 @@
+diff --git a/client/src/OAuth2Demo/Client/Controllers/CoopOAuthController.php b/client/src/OAuth2Demo/Client/Controllers/CoopOAuthController.php
+index a672ec5..2e916f9 100644
+--- a/client/src/OAuth2Demo/Client/Controllers/CoopOAuthController.php
++++ b/client/src/OAuth2Demo/Client/Controllers/CoopOAuthController.php
+@@ -73,6 +73,7 @@ class CoopOAuthController extends BaseController
+         var_dump($responseBody);die;
+         $responseArr = json_decode($responseBody, true);
+         $accessToken = $responseArr['access_token'];
++        $expiresIn = $responseArr['expires_in'];
+ 
+         die('Implement this in CoopOAuthController::receiveAuthorizationCode');
+     }

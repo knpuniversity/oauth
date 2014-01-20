@@ -1,0 +1,15 @@
+diff --git a/client/src/OAuth2Demo/Client/Controllers/CountEggs.php b/client/src/OAuth2Demo/Client/Controllers/CountEggs.php
+index d48ac21..22677a7 100644
+--- a/client/src/OAuth2Demo/Client/Controllers/CountEggs.php
++++ b/client/src/OAuth2Demo/Client/Controllers/CountEggs.php
+@@ -23,6 +23,10 @@ class CountEggs extends BaseController
+     {
+         $user = $this->getLoggedInUser();
+ 
++        if (!$user->coopAccessToken || !$user->coopUserId) {
++            throw new \Exception('Somehow you got here, but without a valid COOP access token! Re-authorize!');
++        }
++
+         /** @var \Guzzle\Http\Client $http */
+         // the Guzzle client object, already prepared for us!
+         $http = new Client('http://coop.apps.knpuniversity.com', array(

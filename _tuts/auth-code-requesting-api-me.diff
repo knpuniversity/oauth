@@ -1,0 +1,21 @@
+diff --git a/client/src/OAuth2Demo/Client/Controllers/CoopOAuthController.php b/client/src/OAuth2Demo/Client/Controllers/CoopOAuthController.php
+index 2e916f9..c3ed850 100644
+--- a/client/src/OAuth2Demo/Client/Controllers/CoopOAuthController.php
++++ b/client/src/OAuth2Demo/Client/Controllers/CoopOAuthController.php
+@@ -70,11 +70,15 @@ class CoopOAuthController extends BaseController
+         // make a request to the token url
+         $response = $request->send();
+         $responseBody = $response->getBody(true);
+-        var_dump($responseBody);die;
+         $responseArr = json_decode($responseBody, true);
+         $accessToken = $responseArr['access_token'];
+         $expiresIn = $responseArr['expires_in'];
+ 
++        $request = $http->get('/api/me');
++        $request->addHeader('Authorization', 'Bearer '.$accessToken);
++        $response = $request->send();
++        echo ($response->getBody(true));die;
++
+         die('Implement this in CoopOAuthController::receiveAuthorizationCode');
+     }
+ }
