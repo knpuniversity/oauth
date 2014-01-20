@@ -1,0 +1,12 @@
+{% extends "base.twig" %}
+
+{% block header %}
+    <h1>Authorization Failed!</h1>
+{% endblock %}
+
+{% block content %}
+    <h4>Error Retrieving Access Token:</h4>
+    {% include '_error.twig' %}
+
+    <a href="{{ path('home') }}">back</a>
+{% endblock %}

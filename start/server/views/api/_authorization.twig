@@ -1,0 +1,9 @@
+<h3>Authorizing your API Requests</h3>
+
+<p>
+    Once you have an access token, send it via the <code>Authorization</code> header:
+</p>
+
+<pre>POST /collect-eggs HTTP/1.1
+Host: {{ app.request.host }}
+Authorization: Bearer ACCESSTOKENHERE</pre>

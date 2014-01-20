@@ -1,0 +1,50 @@
+{% extends "base.twig" %}
+{% import '_formMacros.twig' as forms %}
+
+{% block header %}<h1>Call "{{ action }}"</h1>{% endblock %}
+
+{% set endpointUri = path('api_call', {action: action, 'id': user.id}) %}
+
+{# block is used below via block() #}
+{% block token_help %}
+    This value is typically sent on the "Authorization" header. For example:
+<pre>POST {{ endpointUri }} HTTP/1.1
+Host: {{ app.request.host }}
+Authorization: Bearer ACCESSTOKENHERE</pre>
+{% endblock %}
+
+{% block content %}
+<div class="bs-docs-section" role="main">
+    <div class="row">
+        <h3>
+            Enter your access token below to call the "{{ action }}" API
+        </h3>
+    </div>
+    <div class="row">
+        <form class="bs-example form-horizontal" action="{{ endpointUri }}" method="post">
+            <fieldset>
+                {{ forms.row_input('url', endpointUri, {
+                        'label': 'URL',
+                        'disabled': true
+                }) }}
+                {{ forms.row_input('method', 'POST', {
+                        'label': 'Method',
+                        'disabled': true
+                }) }}
+                {{ forms.row_input('access_token', token, {
+                        'label': 'Access Token',
+                        'placeholder': 'Enter your Access Token here',
+                        'help': block('token_help')
+                }) }}
+                <div class="form-group">
+                    <div class="col-lg-10 col-lg-offset-2">
+                        <a class="btn btn-default" href="{{ path('home') }}">Back</a>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                </div>
+                <input type="hidden" name="grant_type" value="authorization_code" />
+            </fieldset>
+        </form>
+    </div>
+<div>
+{% endblock %}

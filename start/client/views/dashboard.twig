@@ -1,0 +1,37 @@
+{% extends "base.twig" %}
+
+{% block header %}{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-lg-6">
+            <h3>Your Basket of Eggs</h3>
+
+            <div class="alert alert-info">
+                To start counting your eggs, you need to authorize Top Cluck
+                to use your COOP account! Once you do that, we can count
+                your eggs!
+            </div>
+
+            <a class="btn btn-primary btn-lg" href="{{ path('coop_authorize_start') }}">Authorize</a>
+
+            {#
+            <div class="panel panel-default" style="margin-top: 10px;">
+                <div class="panel-body">
+                    todo - add Facebook share stuff!
+                </div>
+            </div>
+            #}
+
+        </div>
+        <div class="col-lg-6">
+            {{ include('_leaderboard.twig', { 'egg_counts': egg_counts }) }}
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    {# Put any JavaScript here #}
+{% endblock %}

@@ -1,0 +1,11 @@
+/client/composer.phar
+/client/vendor
+/client/data/*.sqlite
+/client/behat.yml
+/cron/composer.phar
+/cron/vendor
+/server/data/*.sqlite
+/server/composer.phar
+/server/vendor
+/tuts.json
+

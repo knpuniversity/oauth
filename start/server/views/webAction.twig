@@ -1,0 +1,14 @@
+{% extends "base.twig" %}
+
+{% block header %}<h1>{{ message }}</h1>{% endblock %}
+
+{% block content %}
+<div class="bs-docs-section" role="main">
+    <div class="row">
+        <p>
+            Now do some more stuff:
+        </p>
+        {{ include('_houseActions.twig') }}
+    </div>
+<div>
+{% endblock %}

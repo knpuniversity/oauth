@@ -1,0 +1,111 @@
+<h3>Authentication via OAuth</h3>
+
+<p>
+    COOP's API uses OAuth for authentication and supports the following
+    grant types:
+</p>
+
+<ul>
+    <li>Client Credentials</li>
+    <li>Authorization Code</li>
+</ul>
+
+<p>
+    Here are the important endpoints and their parameters
+</p>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>URL</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>POST {{ path('token_post') }}</td>
+            <th>
+                <p>
+                    The endpoint used for requesting an access token, using
+                    either the authorization_code or client_credentials grant
+                    type.
+                </p>
+
+                <code>
+                    {{ url('token_post') }}
+                </code>
+
+                <p>
+                    This accepts the following POST fields:
+                </p>
+
+                <ul>
+                    <li>
+                        <code>client_id</code>
+                    </li>
+                    <li>
+                        <code>client_secret</code>
+                    </li>
+                    <li>
+                        <code>grant_type</code> Either client_credentials or authorization_code
+                    </li>
+                    <li>
+                        <code>redirect_uri</code> (authorization_code only) Must match redirect_uri from the original /authorize call
+                    </li>
+                    <li>
+                        <code>code</code> (authorization_code only) The authorization code
+                    </li>
+                </ul>
+            </th>
+        </tr>
+        <tr>
+            <td>GET {{ path('authorize') }}</td>
+            <td>
+                <p>
+                    When using the authorization code (traditional "web") grant
+                    type, start by redirecting the user to this URL:
+                </p>
+
+                <code>
+                    {{ url('authorize') }}
+                </code>
+
+                <p>
+                    This accepts the following GET parameters
+                </p>
+
+                <ul>
+                    <li>
+                        <code>client_id</code>
+                    </li>
+                    <li>
+                        <code>response_type</code> Either code or token
+                    </li>
+                    <li>
+                        <code>redirect_uri</code> (authorization_code only)
+                        The URL that COOP will redirect the user back to after granting or denying authorization.
+                    </li>
+                    <li>
+                        <code>scope</code> The permissions the user should authorize, separated by a space (e.g. "eggs-count profile").
+                        One of:
+                        {% for action,message in app.scopes %}
+                            <br/>{{ action }}
+                        {% endfor %}
+                    </li>
+                    <li>
+                        (Optional) <code>state</code> A key that's returned on the redirect_uri
+                        that can be used as a CSRF token.
+                    </li>
+                </ul>
+
+                <p style="margin-top: 20px;">
+                    Once the user is redirected back to <code>redirect_uri</code>,
+                    you'll have a <code>code</code> query parameter. Use
+                    this with the next endpoint to exchange that code for
+                    an access token.
+                </p>
+
+            </td>
+        </tr>
+    </tbody>
+</table>

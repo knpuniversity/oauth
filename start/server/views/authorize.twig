@@ -1,0 +1,43 @@
+{% extends "base.twig" %}
+
+{% block header %}<h1>Authorize "{{client_id}}"</h1>{% endblock %}
+
+{% block content %}
+<div class="bs-docs-section" role="main">
+    {% if error %}
+        <div class="row">
+          <div class="col-lg-12">
+              <div class="alert alert-dismissable alert-danger">
+                <p>{{ error }}</p>
+                <a class="" href="{{ path('home') }}">Back</a>
+              </div>
+          </div>
+
+      </div>
+    {% else %}
+        <div class="row">
+            <h3>Welcome, chicken owner!</h3>
+
+            {% if scope %}
+              <p><strong>{{client_id}}</strong> is requesting permission to perform the following actions: </p>
+
+              <ul>
+                {% for single_scope in scope|split(' ') %}
+                  <li>{{ app.scopes[single_scope] }} ({{ single_scope }})</li>
+                {% endfor %}
+              </ul>
+            {% endif %}
+
+            <p>Click the button below to complete the authorize request and grant an <code>Authorization Code</code> to {{client_id}}.</p>
+        </div>
+        <div class="row">
+            <a href="{{ path('authorize_submit') ~ '?' ~ app.request.queryString ~ '&authorize=1'}}" type="submit" class="btn btn-default">
+                Yes, I Authorize This Request
+            </a>
+            <a href="{{ path('authorize_submit') ~ '?' ~ app.request.queryString ~ '&authorize=0'}}" class="btn btn-primary btn-sm">
+                get me out of here!
+            </a>
+        </div>
+    {% endif %}
+<div>
+{% endblock %}

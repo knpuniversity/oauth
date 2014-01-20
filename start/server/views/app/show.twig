@@ -1,0 +1,75 @@
+{% extends "base.twig" %}
+
+{% block header %}<h1>Application: {{client.client_id}}</h1>{% endblock %}
+
+{% block content %}
+
+<div class="bs-docs-section" role="main">
+    {% if message is defined %}
+        <div class="row">
+            <div class="bs-example">
+                <div class="alert alert-dismissable alert-{{level|default('success')}}"><p>{{message}}<p></div>
+            </div>
+        </div>
+    {% endif %}
+    <div class="bs-example table-responsive">
+        <h3>{{ client.client_id }}</h3>
+        <table class="table table-striped table-bordered table-hover ">
+            <tbody>
+                <tr>
+                    <td>Client ID</td>
+                    <td><strong>{{ client.client_id }}</strong></td>
+                </tr>
+                <tr>
+                    <td>Client Secret</td>
+                    <td><code>{{ client.client_secret }}</code></td>
+                </tr>
+                <tr>
+                    <td>Redirect URI</td>
+                    <td>{{ client.redirect_uri }}</td>
+                </tr>
+                <tr>
+                    <td>Scope</td>
+                    <td>
+                        {% if client.scope %}
+                            <ul>
+                                {% for scope in client.scope|split(' ') %}
+                                    <li>{{ scope }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="bs-docs-section" role="main">
+    <div class="row">
+        <h3>Create an Access Token via Client Credentials</h3>
+        <p>
+            Client credentials gives you access to act on behalf of this application
+            (not as a particular user).
+            <br/>
+            BUT, we've also built COOP so that an application has control
+            over the User account that created it. So, this access token
+            will allow you to take actions for your user account.
+            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                <strong>Your User Id: {{ app.security.token.user.id }}</strong>
+            {% endif %}
+            <br/>
+            <a target="_blank" class="btn btn-primary" href="{{ url('token_get', {client_id: client.client_id, client_secret: client.client_secret, grant_type: 'client_credentials' }) }}">
+                Generate a Token!
+            </a>
+        </p>
+    </div>
+    <div class="row">
+        <h3> Call APIs on Behalf of Another User</h3>
+        <p>
+            In order to call another user's APIs, you must first obtain their authorization bysending them to the <code>authorize</code> url below:
+        </p>
+        <pre class="alert-info"><code><a target="_blank" href="{{ url('authorize', {client_id: client.client_id, response_type: 'code'}, true) }}">{{ url('authorize', {client_id: client.client_id, response_type: 'code'}, true) }}</a></code></pre>
+    </div>
+</div>
+{% endblock %}
