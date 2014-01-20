@@ -36,7 +36,9 @@ PHP web server to run this site:
     point of the project.
 
 That command starts a built-in PHP webserver, and it'll just sit right there
-until we're ready to turn it off.
+until we're ready to turn it off. This project also uses Composer, so let's
+copy the ``composer.phar`` file we used earlier into this directory and use
+install to download some outside libraries the project uses.
 
 .. note::
 
