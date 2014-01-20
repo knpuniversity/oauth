@@ -50,11 +50,9 @@ We already have a leaderboard and basic registration. Go ahead and create an
 account, which automatically logs us in.
 
 The site is fully-functional, with database tables ready to keep track of
-how many eggs each farmer has collected. The only missing pieces is OAuth:
+how many eggs each farmer has collected. The only missing piece is OAuth:
 getting the access token for each user so that we can make an API request
 to count their eggs.
-
-Go ahead and register for an account.
 
 Redirecting to Authorize
 ------------------------
