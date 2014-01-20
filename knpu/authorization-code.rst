@@ -130,7 +130,7 @@ scopes that we included in the URL are clearly communicated. Let's authorize
 the app. Later, we'll see what happens if you don't.
 
 When we click the authorization button, we're sent back to the ``redirect_uri``
-on TopCluck! Nothing has really happened yet. TopCluck didn't set any cookies
+on TopCluck! Nothing has really happened yet. COOP didn't set any cookies
 or anything else. But the URL *does* include a ``code`` query parameter.
 
 Exchanging the Authorization Code for an Access Token
