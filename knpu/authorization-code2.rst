@@ -178,6 +178,8 @@ is possible because we stored the expiration data in the database. I've created
 an easy helper method to check for this. If this happens, let's redirect
 the user to re-authorize, just like if they had clicked the "Authorize" link::
 
+    TODO: Code
+
 Finally, what if the API request itself fails? A simple handling might look
 like this::
 
