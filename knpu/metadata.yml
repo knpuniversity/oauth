@@ -1,6 +1,6 @@
 title:  OAuth in 8 Steps
 price:  12
-length: ~
+length: 22:00
 summary: |
     OAuth: that mystical beast that you kind of understand and occasionally
     wrestle to integrate with some social media site.
@@ -34,12 +34,12 @@ chapters:
     intro:
         title:      Introduction
         is_free:    true
-        length:     0:00
+        length:     2:43
     client-credentials:
         title:      Client Credentials
-        is_free:    false
-        length:     0:00
+        is_free:    true
+        length:     8:56
     authorization-code:
         title:      Authorization Code Grant Type
         is_free:    false
-        length:     0:00
+        length:     10:21
