@@ -22,3 +22,11 @@ This process will just sit there forever. Press `ctrl+c` later when you're
 done with it. You can access the site by going to `http://localhost:8000`.
 
 3) Pop it open in your browser! `http://localhost:8000`
+
+### Requirements
+
+To get this working, you'll need to have the following non-standard PHP extensions
+installed:
+
+* php-sqlite
+
