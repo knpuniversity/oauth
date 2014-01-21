@@ -339,3 +339,4 @@ and how to use an access token in our application. But where should we store
 the token and what if the user denies our application access? We'll look
 at these next.
 
+.. _`COOP's API Authentication page`: http://coop.apps.knpuniversity.com/api#authentication

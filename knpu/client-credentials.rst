@@ -296,6 +296,9 @@ ok now because our script is hidden away on some server.
 But on the web, we won't be able to expose the client secret. And that's
 where the next two grant types become important.
 
+.. _`Guzzle`: http://guzzlephp.org/
+.. _`Composer`: http://getcomposer.org/
+.. _`Download Composer`: http://getcomposer.org/download/
 .. _`http://coop.apps.knpuniversity.com`: http://coop.apps.knpuniversity.com
 .. _`Download Composer`: http://getcomposer.org/download/
 .. _`The Wonderful World of Composer`: http://knpuniversity.com/screencast/composer
