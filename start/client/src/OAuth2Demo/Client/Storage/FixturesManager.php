@@ -32,7 +32,7 @@ class FixturesManager
         $conn->createUser($leanna, rand(), 'Leanna', 'Pelham');
         $conn->createUser($ryan, rand(), 'Ryan', 'Weaver');
         $conn->createUser($paige, rand(), 'Paige', 'Collett');
-        $conn->createUser($brent, rand(), 'Brent', 'Shaffer');
+        $conn->createUser($brent, rand(), 'Farmer', 'Scott');
 
         // create fake egg counts
         $conn->setEggCount($conn->getUser($brent), rand(1, 5), date('Y-m-d', strtotime('-10 days')));
