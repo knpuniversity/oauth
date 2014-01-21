@@ -1,12 +1,13 @@
 diff --git a/client/src/OAuth2Demo/Client/Controllers/CoopOAuthController.php b/client/src/OAuth2Demo/Client/Controllers/CoopOAuthController.php
-index 94cd6a9..e7b0468 100644
+index 94cd6a9..d31ecc9 100644
 --- a/client/src/OAuth2Demo/Client/Controllers/CoopOAuthController.php
 +++ b/client/src/OAuth2Demo/Client/Controllers/CoopOAuthController.php
-@@ -100,6 +100,6 @@ class CoopOAuthController extends BaseController
+@@ -100,6 +100,7 @@ class CoopOAuthController extends BaseController
          $user->coopAccessExpiresAt = $expiresAt;
          $this->saveUser($user);
  
 -        die('Implement this in CoopOAuthController::receiveAuthorizationCode');
++        // redirect back to the homepage
 +        return $this->redirect($this->generateUrl('home'));
      }
  }
