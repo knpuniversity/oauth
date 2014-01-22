@@ -6,8 +6,6 @@ his eggs to the market and screaming "Haha, Brent! My chickens lay way more
 eggs than yours!" But in reality, Brent *knows* that his chickens are way
 better egg-making hens than Scott's... but how to prove it?
 
-  *show Brent's and his chickens facing off against Scott and his chickens*
-
 Then it hits him! The COOP API has an endpoint to see how many eggs have
 been collected from a user's farm each day. Brent decides to create a new
 website that will use this endpoint to count how many total eggs a COOP user's
