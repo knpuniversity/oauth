@@ -127,6 +127,8 @@ If you visit the application you created earlier, you'll see a nice
 "Generate a Token" link that when clicked will fetch one. Behind the scenes,
 this uses client credentials, which we'll see more closely in a second.
 
+.. code-block:: text
+
     http://coop.apps.knpuniversity.com/token
         ?client_id=Your+Client+Name
         &client_secret=abcdefg
