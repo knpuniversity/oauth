@@ -1,8 +1,8 @@
 diff --git a/client/src/OAuth2Demo/Client/Controllers/CountEggs.php b/client/src/OAuth2Demo/Client/Controllers/CountEggs.php
-index cd960f5..d48ac21 100644
+index 71e16fc..93c5058 100644
 --- a/client/src/OAuth2Demo/Client/Controllers/CountEggs.php
 +++ b/client/src/OAuth2Demo/Client/Controllers/CountEggs.php
-@@ -34,10 +34,10 @@ class CountEggs extends BaseController
+@@ -32,10 +32,10 @@ class CountEggs extends BaseController
          $request = $http->post('/api/'.$user->coopUserId.'/eggs-count');
          $request->addHeader('Authorization', 'Bearer '.$user->coopAccessToken);
          $response = $request->send();
