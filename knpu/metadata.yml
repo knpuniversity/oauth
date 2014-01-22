@@ -25,10 +25,11 @@ summary: |
     * What to look out for with security and how you can tighten things.
 
 illustration: oauth.png
-priority: 150
+priority: 170
 tags:
     - { name: php }
-is_upcoming: 1
+status: unfinished
+hasVideoDownload: 0
 
 chapters:
     intro:
