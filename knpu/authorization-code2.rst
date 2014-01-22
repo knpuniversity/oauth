@@ -7,12 +7,10 @@ should we store the access token?
 Saving the Access Token Somewhere
 ---------------------------------
 
-Typically, you'll either set it on the user's session or store it with their
-user record in the database. Both let you get the access token later when
-you need it. If you store it in the database, then when the user logs in
-next week, the access token *may* still work for them, which saves us from
-asking them to authorize again. The token also may have expired by then,
-but we'll cover that later.
+Some access tokens last an hour or two, and are well suited for storing in the
+user's session. Other access tokens are long-term tokens (facebook provides a
+60-day token) and make more sense to store in a database. Either way, storing
+the token will free us from having to ask the user to authorize again.
 
 In our app, we're going to store it in the database::
 
@@ -65,8 +63,8 @@ update a column in the database for the current user.
 When Authorization Fails
 ------------------------
 
-But what if the user declines to authorize our app? An OAuth server will
-*always* redirect back to our ``redirect_uri``. If we start from the homepage
+But what if the user declines to authorize our app? If this happens, an OAuth server will
+redirect the user back to our ``redirect_uri``. If we start from the homepage
 again but deny access on COOP, we can see this. But this time, the page explodes
 because our request to ``/token`` is *not* returning an access token. In
 fact, there COOP hasn't included a ``code`` query parameter in the URL when
@@ -96,8 +94,31 @@ When we try the flow again, we see a nicer message. You can really do whatever
 you want in your application, just make sure you're handling the possibility
 that the user will decline your app's request.
 
-If we start from the homepage again but deny access on COOP, our handling
-page totally explodes.
+If the request fails for any reason, the OAuth server typically provides an "error"
+parameter and possible "error_description" parameter in the querystring, with information
+on what happened. This information can be useful to provide a better experience for
+your users::
+
+    public function receiveAuthorizationCode(Application $app, Request $request)
+    {
+        // equivalent to $_GET['code']
+        $code = $request->get('code');
+
+        if (!$code) {
+            // retrieve the error parameter from the querystring
+            $error = $request->get('error');
+
+            return $this->render('failed_authorization.twig', array(
+                'response' => $request->query->all(),
+                'error'    => $error,
+            ));
+        }
+
+        // ...
+    }
+
+These errors should be documented by the OAuth server, but the standard set of errors
+includes "temporarily_unavailable", "server_error", and "access_denied".
 
 There's one other spot where things can fail: when requesting out to ``/token``.
 What if the response doesn't have an ``access_token`` field? Under normal
@@ -156,7 +177,7 @@ distinct steps to it:
    be different on other OAuth servers, but the idea will be the same.
 
 #. After authorizing our app, the OAuth server redirects back to a URL on
-   our site with a ``code`` query parameter. We an use this, along with our
+   our site with a ``code`` query parameter. We can use this, along with our
    ``client_id`` and ``client_secret`` to make an API request to the ``/token``
    endpoint. Now, we have an access token.
 
@@ -359,7 +380,8 @@ this is important because the call *may* have failed because the ``access_token`
 expired. What, I thought we just checked for that? Well, in the real world,
 there's no guarantee that the token won't expire before its scheduled time.
 Plus, the user may have decided to revoke your token. Be aware, and handle
-accordingly.
+accordingly. Once again, the OAuth Server should provide information on the
+error in the "error" and "error_description" querystring parameters.
 
 You're now dangerous, so lets move on to let our farmers actualy log into
 FCL via COOP.
