@@ -1,0 +1,42 @@
+diff --git a/client/src/OAuth2Demo/Client/Controllers/CoopOAuthController.php b/client/src/OAuth2Demo/Client/Controllers/CoopOAuthController.php
+index 61c7e1e..0c37cad 100644
+--- a/client/src/OAuth2Demo/Client/Controllers/CoopOAuthController.php
++++ b/client/src/OAuth2Demo/Client/Controllers/CoopOAuthController.php
+@@ -95,13 +95,7 @@ class CoopOAuthController extends BaseController
+         if ($this->isUserLoggedIn()) {
+             $user = $this->getLoggedInUser();
+         } else {
+-            $user = $this->createUser(
+-                $meData['email'],
+-                // a blank password - this user hasn't created a password yet!
+-                '',
+-                $meData['firstName'],
+-                $meData['lastName']
+-            );
++            $user = $this->findOrCreateUser($meData);
+ 
+             $this->loginUser($user);
+         }
+@@ -113,4 +107,22 @@ class CoopOAuthController extends BaseController
+         // redirect back to the homepage
+         return $this->redirect($this->generateUrl('home'));
+     }
++
++    private function findOrCreateUser(array $meData)
++    {
++        if ($user = $this->findUserByCOOPId($meData['id'])) {
++            // this is an existing user. Yay!
++            return $user;
++        }
++
++        $user = $this->createUser(
++            $meData['email'],
++            // a blank password - this user hasn't created a password yet!
++            '',
++            $meData['firstName'],
++            $meData['lastName']
++        );
++
++        return $user;
++    }
+ }
