@@ -93,7 +93,7 @@ grab these and pass them into a template I've already prepared::
             return $this->render('failed_authorization.twig', array(
                 'response' => array(
                     'error' => $error,
-                    'error_description => $errorDescription
+                    'error_description' => $errorDescription
                 )
             ));
         }
