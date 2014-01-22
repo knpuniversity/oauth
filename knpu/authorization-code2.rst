@@ -73,8 +73,10 @@ redirecting.
 This is what a canceled authorization looks like: no authorization code.
 
 Unfortunately, we can't just assume that the user authorized our application.
-If the ``code`` query parameter is missing, let's display a message. I've
-already prepared a little template for us that we can just display::
+When this happens, the ``code`` query parameter will be missing, but the OAuth
+server should include a few extra query parameters explaining what went wrong.
+These are commonly called ``error`` and ``error_description``. Let's grab
+these and pass them into a template I've already prepared::
 
     public function receiveAuthorizationCode(Application $app, Request $request)
     {
@@ -82,8 +84,14 @@ already prepared a little template for us that we can just display::
         $code = $request->get('code');
 
         if (!$code) {
+            $error = $request->get('error');
+            $errorDescription = $request->get('error_description');
+
             return $this->render('failed_authorization.twig', array(
-                'response' => $request->query->all()
+                'response' => array(
+                    'error' => $error,
+                    'error_description => $errorDescription
+                )
             ));
         }
 
@@ -94,31 +102,11 @@ When we try the flow again, we see a nicer message. You can really do whatever
 you want in your application, just make sure you're handling the possibility
 that the user will decline your app's request.
 
-If the request fails for any reason, the OAuth server typically provides an "error"
-parameter and possible "error_description" parameter in the querystring, with information
-on what happened. This information can be useful to provide a better experience for
-your users::
-
-    public function receiveAuthorizationCode(Application $app, Request $request)
-    {
-        // equivalent to $_GET['code']
-        $code = $request->get('code');
-
-        if (!$code) {
-            // retrieve the error parameter from the querystring
-            $error = $request->get('error');
-
-            return $this->render('failed_authorization.twig', array(
-                'response' => $request->query->all(),
-                'error'    => $error,
-            ));
-        }
-
-        // ...
-    }
-
-These errors should be documented by the OAuth server, but the standard set of errors
+These errors should be documented by the OAuth server, but the standard set
 includes "temporarily_unavailable", "server_error", and "access_denied".
+
+When Fetching the Access Token Fails
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 There's one other spot where things can fail: when requesting out to ``/token``.
 What if the response doesn't have an ``access_token`` field? Under normal
