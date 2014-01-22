@@ -1,6 +1,13 @@
 Single Signon
 =============
 
+- check if user is logged in and create the user if they are not
+- blank password
+- what if the coopUserId exists or the email exists?
+- log the user in
+- add the login link
+
+
 At this point, we really have everything we need to get secure, temporary
 access to exactly the pieces of someone's HouseRobot account that we need.
 Of course, we're not actually storing the access token anywhere, so it's

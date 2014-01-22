@@ -1,4 +1,4 @@
-Authorization Code: Saving the Token & Handling Failures 
+Authorization Code: Saving the Token & Handling Failures
 ========================================================
 
 What if we want to make other API requests on behalf of Brent later? Where
