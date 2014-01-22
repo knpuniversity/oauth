@@ -1,8 +1,8 @@
 diff --git a/client/src/OAuth2Demo/Client/Controllers/CoopOAuthController.php b/client/src/OAuth2Demo/Client/Controllers/CoopOAuthController.php
-index cfad633..94cd6a9 100644
+index 3edc052..8c9800b 100644
 --- a/client/src/OAuth2Demo/Client/Controllers/CoopOAuthController.php
 +++ b/client/src/OAuth2Demo/Client/Controllers/CoopOAuthController.php
-@@ -77,6 +77,14 @@ class CoopOAuthController extends BaseController
+@@ -75,6 +75,14 @@ class CoopOAuthController extends BaseController
          $response = $request->send();
          $responseBody = $response->getBody(true);
          $responseArr = json_decode($responseBody, true);
