@@ -8,8 +8,8 @@ Saving the Access Token Somewhere
 ---------------------------------
 
 Some access tokens last an hour or two, and are well suited for storing in the
-user's session. Other access tokens are long-term tokens (facebook provides a
-60-day token) and make more sense to store in a database. Either way, storing
+session. Others are long-term tokens, for example facebook provides a 60-day token, 
+and these make more sense to store in a database. Either way, storing
 the token will free us from having to ask the user to authorize again.
 
 In our app, we're going to store it in the database::
@@ -37,7 +37,8 @@ calls have the user's ID in the URI.
 Recording the Expires Time
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-We can also store the time when the token will expire. We can check this
+We can also store the time when the token will expire. I'll create a ``DateTime``
+object that represents the expiration time. We can check this
 later before trying to make API requests. If the token is expired, we'll
 need to send the user through the authorization process again::
 
@@ -58,7 +59,9 @@ need to send the user through the authorization process again::
     }
 
 Again, the code here is special to my app, but the end result is just to
-update a column in the database for the current user.
+update a column in the database for the current user. When we try it, it
+runs and hits our ``die`` statement. But if you go to the homepage, the
+user drop-down shows us that the COOP user id was saved! Eggcellent...
 
 When Authorization Fails
 ------------------------
@@ -67,16 +70,16 @@ But what if the user declines to authorize our app? If this happens, an OAuth se
 redirect the user back to our ``redirect_uri``. If we start from the homepage
 again but deny access on COOP, we can see this. But this time, the page explodes
 because our request to ``/token`` is *not* returning an access token. In
-fact, there COOP hasn't included a ``code`` query parameter in the URL when
-redirecting.
+fact, COOP hasn't included a ``code`` query parameter in the URL on the
+redirect.
 
 This is what a canceled authorization looks like: no authorization code.
 
 Unfortunately, we can't just assume that the user authorized our application.
-When this happens, the ``code`` query parameter will be missing, but the OAuth
-server should include a few extra query parameters explaining what went wrong.
-These are commonly called ``error`` and ``error_description``. Let's grab
-these and pass them into a template I've already prepared::
+As we've seen when this happens, the ``code`` query parameter will be missing, 
+but the OAuth server should include a few extra query parameters explaining what 
+went wrong. These are commonly called ``error`` and ``error_description``. Let's 
+grab these and pass them into a template I've already prepared::
 
     public function receiveAuthorizationCode(Application $app, Request $request)
     {
