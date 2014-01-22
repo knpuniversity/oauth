@@ -1,8 +1,8 @@
 diff --git a/client/src/OAuth2Demo/Client/Controllers/CoopOAuthController.php b/client/src/OAuth2Demo/Client/Controllers/CoopOAuthController.php
-index 61c7e1e..0c37cad 100644
+index 4d02c1b..0eeb894 100644
 --- a/client/src/OAuth2Demo/Client/Controllers/CoopOAuthController.php
 +++ b/client/src/OAuth2Demo/Client/Controllers/CoopOAuthController.php
-@@ -95,13 +95,7 @@ class CoopOAuthController extends BaseController
+@@ -101,13 +101,7 @@ class CoopOAuthController extends BaseController
          if ($this->isUserLoggedIn()) {
              $user = $this->getLoggedInUser();
          } else {
@@ -17,7 +17,7 @@ index 61c7e1e..0c37cad 100644
  
              $this->loginUser($user);
          }
-@@ -113,4 +107,22 @@ class CoopOAuthController extends BaseController
+@@ -119,4 +113,22 @@ class CoopOAuthController extends BaseController
          // redirect back to the homepage
          return $this->redirect($this->generateUrl('home'));
      }
