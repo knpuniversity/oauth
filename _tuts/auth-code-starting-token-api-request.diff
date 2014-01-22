@@ -1,13 +1,11 @@
 diff --git a/client/src/OAuth2Demo/Client/Controllers/CoopOAuthController.php b/client/src/OAuth2Demo/Client/Controllers/CoopOAuthController.php
-index 528aca5..e930814 100644
+index a43c0c7..5d7f4ad 100644
 --- a/client/src/OAuth2Demo/Client/Controllers/CoopOAuthController.php
 +++ b/client/src/OAuth2Demo/Client/Controllers/CoopOAuthController.php
-@@ -51,6 +51,27 @@ class CoopOAuthController extends BaseController
+@@ -51,6 +51,25 @@ class CoopOAuthController extends BaseController
          // equivalent to $_GET['code']
          $code = $request->get('code');
  
-+        /** @var \Guzzle\Http\Client $http */
-+        // the Guzzle client object, already prepared for us!
 +        $http = new Client('http://coop.apps.knpuniversity.com', array(
 +            'request.options' => array(
 +                'exceptions' => false,
