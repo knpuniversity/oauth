@@ -47,9 +47,9 @@ class Connection
         return $this->getUserProvider()->createUser($userInfo);
     }
 
-    public function saveUser(User $user)
+    public function saveUser(User $user, $forceInsert = false)
     {
-        if ($this->getUser($user->email)) {
+        if ($this->getUser($user->email) && !$forceInsert) {
             $stmt = $this->db->prepare(sprintf('UPDATE %s SET password=:password, firstName=:firstName, lastName=:lastName, coopUserId=:coopUserId, coopAccessToken=:coopAccessToken, coopAccessExpiresAt=:coopAccessExpiresAt, coopRefreshToken=:coopRefreshToken, facebookUserId=:facebookUserId where email=:email', self::TABLE_USER));
         } else {
             $stmt = $this->db->prepare(sprintf('INSERT INTO %s (email, password, firstName, lastName, coopUserId, coopAccessToken, coopAccessExpiresAt, coopRefreshToken, facebookUserId) VALUES (:email, :password, :firstName, :lastName, :coopUserId, :coopAccessToken, :coopAccessExpiresAt, :coopRefreshToken, :facebookUserId)', self::TABLE_USER));
@@ -84,7 +84,7 @@ class Connection
             'lastName' => $lastName
         ));
 
-        $this->saveUser($user);
+        $this->saveUser($user, true);
 
         return $user;
     }
