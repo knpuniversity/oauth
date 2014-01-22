@@ -16,7 +16,20 @@ but we'll cover that later.
 
 In our app, we're going to store it in the database::
 
-    TODO: Code: Auth Code: Save access token to the user
+    // src/OAuth2Demo/Client/Controllers/CoopOAuthController.php
+
+    public function receiveAuthorizationCode(Application $app, Request $request)
+    {
+        // ...
+        $meData = json_decode($response->getBody(), true);
+
+        $user = $this->getLoggedInUser();
+        $user->coopAccessToken = $accessToken;
+        $user->coopUserId = $meData['id'];
+        $this->saveUser($user);
+
+        // ...
+    }
 
 This code is specific to my app, but the end result is that I've updated
 the ``coopAccessToken`` column on the user table for the currently-authenticated
@@ -30,7 +43,21 @@ We can also store the time when the token will expire. We can check this
 later before trying to make API requests. If the token is expired, we'll
 need to send the user through the authorization process again::
 
-    TODO: Code: Auth Code: Storing expiration
+    public function receiveAuthorizationCode(Application $app, Request $request)
+    {
+        // ...
+        $expiresIn = $responseArr['expires_in'];
+        $expiresAt = new \DateTime('+'.$expiresIn.' seconds');
+        // ...
+
+        $user = $this->getLoggedInUser();
+        $user->coopAccessToken = $accessToken;
+        $user->coopUserId = $meData['id'];
+        $user->coopAccessExpiresAt = $expiresAt;
+        $this->saveUser($user);
+
+        // ...
+    }
 
 Again, the code here is special to my app, but the end result is just to
 update a column in the database for the current user.
@@ -51,7 +78,19 @@ Unfortunately, we can't just assume that the user authorized our application.
 If the ``code`` query parameter is missing, let's display a message. I've
 already prepared a little template for us that we can just display::
 
-    TODO: Code: Auth Code: Authorization Declined
+    public function receiveAuthorizationCode(Application $app, Request $request)
+    {
+        // equivalent to $_GET['code']
+        $code = $request->get('code');
+
+        if (!$code) {
+            return $this->render('failed_authorization.twig', array(
+                'response' => $request->query->all()
+            ));
+        }
+
+        // ...
+    }
 
 When we try the flow again, we see a nicer message. You can really do whatever
 you want in your application, just make sure you're handling the possibility
@@ -67,7 +106,25 @@ error template in case it does. Don't worry about the variables I'm passing
 into the template, I'm just trying to pass enough information so that we
 can see what the problem was::
 
-    TODO: Code: Auth Code: Access Token Request Fails
+    public function receiveAuthorizationCode(Application $app, Request $request)
+    {
+        // ...
+        $request = $http->post('/token', null, array(
+            // ...
+        ));
+
+        $response = $request->send();
+        $responseBody = $response->getBody(true);
+        $responseArr = json_decode($responseBody, true);
+
+        // if there is no access_token, we have a problem!!!
+        if (!isset($responseArr['access_token'])) {
+            return $this->render('failed_token_request.twig', array(
+                'response' => $responseArr ? $responseArr : $response
+            ));
+        }
+        // ...
+    }
 
 Try the whole cycle again, but approve the app this time. It works the first
 time of course. But if you refresh, you'll see this error in action. The
@@ -81,7 +138,13 @@ that handles the OAuth redirect. What you'll actually want to do here is
 redirect to some other page. Our work is done for now, so we want to help
 the user keep using our site::
 
-    Auth Code: Redirecting after success
+    public function receiveAuthorizationCode(Application $app, Request $request)
+    {
+        // ...
+
+        // redirect back to the homepage
+        return $this->redirect($this->generateUrl('home'));
+    }
 
 In our application, this code simply redirects us to the homepage. And just
 like that, we're done! This is the authorization grant type, which has 2
@@ -111,7 +174,14 @@ the database:
 
 .. code-block:: html+jinja
 
-    TODO: Code: API: Hiding Authorize button
+    {# views/dashboard.twig #}
+    {# ... #}
+
+    {% if user.coopUserId %}
+
+    {% else %}
+        <a class="btn btn-primary btn-lg" href="{{ path('coop_authorize_start') }}">Authorize</a>
+    {% endif %}
 
 If we *do* have a ``coopUserId``, let's add a link the user can click that
 will count their daily eggs. Don't worry if you're not familiar with the
@@ -119,7 +189,14 @@ code here, we're just generating a URL to new page that I've already setup:
 
 .. code-block:: html+jinja
 
-    API: Adding Count Eggs link
+    {# views/dashboard.twig #}
+    {# ... #}
+
+    {% if user.coopUserId %}
+        <a class="btn btn-primary btn-lg" href="{{ path('count_eggs') }}">Count Eggs</a>
+    {% else %}
+        <a class="btn btn-primary btn-lg" href="{{ path('coop_authorize_start') }}">Authorize</a>
+    {% endif %}
 
 When we refresh, we see the new link. Clicking it gives us another todo message.
 Open up ``src/OAuth2Demo/Client/Controllers/CountEggs.php``, which is the
@@ -132,18 +209,63 @@ Start by copying the ``/api/me`` code from ``CoopOAuthController``, and changing
 the method from ``get`` to ``post``, since the ``eggs-count`` endpoint requires
 POST::
 
-    TODO: Code: API: Copy /api/me code for count eggs
+    // src/OAuth2Demo/Client/Controllers/CountEggs.php
+    // ...
+
+    class CountEggs extends BaseController
+    {
+        // ...
+        public function countEggs()
+        {
+            $http = new Client('http://coop.apps.knpuniversity.com', array(
+                'request.options' => array(
+                    'exceptions' => false,
+                )
+            ));
+
+            $request = $http->post('/api/me');
+            $request->addHeader('Authorization', 'Bearer '.$accessToken);
+            $response = $request->send();
+            $meData = json_decode($response->getBody(), true);
+
+            die('Implement this in CountEggs::countEggs');
+
+            return $this->redirect($this->generateUrl('home'));
+        }
+    }
 
 The endpoint we want to hit now is ``/api/USER_ID/eggs-count``. Fortunately,
 we've already saved the COOP user id and access token for the currently logged-in
 user to the database. Get that data by using our app's ``$this->getLoggedInUser()``
 method and update the URL::
 
-    TODO: Code: API: Fill in USER_ID and access_token
+    public function countEggs()
+    {
+        $user = $this->getLoggedInUser();
+
+        $http = new Client('http://coop.apps.knpuniversity.com', array(
+            'request.options' => array(
+                'exceptions' => false,
+            )
+        ));
+
+        $request = $http->post('/api/'.$user->coopUserId.'/eggs-count');
+        $request->addHeader('Authorization', 'Bearer '.$user->coopAccessToken);
+        // ...
+    }
 
 I'll add in some debug code so we can see if this is working::
 
-    TODO: Code: API: Debug code
+    public function countEggs()
+    {
+        // ...
+
+        $request = $http->post('/api/'.$user->coopUserId.'/eggs-count');
+        $request->addHeader('Authorization', 'Bearer '.$user->coopAccessToken);
+        $response = $request->send();
+        echo ($response->getBody(true));die;
+        // ...
+    }
 
 When we refresh, you should see a nice JSON response. Yea, we're counting
 eggs! Since the purpose of TopCluck is to keep track of how many eggs each
@@ -153,7 +275,18 @@ just the OAuth pieces. Just call ``setTodaysEggCountForUser`` and pass it
 the current user and the egg count. While we're here, we can remove the ``die``
 statement and redirect the user back to the homepage once we're done::
 
-    TODO: Code: API: Saving Daily Egg Count
+    public function countEggs()
+    {
+        // ...
+
+        $response = $request->send();
+        $countEggsData = json_decode($response->getBody(), true);
+
+        $eggCount = $countEggsData['data'];
+        $this->setTodaysEggCountForUser($this->getLoggedInUser(), $eggCount);
+
+        return $this->redirect($this->generateUrl('home'));
+    }
 
 When we refresh, we should get redirected back to the homepage. But on the
 right, we can see Brent climbing up the leaderboard. Let's go to COOP and
@@ -168,7 +301,16 @@ of the things that might go wrong. First, we're hiding its link, but what
 if a user somehow ends up on the page without a ``coopUserId`` or ``coopAccessToken``?
 Let's code for this case::
 
-    TODO: Code: API: Check for no access token
+    public function countEggs()
+    {
+        $user = $this->getLoggedInUser();
+
+        if (!$user->coopAccessToken || !$user->coopUserId) {
+            throw new \Exception('Somehow you got here, but without a valid COOP access token! Re-authorize!');
+        }
+
+        // ...
+    }
 
 I'm throwing an exception message, but we could also handle this differently,
 like by redirecting the user to the "Authorize" page to start the OAuth flow.
@@ -178,12 +320,38 @@ is possible because we stored the expiration data in the database. I've created
 an easy helper method to check for this. If this happens, let's redirect
 the user to re-authorize, just like if they had clicked the "Authorize" link::
 
-    TODO: Code
+    public function countEggs()
+    {
+        $user = $this->getLoggedInUser();
+
+        if (!$user->coopAccessToken || !$user->coopUserId) {
+            throw new \Exception('Somehow you got here, but without a valid COOP access token! Re-authorize!');
+        }
+
+        if ($user->hasCoopAccessTokenExpired()) {
+            return $this->redirect($this->generateUrl('coop_authorize_start'));
+        }
+
+        // ...
+    }
 
 Finally, what if the API request itself fails? A simple handling might look
 like this::
 
-    TODO: Code: API: Check for API call fail
+    public function countEggs()
+    {
+        // ...
+
+        $request = $http->post('/api/'.$user->coopUserId.'/eggs-count');
+        $request->addHeader('Authorization', 'Bearer '.$user->coopAccessToken);
+        $response = $request->send();
+
+        if ($response->isError()) {
+            throw new \Exception($response->getBody(true));
+        }
+
+        // ...
+    }
 
 Of course, you may want to do something more sophisticated. The response may
 also have some error information on it, which you can handle. For OAuth,
