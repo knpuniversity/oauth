@@ -1,11 +1,11 @@
-title:  OAuth in 8 Steps
+title:  OAuth2 in 8 Steps
 price:  12
 length: 22:00
 summary: |
-    OAuth: that mystical beast that you kind of understand and occasionally
+    OAuth2: that mystical beast that you kind of understand and occasionally
     wrestle to integrate with some social media site.
 
-    Time to master OAuth... and why not do it by building a real app with
+    Time to master OAuth2... and why not do it by building a real app with
     farmers, chickens and real-life providers like Facebook and Google Plus.
     We'll show you how OAuth really works while looking at how OAuth will
     feel by using SDK's and other tools that give you shortcuts.
