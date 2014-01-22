@@ -134,6 +134,21 @@
             "id": "api-check-for-api-call-fail",
             "name": "API: Check for API call fail",
             "description": null
+        },
+        {
+            "id": "login-create-user-if-not-logged-in",
+            "name": "Login: Create user if not logged in",
+            "description": null
+        },
+        {
+            "id": "login-authenticate-the-user",
+            "name": "Login: Authenticate the user",
+            "description": null
+        },
+        {
+            "id": "adding-login-with-coop-button",
+            "name": "Adding Login with COOP button",
+            "description": null
         }
     ]
 }
