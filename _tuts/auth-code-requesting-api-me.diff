@@ -1,8 +1,8 @@
 diff --git a/client/src/OAuth2Demo/Client/Controllers/CoopOAuthController.php b/client/src/OAuth2Demo/Client/Controllers/CoopOAuthController.php
-index 2e916f9..c3ed850 100644
+index 52de82d..0aa1a20 100644
 --- a/client/src/OAuth2Demo/Client/Controllers/CoopOAuthController.php
 +++ b/client/src/OAuth2Demo/Client/Controllers/CoopOAuthController.php
-@@ -70,11 +70,15 @@ class CoopOAuthController extends BaseController
+@@ -68,11 +68,15 @@ class CoopOAuthController extends BaseController
          // make a request to the token url
          $response = $request->send();
          $responseBody = $response->getBody(true);
