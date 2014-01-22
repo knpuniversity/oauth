@@ -140,7 +140,7 @@ can see what the problem was::
 
 Try the whole cycle again, but approve the app this time. It works the first
 time of course. But if you refresh, you'll see this error in action. The
-code parameter exists, but it's expired.  The request to ``/token`` fails.
+code parameter exists, but it's expired. So, the request to ``/token`` fails.
 
 Redirecting after Success
 -------------------------
@@ -148,7 +148,7 @@ Redirecting after Success
 Until now, we've had an ugly ``die`` statement at the bottom of the code
 that handles the OAuth redirect. What you'll actually want to do here is
 redirect to some other page. Our work is done for now, so we want to help
-the user keep using our site::
+the user to continue on our site::
 
     public function receiveAuthorizationCode(Application $app, Request $request)
     {
@@ -172,7 +172,7 @@ distinct steps to it:
    ``client_id`` and ``client_secret`` to make an API request to the ``/token``
    endpoint. Now, we have an access token.
 
-Let's finally use the access token to count some eggs!
+Let's finally use it to count some eggs!
 
 Couting Eggs
 ------------
@@ -197,7 +197,7 @@ the database:
 
 If we *do* have a ``coopUserId``, let's add a link the user can click that
 will count their daily eggs. Don't worry if you're not familiar with the
-code here, we're just generating a URL to new page that I've already setup:
+code here, we're just generating a URL to a new page that I've already setup:
 
 .. code-block:: html+jinja
 
@@ -280,7 +280,9 @@ I'll add in some debug code so we can see if this is working::
     }
 
 When we refresh, you should see a nice JSON response. Yea, we're counting
-eggs! Since the purpose of TopCluck is to keep track of how many eggs each
+eggs! That'll show Farmer Scott! 
+
+Since the purpose of TopCluck is to keep track of how many eggs each
 farmer has collected each day, let's save the new count to the database.
 Like before, I've already done all the hard work, so that we can focus on
 just the OAuth pieces. Just call ``setTodaysEggCountForUser`` and pass it
@@ -301,7 +303,7 @@ statement and redirect the user back to the homepage once we're done::
     }
 
 When we refresh, we should get redirected back to the homepage. But on the
-right, we can see Brent climbing up the leaderboard. Let's go to COOP and
+right, Farmer Brent's egg count isn't going up. Let's go to COOP and
 collect a few more eggs manually. Back on FCL, if we count our eggs again,
 we get the updated count. Sweet!
 
@@ -347,7 +349,7 @@ the user to re-authorize, just like if they had clicked the "Authorize" link::
         // ...
     }
 
-Finally, what if the API request itself fails? A simple handling might look
+Finally, what if the API request itself fails? A simple way to handle this might look
 like this::
 
     public function countEggs()
@@ -365,13 +367,13 @@ like this::
         // ...
     }
 
-Of course, you may want to do something more sophisticated. The response may
-also have some error information on it, which you can handle. For OAuth,
+Of course, you may want to do something more sophisticated. The response could
+also have some error information on it, which you can play around with. For OAuth,
 this is important because the call *may* have failed because the ``access_token``
 expired. What, I thought we just checked for that? Well, in the real world,
 there's no guarantee that the token won't expire before its scheduled time.
-Plus, the user may have decided to revoke your token. Be aware, and handle
-accordingly. Once again, the OAuth Server should provide information on the
+Plus, the user may have decided to revoke your token -- what a bully. Be aware, 
+and handle accordingly. Once again, the OAuth Server should provide information on the
 error in the "error" and "error_description" querystring parameters.
 
 You're now dangerous, so lets move on to let our farmers actualy log into
