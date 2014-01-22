@@ -1,8 +1,8 @@
 diff --git a/client/src/OAuth2Demo/Client/Controllers/CoopOAuthController.php b/client/src/OAuth2Demo/Client/Controllers/CoopOAuthController.php
-index 197d88e..68f25ad 100644
+index 479f85d..fb4654f 100644
 --- a/client/src/OAuth2Demo/Client/Controllers/CoopOAuthController.php
 +++ b/client/src/OAuth2Demo/Client/Controllers/CoopOAuthController.php
-@@ -73,6 +73,7 @@ class CoopOAuthController extends BaseController
+@@ -71,6 +71,7 @@ class CoopOAuthController extends BaseController
          $responseArr = json_decode($responseBody, true);
          $accessToken = $responseArr['access_token'];
          $expiresIn = $responseArr['expires_in'];
@@ -10,7 +10,7 @@ index 197d88e..68f25ad 100644
  
          $request = $http->get('/api/me');
          $request->addHeader('Authorization', 'Bearer '.$accessToken);
-@@ -82,6 +83,7 @@ class CoopOAuthController extends BaseController
+@@ -80,6 +81,7 @@ class CoopOAuthController extends BaseController
          $user = $this->getLoggedInUser();
          $user->coopAccessToken = $accessToken;
          $user->coopUserId = $meData['id'];
