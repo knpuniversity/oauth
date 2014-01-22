@@ -83,7 +83,22 @@ Handling Existing Users
 
 There's one big hole in our logic. If I logout and go through the process
 again, it blows up! This time, it tries to create a *second* new user for
-Brent instead of using the one from before. Let's fix that::
+Brent instead of using the one from before. Let's fix that. For organization,
+I'm going to create a new private function called ``findOrCreateUser`` in
+this same class. If we can find a user with this COOP User ID, then we can
+just log the user into that account. If not, we'll keep creating a new user::
+
+    TODO: Code: Login: Looking up existing users
+
+
+
+A) look up on CoopUserId
+B) if there is an email dup, it means that the user has created an account,
+    but either not linked yet, or linked to another account
+    -> prompt to prove they are that account
+
+
+--> be careful not to look up on id. What if there is an email dup still?
 
 - check if user is logged in and create the user if they are not
 - blank password
