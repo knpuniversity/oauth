@@ -43,3 +43,33 @@ chapters:
         title:      Authorization Code Grant Type
         is_free:    false
         length:     10:21
+    authorization-code2:
+        title:      Authorization Code: Saving the Token & Handling Failures
+        is_free:    false
+        length:     00:00
+        is_finished: 0
+    logging-in:
+        title:      Single Signon
+        is_free:    false
+        length:     00:00
+        is_finished: 0
+    facebook:
+        title:      Facebook Integration
+        is_free:    false
+        length:     00:00
+        is_finished: 0
+    javascript-implicit-google-plus:
+        title:      Implicit Grant Type with Google+
+        is_free:    false
+        length:     00:00
+        is_finished: 0
+    refresh-token:
+        title:      Using Refresh Tokens
+        is_free:    false
+        length:     00:00
+        is_finished: 0
+    security:
+        title:      Tightening up Security
+        is_free:    false
+        length:     00:00
+        is_finished: 0

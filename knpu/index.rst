@@ -10,7 +10,7 @@ OAuth 2.0: Episode1
     authorization-code2
     logging-in
     facebook
-    facebook-javascript
+    javascript-implicit-google-plus
     expired-token
     refresh-token
     security
