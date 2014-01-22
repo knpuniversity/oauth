@@ -70,8 +70,12 @@ class Connection
 
     public function createUser($email, $password, $firstName = null, $lastName = null)
     {
-        // do not store in plaintext
-        $password = $this->encodePassword(new User(), $password);
+        // if the password is blank (valid for social logins), leave it blank
+        // that will prevent it from ever matching on login
+        if ($password) {
+            // do not store in plaintext
+            $password = $this->encodePassword(new User(), $password);
+        }
 
         $user = $this->getUserProvider()->createUser(array(
             'email' => $email,
