@@ -50,7 +50,7 @@ chapters:
         length:     00:00
         is_finished: 0
     logging-in:
-        title:      Single Signon
+        title:      User Login with OAuth
         is_free:    false
         length:     00:00
         is_finished: 0
