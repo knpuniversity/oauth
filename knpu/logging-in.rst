@@ -44,7 +44,7 @@ password. Normally, my passwords are encoded before being saved, like all
 passwords should be. You can't see it here, but when the password is set
 to a blank string, I'm skipping the encoding process and actually setting
 the ``password`` to be blank. If someone *does* try to login using a blank
-password, it'll be encoded first and won't match what's on the database.
+password, it'll be encoded first and won't match what's in the database.
 
 As long as you find some way to prevent anyone from logging in as the user
 via a password, you're in good shape! You could also have the user choose
@@ -111,14 +111,14 @@ COOP? If so, I could register with someone else's email there and then use
 this to login that user's TopCluck account. With something other than COOP's
 own user id, you need to think about if it's possible that you're getting
 falsified information. If you're not sure, it might be safe to break the
-process here and force the user to type in the TopCluck for this account
+process here and force the user to type in their TopCluck password for this account
 before linking them. That's a bit more work, but we do it here on KnpUniversity.com.
 
 Finishing Registration
 ----------------------
 
-When you *do* have a new user, isntead of just creating the account, you
-may instead want to show them a finish registration form. This would let
+When you *do* have a new user, instead of just creating the account, you
+may want to show them a finish registration form. This would let
 them choose a password and fill out any other fields you want.
 
 We've got more OAuth-focused things that we need to get to, so we'll leave
