@@ -154,6 +154,11 @@
             "id": "login-looking-up-existing-users",
             "name": "Login: Looking up existing users",
             "description": null
+        },
+        {
+            "id": "login-looking-up-existing-by-email",
+            "name": "Login: Looking up existing by email",
+            "description": null
         }
     ]
 }
