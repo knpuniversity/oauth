@@ -100,6 +100,20 @@ class BaseController
     }
 
     /**
+     * Finds a User in the database for this email
+     *
+     * @param $coopUserId
+     * @return bool|User
+     */
+    public function findUserByCOOPId($coopUserId)
+    {
+        /** @var \OAuth2Demo\Client\Storage\Connection $storage */
+        $storage = $this->container['connection'];
+
+        return $storage->findUserByCoopUserId($coopUserId);
+    }
+
+    /**
      * @param  string $routeName  The name of the route
      * @param  array  $parameters Route variables
      * @param  bool   $absolute

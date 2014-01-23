@@ -47,6 +47,18 @@ class Connection
         return $this->getUserProvider()->createUser($userInfo);
     }
 
+    public function findUserByCoopUserId($coopUserId)
+    {
+        $stmt = $this->db->prepare($sql = sprintf('SELECT * from %s where coopUserId=:coopUserId', self::TABLE_USER));
+        $stmt->execute(array('coopUserId' => $coopUserId));
+
+        if (!$userInfo = $stmt->fetch()) {
+            return false;
+        }
+
+        return $this->getUserProvider()->createUser($userInfo);
+    }
+
     public function saveUser(User $user, $forceInsert = false)
     {
         if ($this->getUser($user->email) && !$forceInsert) {
