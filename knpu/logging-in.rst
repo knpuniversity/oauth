@@ -48,7 +48,8 @@ password, it'll be encoded first and won't match what's on the database.
 
 As long as you find some way to prevent anyone from logging in as the user
 via a password, you're in good shape! You could also have the user choose
-a password - I'll mention that later.
+a password right now or have an area to do that in their profile. I'll mention
+the first approach in a second.
 
 Finally, let's log the user into this new account::
 
@@ -90,23 +91,42 @@ just log the user into that account. If not, we'll keep creating a new user::
 
     TODO: Code: Login: Looking up existing users
 
+Try the process again. No error this time - we find the existing user and
+use it instead of creating a new one.
 
+Duplicate Emails
+~~~~~~~~~~~~~~~~
 
-A) look up on CoopUserId
-B) if there is an email dup, it means that the user has created an account,
-    but either not linked yet, or linked to another account
-    -> prompt to prove they are that account
+There is one other edge-case. What if we *don't* find any users with this
+COOP user id, but there *is* already a user with this email? This might be
+because the user registered on TopCluck, but hasn't gone through the COOP
+authorization process.
 
+Pretty easily, we can do another lookup by email::
 
---> be careful not to look up on id. What if there is an email dup still?
+    TODO: Code: Login: Looking up existing by email
 
-- check if user is logged in and create the user if they are not
-- blank password
-- what if the coopUserId exists or the email exists?
-    -> look up account based on coopUserId
-- log the user in
-- add the login link
+Cool. But be careful. Is it easy to fake someone else's email address on
+COOP? If so, I could register with someone else's email there and then use
+this to login that user's TopCluck account. With something other than COOP's
+own user id, you need to think about if it's possible that you're getting
+falsified information. If you're not sure, it might be safe to break the
+process here and force the user to type in the TopCluck for this account
+before linking them. That's a bit more work, but we do it here on KnpUniversity.com.
 
+Finishing Registration
+----------------------
 
-----> set a password later?
-----> finish registration?
+When you *do* have a new user, isntead of just creating the account, you
+may instead want to show them a finish registration form. This would let
+them choose a password and fill out any other fields you want.
+
+We've got more OAuth-focused things that we need to get to, so we'll leave
+this to you. But the key is simple: store at least the ``coopAccessToken``,
+``coopUserId`` and token expiration in the session and redirect to a registration
+form with fields like email, password and anything else you need. You could
+also store the email in the session and use it to prepopulate the form, or
+even make another API request to ``/api/me`` to get it. When they finally
+submit a valid form, just create your user then. It's really just like any
+registration form, except that you'll also save the COOP access token, user
+id, and expiration when you create your user.
