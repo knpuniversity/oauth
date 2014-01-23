@@ -24,7 +24,7 @@ class FacebookOAuthController extends BaseController
      */
     public function redirectToAuthorization()
     {
-        die('todo');
+        die('Todo: Redirect to Facebook');
     }
 
     /**
@@ -39,7 +39,7 @@ class FacebookOAuthController extends BaseController
      */
     public function receiveAuthorizationCode(Application $app, Request $request)
     {
-        die('todo');
+        die('Todo: Handle after Facebook redirects to us');
     }
 
     /**
@@ -50,7 +50,7 @@ class FacebookOAuthController extends BaseController
      */
     public function shareProgressOnFacebook()
     {
-        die('todo');
+        die('Todo: Use Facebook\'s API to post to someone\'s feed');
 
         return $this->redirect($this->generateUrl('home'));
     }
