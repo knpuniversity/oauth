@@ -130,13 +130,3 @@ even make another API request to ``/api/me`` to get it. When they finally
 submit a valid form, just create your user then. It's really just like any
 registration form, except that you'll also save the COOP access token, user
 id, and expiration when you create your user.
-
-Differences Between User Login with OAuth and Single Sign-On
-------------------------------------------------------------
-
-Although similar, there are key differences between what we have just added to
-TopCluck, and a Single Sign-On integration. Single Sign-On implies that if a user
-signs into COOP, they will be granted access to TopCluck automatically, and vice
-versa. Additionally, Logging out of COOP will log them out out of TopCluck as well.
-This is useful if the application is an extension of COOP, but not if the application
-is a third party, such as TopCluck.
