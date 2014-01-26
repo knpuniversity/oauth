@@ -1,6 +1,6 @@
 title:  OAuth2 in 8 Steps
 price:  12
-length: 22:00
+length: 32:36
 summary: |
     OAuth2: that mystical beast that you kind of understand and occasionally
     wrestle to integrate with some social media site.
@@ -47,8 +47,7 @@ chapters:
     authorization-code2:
         title:      Authorization Code: Saving the Token & Handling Failures
         is_free:    false
-        length:     00:00
-        is_finished: 0
+        length:     10:36
     logging-in:
         title:      User Login with OAuth
         is_free:    false
