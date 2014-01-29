@@ -194,6 +194,31 @@
             "id": "facebook-handle-access-token-failure",
             "name": "Facebook: Handle access token failure",
             "description": null
+        },
+        {
+            "id": "facebook-saving-fb-user-id",
+            "name": "Facebook: Saving FB user id",
+            "description": null
+        },
+        {
+            "id": "facebook-adding-share-link",
+            "name": "Facebook: Adding share link",
+            "description": null
+        },
+        {
+            "id": "facebook-initial-share-api-request",
+            "name": "Facebook: Initial share API request",
+            "description": null
+        },
+        {
+            "id": "facebook-dump-api-response",
+            "name": "Facebook: Dump API response",
+            "description": null
+        },
+        {
+            "id": "facebook-add-egg-count-to-message",
+            "name": "Facebook: Add egg count to message",
+            "description": null
         }
     ]
 }
