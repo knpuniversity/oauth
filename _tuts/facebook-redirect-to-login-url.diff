@@ -1,0 +1,13 @@
+diff --git a/client/src/OAuth2Demo/Client/Controllers/FacebookOAuthController.php b/client/src/OAuth2Demo/Client/Controllers/FacebookOAuthController.php
+index 8703825..8c6dd7c 100644
+--- a/client/src/OAuth2Demo/Client/Controllers/FacebookOAuthController.php
++++ b/client/src/OAuth2Demo/Client/Controllers/FacebookOAuthController.php
+@@ -39,7 +39,7 @@ class FacebookOAuthController extends BaseController
+             'scope' => array('publish_actions', 'email')
+         ));
+ 
+-        die('Todo: Redirect to Facebook');
++        return $this->redirect($url);
+     }
+ 
+     /**
