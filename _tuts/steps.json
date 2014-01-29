@@ -159,6 +159,41 @@
             "id": "login-looking-up-existing-by-email",
             "name": "Login: Looking up existing by email",
             "description": null
+        },
+        {
+            "id": "facebook-add-connect-link",
+            "name": "Facebook: Add Connect Link",
+            "description": null
+        },
+        {
+            "id": "facebook-create-sdk-object",
+            "name": "Facebook: create SDK object",
+            "description": null
+        },
+        {
+            "id": "facebook-complete-getloginurl",
+            "name": "Facebook: Complete getLoginUrl",
+            "description": null
+        },
+        {
+            "id": "facebook-redirect-to-login-url",
+            "name": "Facebook: Redirect to login url",
+            "description": null
+        },
+        {
+            "id": "facebook-refactor-to-createfacebook",
+            "name": "Facebook: Refactor to createFacebook",
+            "description": null
+        },
+        {
+            "id": "facebook-getuser",
+            "name": "Facebook: getUser",
+            "description": null
+        },
+        {
+            "id": "facebook-handle-access-token-failure",
+            "name": "Facebook: Handle access token failure",
+            "description": null
         }
     ]
 }
