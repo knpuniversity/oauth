@@ -1,0 +1,18 @@
+diff --git a/client/src/OAuth2Demo/Client/Controllers/FacebookOAuthController.php b/client/src/OAuth2Demo/Client/Controllers/FacebookOAuthController.php
+index 680922b..8d5e89f 100644
+--- a/client/src/OAuth2Demo/Client/Controllers/FacebookOAuthController.php
++++ b/client/src/OAuth2Demo/Client/Controllers/FacebookOAuthController.php
+@@ -58,9 +58,11 @@ class FacebookOAuthController extends BaseController
+             ));
+         }
+ 
+-        var_dump($userId);die;
++        $user = $this->getLoggedInUser();
++        $user->facebookUserId = $userId;
++        $this->saveUser($user);
+ 
+-        die('Todo: Handle after Facebook redirects to us');
++        return $this->redirect($this->generateUrl('home'));
+     }
+ 
+     /**
