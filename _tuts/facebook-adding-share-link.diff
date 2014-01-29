@@ -1,0 +1,20 @@
+diff --git a/client/views/dashboard.twig b/client/views/dashboard.twig
+index d028452..3995d14 100644
+--- a/client/views/dashboard.twig
++++ b/client/views/dashboard.twig
+@@ -21,8 +21,13 @@
+ 
+             <div class="panel panel-default" style="margin-top: 10px;">
+                 <div class="panel-body">
+-                    Share your progress on Facebook!
+-                    <a href="{{ path('facebook_authorize_start') }}">Connect with Facebook</a>
++                    {% if user.facebookUserId %}
++                        Share how many eggs you've collected today on Facebook!
++                        <a href="{{ path('facebook_share_place') }}" class="btn btn-info">Share</a>
++                    {% else %}
++                        Share your status on Facebook!
++                        <a href="{{ path('facebook_authorize_start') }}">Connect with Facebook</a>
++                    {% endif %}
+                 </div>
+             </div>
+ 
