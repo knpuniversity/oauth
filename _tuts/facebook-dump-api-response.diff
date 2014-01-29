@@ -1,0 +1,18 @@
+diff --git a/client/src/OAuth2Demo/Client/Controllers/FacebookOAuthController.php b/client/src/OAuth2Demo/Client/Controllers/FacebookOAuthController.php
+index 9c1e080..a82be9f 100644
+--- a/client/src/OAuth2Demo/Client/Controllers/FacebookOAuthController.php
++++ b/client/src/OAuth2Demo/Client/Controllers/FacebookOAuthController.php
+@@ -75,10 +75,12 @@ class FacebookOAuthController extends BaseController
+     {
+         $facebook = $this->createFacebook();
+ 
+-        $facebook->api('/'.$facebook->getUser().'/feed', 'POST', array(
++        $result = $facebook->api('/'.$facebook->getUser().'/feed', 'POST', array(
+             'message' => 'TEST',
+         ));
+ 
++        var_dump($result);
++
+         die('Todo: Use Facebook\'s API to post to someone\'s feed');
+ 
+         return $this->redirect($this->generateUrl('home'));
