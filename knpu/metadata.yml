@@ -1,6 +1,6 @@
 title:  OAuth2 in 8 Steps
 price:  12
-length: 32:36
+length: 39:36
 summary: |
     OAuth2: that mystical beast that you kind of understand and occasionally
     wrestle to integrate with some social media site.
@@ -51,8 +51,7 @@ chapters:
     logging-in:
         title:      User Login with OAuth
         is_free:    false
-        length:     00:00
-        is_finished: 0
+        length:     7:00
     facebook:
         title:      Facebook Integration
         is_free:    false
