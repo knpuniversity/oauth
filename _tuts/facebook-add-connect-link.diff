@@ -1,0 +1,20 @@
+diff --git a/client/views/dashboard.twig b/client/views/dashboard.twig
+index f4e72c0..d028452 100644
+--- a/client/views/dashboard.twig
++++ b/client/views/dashboard.twig
+@@ -19,13 +19,12 @@
+                 <a class="btn btn-primary btn-lg" href="{{ path('coop_authorize_start') }}">Authorize</a>
+             {% endif %}
+ 
+-            {#
+             <div class="panel panel-default" style="margin-top: 10px;">
+                 <div class="panel-body">
+-                    todo - add Facebook share stuff!
++                    Share your progress on Facebook!
++                    <a href="{{ path('facebook_authorize_start') }}">Connect with Facebook</a>
+                 </div>
+             </div>
+-            #}
+ 
+         </div>
+         <div class="col-md-6">
