@@ -1,0 +1,23 @@
+diff --git a/client/src/OAuth2Demo/Client/Controllers/FacebookOAuthController.php b/client/src/OAuth2Demo/Client/Controllers/FacebookOAuthController.php
+index a82be9f..352c708 100644
+--- a/client/src/OAuth2Demo/Client/Controllers/FacebookOAuthController.php
++++ b/client/src/OAuth2Demo/Client/Controllers/FacebookOAuthController.php
+@@ -74,15 +74,12 @@ class FacebookOAuthController extends BaseController
+     public function shareProgressOnFacebook()
+     {
+         $facebook = $this->createFacebook();
++        $eggCount = $this->getTodaysEggCountForUser($this->getLoggedInUser());
+ 
+-        $result = $facebook->api('/'.$facebook->getUser().'/feed', 'POST', array(
+-            'message' => 'TEST',
++        $facebook->api('/'.$facebook->getUser().'/feed', 'POST', array(
++            'message' => sprintf('Woh my chickens have laid %s eggs today!', $eggCount),
+         ));
+ 
+-        var_dump($result);
+-
+-        die('Todo: Use Facebook\'s API to post to someone\'s feed');
+-
+         return $this->redirect($this->generateUrl('home'));
+     }
+ 
