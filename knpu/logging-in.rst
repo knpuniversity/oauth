@@ -19,12 +19,46 @@ Start back in ``CoopOAuthController.php``, where we handled the exchange of the
 authorization code for the access token. Right now, this assumes that
 the user is already logged in and updates their account with the COOP details::
 
-    TODO: Code: Auth Code: Saving access token and id to db
+    // src/OAuth2Demo/Client/Controllers/CoopOAuthController.php
+    // ...
+    public function receiveAuthorizationCode(Application $app, Request $request)
+    {
+        // ...
+        $meData = json_decode($response->getBody(), true);
+
+        $user = $this->getLoggedInUser();
+        $user->coopAccessToken = $accessToken;
+        $user->coopUserId = $meData['id'];
+        $this->saveUser($user);
+        // ...
+    }
 
 But instead, let's actively allow anonymous users to go through the authorization
 process. And when they do, let's create a *new* user in our database::
 
-    TODO: Code: Login: Create user if not logged in
+    public function receiveAuthorizationCode(Application $app, Request $request)
+    {
+        // ...
+
+        $meData = json_decode($response->getBody(), true);
+
+        if ($this->isUserLoggedIn()) {
+            $user = $this->getLoggedInUser();
+        } else {
+            $user = $this->createUser(
+                $meData['email'],
+                // a blank password - this user hasn't created a password yet!
+                '',
+                $meData['firstName'],
+                $meData['lastName']
+            );
+        }
+        $user->coopAccessToken = $accessToken;
+        $user->coopUserId = $meData['id'];
+        $user->coopAccessExpiresAt = $expiresAt;
+        $this->saveUser($user);
+        // ...
+    }
 
 Some of these functions are specific to my app, but it's simple: if the user
 isn't logged in, create and insert a new user record using the data from
@@ -53,7 +87,26 @@ the first approach in a second.
 
 Finally, let's log the user into this new account::
 
-    TODO: Code: Login: Authenticate the user
+    public function receiveAuthorizationCode(Application $app, Request $request)
+    {
+        // ...
+
+        if ($this->isUserLoggedIn()) {
+            $user = $this->getLoggedInUser();
+        } else {
+            $user = $this->createUser(
+                $meData['email'],
+                // a blank password - this user hasn't created a password yet!
+                '',
+                $meData['firstName'],
+                $meData['lastName']
+            );
+
+            $this->loginUser($user);
+        }
+
+        // ...
+    }
 
 We still need to handle a few edge-cases, but this creates the user, logs
 them in, and then still updates them with the COOP details.
@@ -66,14 +119,27 @@ add a "Login with COOP" link. The template that renders this page is at ``views/
 
 .. code-block:: html+jinja
 
-    TODO: Code: Adding Login with COOP button
+    {# views/user/login.twig #}
+
+    <div class="form-group">
+        <div class="col-lg-10 col-lg-offset-2">
+            <button type="submit" class="btn btn-primary">Login!</button>
+            OR
+            <a href="{{ path('coop_authorize_start') }}"
+                class="btn btn-default">Login with COOP</a>
+        </div>
+    </div>
 
 The URL for the link is the same as the "Authorize" button on the homepage.
 If you're already logged in, we'll just update your account. But if you're
 not, we'll create a new account and log you in. It's that simple!
 
 Let's also completely reset the database, which you can do just by deleting
-the ``data/topcluck.sqlite`` file inside the ``client/`` directory.
+the ``data/topcluck.sqlite`` file inside the ``client/`` directory:
+
+.. code-block:: bash
+
+    $ rm data/topcluck.sqlite
 
 When we try it out, we're redirected to COOP, sent back to TopCluck, and
 are suddenly logged in. If we look at our user details, we can see we're
@@ -89,7 +155,38 @@ I'm going to create a new private function called ``findOrCreateUser`` in
 this same class. If we can find a user with this COOP User ID, then we can
 just log the user into that account. If not, we'll keep creating a new one::
 
-    TODO: Code: Login: Looking up existing users
+    public function receiveAuthorizationCode(Application $app, Request $request)
+    {
+        // ...
+
+        if ($this->isUserLoggedIn()) {
+            $user = $this->getLoggedInUser();
+        } else {
+            $user = $this->findOrCreateUser($meData);
+
+            $this->loginUser($user);
+        }
+
+        // ...
+    }
+
+    private function findOrCreateUser(array $meData)
+    {
+        if ($user = $this->findUserByCOOPId($meData['id'])) {
+            // this is an existing user. Yay!
+            return $user;
+        }
+
+        $user = $this->createUser(
+            $meData['email'],
+            // a blank password - this user hasn't created a password yet!
+            '',
+            $meData['firstName'],
+            $meData['lastName']
+        );
+
+        return $user;
+    }
 
 Try the process again. No error this time - we find the existing user and
 use it instead of creating a new one.
@@ -104,7 +201,30 @@ authorization process.
 
 Pretty easily, we can do another lookup by email::
 
-    TODO: Code: Login: Looking up existing by email
+    private function findOrCreateUser(array $meData)
+    {
+        if ($user = $this->findUserByCOOPId($meData['id'])) {
+            // this is an existing user. Yay!
+            return $user;
+        }
+
+        if ($user = $this->findUserByEmail($meData['email'])) {
+            // we match by email
+            // we have to think if we should trust this. Is it possible to
+            // register at COOP with someone else's email?
+            return $user;
+        }
+
+        $user = $this->createUser(
+            $meData['email'],
+            // a blank password - this user hasn't created a password yet!
+            '',
+            $meData['firstName'],
+            $meData['lastName']
+        );
+
+        return $user;
+    }
 
 Cool. But be careful. Is it easy to fake someone else's email address on
 COOP? If so, I could register with someone else's email there and then use
