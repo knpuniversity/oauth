@@ -1,0 +1,19 @@
+diff --git a/client/src/OAuth2Demo/Client/Controllers/FacebookOAuthController.php b/client/src/OAuth2Demo/Client/Controllers/FacebookOAuthController.php
+index 9f28ba5..cf2ddbf 100644
+--- a/client/src/OAuth2Demo/Client/Controllers/FacebookOAuthController.php
++++ b/client/src/OAuth2Demo/Client/Controllers/FacebookOAuthController.php
+@@ -24,6 +24,14 @@ class FacebookOAuthController extends BaseController
+      */
+     public function redirectToAuthorization()
+     {
++        $config = array(
++          'appId' => 'YOUR_APP_ID',
++          'secret' => 'YOUR_APP_SECRET',
++          'allowSignedRequest' => false // optional but should be set to false for non-canvas apps
++        );
++
++        $facebook = new \Facebook($config);
++
+         die('Todo: Redirect to Facebook');
+     }
+ 
