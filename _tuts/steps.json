@@ -219,6 +219,56 @@
             "id": "facebook-add-egg-count-to-message",
             "name": "Facebook: Add egg count to message",
             "description": null
+        },
+        {
+            "id": "facebook-try-catch-on-api-call",
+            "name": "Facebook: try-catch on API call",
+            "description": null
+        },
+        {
+            "id": "facebook-redirect-to-authorize-on-error",
+            "name": "Facebook: redirect to authorize on error",
+            "description": null
+        },
+        {
+            "id": "facebook-refactor-into-a-method",
+            "name": "Facebook: Refactor into a method",
+            "description": null
+        },
+        {
+            "id": "facebook-retry-on-failure",
+            "name": "Facebook: Retry on failure",
+            "description": null
+        },
+        {
+            "id": "facebook-use-access-token-from-db",
+            "name": "Facebook: Use access token from db",
+            "description": null
+        },
+        {
+            "id": "facebook-remove-the-retry-stuff",
+            "name": "Facebook remove the retry stuff",
+            "description": null
+        },
+        {
+            "id": "facebook-add-the-login-link",
+            "name": "Facebook: Add the login link",
+            "description": null
+        },
+        {
+            "id": "facebook-starting-to-create-a-user",
+            "name": "Facebook: Starting to create a user",
+            "description": null
+        },
+        {
+            "id": "facebook-request-to-me",
+            "name": "Facebook: Request to \/me",
+            "description": null
+        },
+        {
+            "id": "facebook-updating-findorcreateuser",
+            "name": "Facebook: Updating findOrCreateUser",
+            "description": null
         }
     ]
 }
