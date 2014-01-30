@@ -343,7 +343,144 @@ Using the API
 Just like with the Facebook PHP SDK, the Google JavaScript SDK now has an
 access token that it's storing. This means we can start making API calls.
 I'll copy in a function that uses the API to get a list of all of the people
-in my circles and 
+in my circles and prints their smiling faces:
+
+.. code-block:: javascript
+
+    // views/dashboard.twig
+    function loadCirclesPeople() {
+        var request = gapi.client.plus.people.list({
+            'userId': 'me',
+            'collection': 'visible'
+        });
+        request.execute(function (people) {
+            var $people = $('#google-plus-people');
+            $people.empty();
+            for (var personIndex in people.items) {
+                var person = people.items[personIndex];
+                $people.append('<img src="' + person.image.url + '">');
+            }
+        });
+    }
+
+This looks for a div with the id ``google-plus-people``, so let's add that
+to our page:
+
+    {# views/dashboard.twig #}
+
+    <!-- ... -->
+    <a href="#" class="btn btn-lg btn-info js-google-signin">Sign in with Google+</a>
+    <div id="google-plus-people"></div>
+    <!-- ... -->
+
+Let's call this function automatically after we authenticate:
+
+    function mySignInCallback(authResult) {
+        if (authResult['status']['signed_in']) {
+            // ...
+
+            // loads the gapi.client.plus JavaScript object
+            gapi.client.load('plus','v1', function() {
+                loadCirclesPeople();
+            });
+        } else {
+            // ...
+        }
+    }
+
+Ok, let's try it! When we refresh and sign in, we get a beautiful box of
+people in our circle! In my console, if we click on the AJAX call that was
+made, we can see that an access token was sent on the ``Authorization: Bearer``
+header. OAuth is happening behind the scenes!
+
+Page-Parameters
+---------------
+
+Our ultimate goal is for the user to be able to choose from the people in
+your circles and invite them to join TopCluck. With all the OAuth stuff behind
+us, this is just a matter of writing some JavaScript and figuring out exactly
+how to use the Google+ API to accomplish this. We'll leave this to you!
+
+But there's one more small thing that's bothering me. When we click to sign in,
+the ``mySignInCallback`` is called twice, which means ``loadCirclesPeople``
+is called twice and 2 API requests are made to Google.
+
+Regardless of why this happens, we could of course avoid the double-calls
+by using a simple variable:
+
+.. code-block:: javascript
+
+        var isSignedIn = false;
+        function mySignInCallback(authResult) {
+            if (authResult['status']['signed_in']) {
+                if (isSignedIn) {
+                    return;
+                }
+                isSignedIn = true;
+
+                // ...
+            } else {
+                // ...
+            }
+        }
+
+But the reason this is happening is more interesting. Rememember how the
+Facebook SDK stores the access token details in the session? The Google JavaScript
+SDK stores those details in a cookie. This means that since we've already
+signed in, we should *still* be signed in if we refresh. We shouldn't need
+to click the Sign in button each time.
+
+To make this possible, we just need to move the ``signIn`` parameters to
+meta tags. This is actually what `Step 4`_ of the example does. Let's copy
+these ``meta`` tags into our layout and update it with our client id. We
+can also add the callback parameter here:
+
+.. code-block:: html+jinja
+
+    {# views/base.twig #}
+    {# ... #}
+
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+
+    <meta name="google-signin-clientid" content="104029852624-a72k7hnbrrqo02j5ofre9tel76ui172i.apps.googleusercontent.com" />
+    <meta name="google-signin-scope" content="https://www.googleapis.com/auth/plus.login" />
+    <meta name="google-signin-requestvisibleactions" content="http://schemas.google.com/AddActivity" />
+    <meta name="google-signin-cookiepolicy" content="single_host_origin" />
+    <meta name="google-signin-callback" content="mySignInCallback" />
+    {# ... #}
+
+Google calls this page-level configuration. One big advantage is that if
+we already have an access token stored in a cookie, it will call the callback
+function on page load. Now that we have these, remove the ``params`` entirely:
+
+.. code-block:: javascript
+
+    // views/dashboard.twig
+    $('.js-google-signin').on('click', function(e) {
+        // prevent the click from going to #
+        e.preventDefault();
+
+        gapi.auth.signIn();
+    });
+
+Refresh the page now. Instantly, the Sign in button disappears and our circles
+show up. Whether we're managing the access token on the server or in JavaScript,
+we can make it persist throughout a session. This isn't always clear, since
+the Facebook and Google SDK's do a lot automatically for us. Just keep thinking
+about how OAuth works and you'll be in great shape.
+
+In this chapter, we saw how you can choose between the authorization code
+or implicit grant type when starting the authorization process. And although
+it has nothing to do with grant types, we also saw how the authorization
+process can be done by redirecting the user, like we saw in past chapters,
+*or* by opening a popup and communicating with JavaScript. Which method you'll
+use will laregely depend on the OAuth server and what it supports most easily.
+
+But if you need a *pure* JavaScript solution that never touches the server,
+then you need the implicit grant type. Even if you can keep much of the flow
+in JavaScript, the authorization code *still* needs a server so that it can
+use the client secret to exchange the code for the token.
 
 .. _`JavaScript Quick Start`: https://developers.google.com/+/quickstart/javascript
 .. _`Google+ Sign-In button`: https://developers.google.com/+/web/signin/
@@ -355,20 +492,4 @@ in my circles and
 .. _`nice documentation`: https://developers.google.com/+/web/api/javascript
 .. _`documentation page`: https://developers.google.com/+/web/api/javascript
 .. _`Step 5`: https://developers.google.com/+/web/signin/javascript-flow#step_5_handling_the_sign-in
-
--- how are the client-side API requests being made behind the scenes?
--- how does Facebook's JavaScript implementation differ and how does this
-    relate (or what should we mention about) the code versus token response
-    type when doing the authorization redirect.
--- mention no refresh token
--- token should be validated? (https://developers.google.com/accounts/docs/OAuth2?csw=1#scenarios)
--- page-parameters
-
-
-Client ID	104029852624-a72k7hnbrrqo02j5ofre9tel76ui172i.apps.googleusercontent.com
-Email address	104029852624-a72k7hnbrrqo02j5ofre9tel76ui172i@developer.gserviceaccount.com
-Client secret	GC3rBLT2Sv7zh2PTFx7-XP5t
-Redirect URIs	
-https://localhost:9000/oauth2callback
-Javascript Origins	
-https://localhost:9000
+.. _`Step 4`: https://developers.google.com/+/web/signin/javascript-flow#step_5_handling_the_sign-in
