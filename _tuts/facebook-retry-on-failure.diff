@@ -1,0 +1,25 @@
+diff --git a/client/src/OAuth2Demo/Client/Controllers/FacebookOAuthController.php b/client/src/OAuth2Demo/Client/Controllers/FacebookOAuthController.php
+index 60c652f..84fe21e 100644
+--- a/client/src/OAuth2Demo/Client/Controllers/FacebookOAuthController.php
++++ b/client/src/OAuth2Demo/Client/Controllers/FacebookOAuthController.php
+@@ -88,7 +88,7 @@ class FacebookOAuthController extends BaseController
+         return $this->redirect($this->generateUrl('home'));
+     }
+ 
+-    private function makeApiRequest(\Facebook $facebook, $url, $method, $parameters)
++    private function makeApiRequest(\Facebook $facebook, $url, $method, $parameters, $retry = true)
+     {
+         try {
+             return $facebook->api($url, $method, $parameters);
+@@ -99,6 +99,11 @@ class FacebookOAuthController extends BaseController
+                 return $this->redirect($this->generateUrl('facebook_authorize_start'));
+             }
+ 
++            // re-try one time
++            if ($retry) {
++                return $this->makeApiRequest($facebook, $url, $method, false);
++            }
++
+             // it failed for some odd reason...
+             throw $e;
+         }
