@@ -245,9 +245,8 @@ Using the Facebook API
 ~~~~~~~~~~~~~~~~~~~~~~
 
 To post to someone's timeline, we'll use Facebook's API. Like with any API
-that uses OAuth, we just need to know what URL we need, the HTTP method,
-any data we need to send, and how should attach the access token to the
-request.
+that uses OAuth, we just need to know the URL, the HTTP method,nany data we 
+need to send, and how the access token should be attached to the request.
 
 With some `quick googling`_, we see that we need to make a POST request to
 ``/[USER_ID]/feed`` and send ``message`` and ``access_token`` POST data.
@@ -274,7 +273,7 @@ Let's set the return value to a variable and dump it::
 Refresh the page to try it out. It prints out an array with an ``id`` and
 a long number string. The response from ``api`` is specific to what you're
 trying to do. In this case, this is the ID of the new post it made. When
-I go to my Facebook page, there's my post!
+I go to my Facebook page, there's my egg-citing post!
 
 Remember that one of the reasons this works is that our authorization URL
 included the scope ``publish_actions``. Had we *not* done that, this request
@@ -292,14 +291,14 @@ the flow by redirecting back to the homepage::
     TODO: Code:
 
 Refresh to try it all again. Check Facebook to see that we're bragging about
-our egg-laying progress!
+our egg-laying hens' progress!
 
 Handling Failure and Re-Authorizing
 -----------------------------------
 
 Of course, the API request may fail, especially in the world of OAuth where
 the access token might be expired. If any API request fails, the Facebook
-class will throw a ``FacebookApiException`` exception. That's great, because
+class will throw a ``FacebookApiException``. That's great, because
 we can wrap the API call in a try-catch block::
 
     TODO: Code: Facebook: try-catch on API call
@@ -309,8 +308,8 @@ a few useful methods, like ``getResult``, which gives you the raw API error
 response or ``getType`` and ``getCode``. Facebook has a helpful page called
 `Using the Graph API`_ that talks about the API and also the errors you might
 get back. If ``getType`` returns ``OAuthException``, or the if the code is
-190 or 102, the error is probably related to OAuth and we should probably
-try re-authorizing them::
+190 or 102, the error is probably related to OAuth and we should try 
+re-authorizing them::
 
     TODO: Code: Facebook: redirect to authorize on error
 
@@ -319,7 +318,7 @@ more detail. If this seems a little unclear, that's probably because Facebook's
 error documentation is a little fuzzy.
 
 If it's any other error, I'll just throw the original exception. You could
-also render some custom error page.
+even render some custom error page.
 
 With any API that uses OAuth, if you can be smart enough to detect when
 API requests fail due to an expired access token, you can give your users
@@ -330,7 +329,7 @@ Re-trying an API Request
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
 Depending on the error, you might also want to re-try the request. Let's
-refactor the API call into a new private method::
+refactor the API call into a new private method called ``makeApiRequest``::
 
     public function shareProgressOnFacebook()
     {
