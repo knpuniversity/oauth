@@ -304,15 +304,21 @@ we can wrap the API call in a try-catch block::
 
     TODO: Code: Facebook: try-catch on API call
 
-If you want to get information about the error, you can use either the ``getResult``
-or ``getType`` method on the exception object. For example, if ``getType``
-is equal to ``TODO``, it means that we don't have an access token or it expired.
-In that case, let's actually redirect the user and re-start the authorization
-process::
+If you want to get information about the error, the exception object has
+a few useful methods, like ``getResult``, which gives you the raw API error
+response or ``getType`` and ``getCode``. Facebook has a helpful page called
+`Using the Graph API`_ that talks about the API and also the errors you might
+get back. If ``getType`` returns ``OAuthException``, or the if the code is
+190 or 102, the error is probably related to OAuth and we should probably
+try re-authorizing them::
 
     TODO: Code: Facebook: redirect to authorize on error
 
-If it's some other error, I'll just throw the original exception. You could
+There's even `another page`_ that talks about handling expired tokens in
+more detail. If this seems a little unclear, that's probably because Facebook's
+error documentation is a little fuzzy.
+
+If it's any other error, I'll just throw the original exception. You could
 also render some custom error page.
 
 With any API that uses OAuth, if you can be smart enough to detect when
@@ -579,3 +585,5 @@ for you!
 .. _`getLoginUrl()`: https://developers.facebook.com/docs/reference/php/facebook-getLoginUrl/
 .. _`find a page`: https://developers.facebook.com/docs/reference/login/
 .. _`quick googling`: https://developers.facebook.com/docs/reference/api/publishing/
+.. _`Using the Graph API`: https://developers.facebook.com/docs/graph-api/using-graph-api
+.. _`another page`: https://developers.facebook.com/docs/facebook-login/access-tokens#errors
