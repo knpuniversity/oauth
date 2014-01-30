@@ -107,7 +107,23 @@ our layout::
 
 .. code-block:: html+jinja
 
-    TODO: Code: Google: Include JS SDK
+    {# views/base.twig #}
+
+    <script src="http://code.jquery.com/jquery-2.0.3.min.js"></script>
+    <script src="{{ app.request.basePath }}/js/bootstrap.min.js"></script>
+
+    <script type="text/javascript">
+        (function () {
+            var po = document.createElement('script');
+            po.type = 'text/javascript';
+            po.async = true;
+            po.src = 'https://apis.google.com/js/client:plusone.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(po, s);
+        })();
+    </script>
+
+    {# ... #}
 
 This exposes a global ``gapi`` object we'll use in a second.
 
@@ -119,14 +135,40 @@ click event listener to it:
 
 .. code-block:: html+jinja
 
-    TODO: Code: Google: Adding Sign in with Google button
+    {# views/dashboard.twig #}
+    
+    <!-- ... -->
+    <a href="#" class="btn btn-lg btn-info js-google-signin">Sign in with Google+</a>
+    <!-- ... -->
+    
+    {% block javascripts %}
+        {{ parent() }}
+
+        <script>
+            jQuery(document).ready(function() {
+                $('.js-google-signin').on('click', function(e) {
+                    // prevent the click from going to #
+                    e.preventDefault();
+
+                });
+            });
+        </script>
+        {# Put any JavaScript here #}
+    {% endblock %}
 
 We can start the authentication process by using the ``signIn`` method of
 the ``gapi.authentication`` JavaScript object:
 
 .. code-block:: javascript
 
-    TODO: Code: Google: Starting the authentication process
+    jQuery(document).ready(function() {
+        $('.js-google-signin').on('click', function(e) {
+            // prevent the click from going to #
+            e.preventDefault();
+
+            gapi.auth.signIn();
+        });
+    });
 
 When we try it, nothing happens. In fact, there's a JavaScript error:
 
@@ -166,7 +208,21 @@ need to worry about it:
 
 .. code-block:: javascript::
 
-    Google: Add signIn parameters
+        jQuery(document).ready(function() {
+            $('.js-google-signin').on('click', function(e) {
+                // prevent the click from going to #
+                e.preventDefault();
+
+                var myParams = {
+                    'clientid': '104029852624-a72k7hnbrrqo02j5ofre9tel76ui172i.apps.googleusercontent.com',
+                    'cookiepolicy': 'single_host_origin',
+                    'callback': 'mySignInCallback',
+                    'scope': 'https://www.googleapis.com/auth/plus.login',
+                    'requestvisibleactions': 'http://schemas.google.com/AddActivity'
+                };
+                gapi.auth.signIn(myParams);
+            });
+        });
 
 The ``cookiepolicy`` tells the SDK to set cookie data that's only accessible
 by our host name. This is a necessary detail just to make sure the data being
@@ -195,7 +251,9 @@ Let's create the ``mySignInCallback`` function and just prints these details:
 
 .. code-block:: javascript
 
-    TODO: Code: Google: Add basic callback function
+    function mySignInCallback(authResult) {
+        console.log(authResult);
+    }
 
 Refresh and try it again! Awesome, we see it print out an object with an
 ``access_token``. This is the big difference between the implicit flow and
@@ -217,7 +275,16 @@ The answer for Google+ is a parameter called ``redirecturi``. Set this to
 
 .. code-block:: javascript
 
-    TODO: Code: Google: Using authorization code temporarily
+    var myParams = {
+        'clientid': '104029852624-a72k7hnbrrqo02j5ofre9tel76ui172i.apps.googleusercontent.com',
+        'cookiepolicy': 'single_host_origin',
+        'callback': 'mySignInCallback',
+        'scope': 'https://www.googleapis.com/auth/plus.login',
+        'requestvisibleactions': 'http://schemas.google.com/AddActivity',
+        // add this temporarily!
+        'redirecturi': 'postmessage'
+    };
+    gapi.auth.signIn(myParams);
 
 This time, the ``authResult`` includes a ``code`` and *not* an ``access_token``.
 This is the authorization code grant type inside JavaScript. We would *still*
@@ -254,7 +321,18 @@ by copying the examle from `Step 5`_ of the docs and making some changes:
 
 .. code-block:: html+jinja
 
-    TODO: Code: [Google: Finishing the login callback
+    function mySignInCallback(authResult) {
+        if (authResult['status']['signed_in']) {
+            // Update the app to reflect a signed in userI
+            $('.js-google-signin').hide();
+        } else {
+            // Possible error values:
+            //   "user_signed_out" - User is signed-out
+            //   "access_denied" - User denied access to your app
+            //   "immediate_failed" - Could not automatically log in the user
+            console.log('Sign-in state: ' + authResult['error']);
+        }
+    }
 
 When we refresh and try again, the sign in button disappears, proving that
 authentication was successful!
@@ -264,6 +342,8 @@ Using the API
 
 Just like with the Facebook PHP SDK, the Google JavaScript SDK now has an
 access token that it's storing. This means we can start making API calls.
+I'll copy in a function that uses the API to get a list of all of the people
+in my circles and 
 
 .. _`JavaScript Quick Start`: https://developers.google.com/+/quickstart/javascript
 .. _`Google+ Sign-In button`: https://developers.google.com/+/web/signin/
