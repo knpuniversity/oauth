@@ -363,8 +363,10 @@ refactor the API call into a new private method called ``makeApiRequest``::
         }
     }
 
-So far, this does exactly the same thing as before. But if we add a new ``$retry``
-argument, we could run the request 1 more time if it fails::
+This method does the exact same thing as before. The ``if`` statement checks to see if
+``makeApiRequest`` needs us to redirect the user back to the authorize URL.
+
+But if we add a new ``$retry`` argument, we could run the request 1 more time if it fails::
 
     private function makeApiRequest(\Facebook $facebook, $url, $method, $parameters, $retry = true)
     {
@@ -425,7 +427,7 @@ is fake code, let's remove all the retry code for now::
 Logging in with Facebook
 ------------------------
 
-Finally, let's make it so the farmers can login with the Facebook account.
+Finally, let's make it so the farmers can login with their Facebook account.
 Let's start by adding a link on the login page. Just like with "Login with COOP",
 the URL is to the page that starts the Facebook authorization process:
 
@@ -490,7 +492,7 @@ into our FacebookOAuthController::
     }
 
 But to create a user, we need some basic information, like email, first name
-and last name. With COOP, we had made an API request to get this information.
+and last name. With COOP, we made an API request to get this information.
 Let's do the same thing for Facebook, using the really important endpoint
 ``/me``. And knowing that things can fail, let's make sure to wrap it in
 a try-catch block::
@@ -517,12 +519,10 @@ a try-catch block::
 
 At this point, we *should* have a valid access token, so if the request fails,
 something is very strange. That's why I'm showing an error page instead of
-redirecting them to re-authorize. If there's a problem, that could cause
-an infinite loop of redirecting the user to authorize.
+redirecting them to re-authorize.
 
-I'm dumping the result of the API request, so let's logout and try out the
-process. But first, reset the database so that it doesn't find our existing
-user:
+I'm dumping the result of the API request, so let's logout and try the process. 
+But first, reset the database so that it doesn't find our existing user:
 
 .. code-block:: bash
 
