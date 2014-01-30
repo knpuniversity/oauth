@@ -1,10 +1,13 @@
 OAuth with Facebook
 ===================
 
-CHECK TODOS!
+Now that Brent has TopCluck up and running it is time to challenge Farmer
+Scott to an all out egg counting brawl. Brent knows that if they are both
+tracking egg collections on TopCluck everyone will see how awesome his hens
+really are.
 
-Farmers are going crazy for TopCluck, so Brent hatches another idea: having
-users share their chicken-laying progress on Facebook.
+But what fun is winning if no one else gets to see? So Brent hatches another 
+idea: having users share their chicken-laying progress on Facebook. 
 
 Fortunately, Facebook uses OAuth 2.0 for their API, so we're already dangerous.
 And like a lot of sites, they even have a PHP library to help us work with
