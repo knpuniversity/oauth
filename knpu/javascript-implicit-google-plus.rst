@@ -15,18 +15,18 @@ The Implicit Grant Type
 -----------------------
 
 So far we've seen 2 different grant types, or strategies for exchanging the
-access token. These were client credentials and authorization code. Unfortunately,
+access token. These were Client Credentials and Authorization Code. Unfortunately,
 neither works inside JavaScript. The problem is that both ultimately involve
-making a request to the token endpoint (e.g. ``/token``) and including your
+making a request to the OAuth server using your
 client secret. As the name suggests, that string is a secret. So, printing
 it inside an HTML page and using it in JavaScript would be a terrible idea.
 
-Instead, we need to look at one more grant type called implicit. It's a lot
-like authorization code, but simpler. With authorization code, the user is
+Instead, we need to look at one more grant type called Implicit. It's a lot
+like Authorization Code, but simpler. With Authorization Code, the user is
 redirected back to our app with an authorization code. We make another API
 request to the token endpoint to exchange it for an access token.
 
-With the implicit flow, when the user is sent back to us, they come with
+With the Implicit flow, when the user is sent back to us, they come with
 the access token directly - instead of the authorization code. This eliminates
 one step of the process. But it also has some disadvantages as we'll see.
 
@@ -38,7 +38,7 @@ which is a little example app. If we follow the `Google+ Sign-In button`_,
 we can get some actual details on how Google+ sign in works.
 
 Now that we know a lot about OAuth, the "Choosing a sign-in flow" is really
-interesting. These are a great example of how the OAuth grant types will
+interesting. This is a great example of how the OAuth grant types will
 look slightly different depending on the server.
 
 Pure server-side flow
@@ -92,7 +92,7 @@ Next, click `APIs and auth` and make sure the "Google+ API" is set to ON.
 
 Finally, click "Credentials" on the left and click the "Create New Client ID"
 button. Keep "Web Application" selected and fill in your domain name. Since
-we won't be using the authorization code grant type and redirecting the user,
+we won't be using the Authorization Code grant type and redirecting the user,
 we only really need to worry about the JavaScript origins. Google makes us
 fill these in for security purposes - a topic we'll cover later.
 
@@ -136,11 +136,11 @@ click event listener to it:
 .. code-block:: html+jinja
 
     {# views/dashboard.twig #}
-    
+
     <!-- ... -->
     <a href="#" class="btn btn-lg btn-info js-google-signin">Sign in with Google+</a>
     <!-- ... -->
-    
+
     {% block javascripts %}
         {{ parent() }}
 
@@ -235,7 +235,7 @@ And when we approve, we get a JavaScript error:
 
 .. code-block:: text
 
-    Callback function named "mySignInCallback" not found 
+    Callback function named "mySignInCallback" not found
 
 That's actually great! Instead of redirecting the user back to a URL on our
 site, Google passes us the OAuth details by calling a JavaScript function.
@@ -343,7 +343,7 @@ Using the API
 Just like with the Facebook PHP SDK, the Google JavaScript SDK now has an
 access token that it's storing. This means we can start making API calls.
 I'll copy in a function that uses the API to get a list of all of the people
-in my circles and 
+in my circles and
 
 .. _`JavaScript Quick Start`: https://developers.google.com/+/quickstart/javascript
 .. _`Google+ Sign-In button`: https://developers.google.com/+/web/signin/
@@ -365,10 +365,10 @@ in my circles and
 -- page-parameters
 
 
-Client ID	104029852624-a72k7hnbrrqo02j5ofre9tel76ui172i.apps.googleusercontent.com
-Email address	104029852624-a72k7hnbrrqo02j5ofre9tel76ui172i@developer.gserviceaccount.com
-Client secret	GC3rBLT2Sv7zh2PTFx7-XP5t
-Redirect URIs	
+Client ID   104029852624-a72k7hnbrrqo02j5ofre9tel76ui172i.apps.googleusercontent.com
+Email address   104029852624-a72k7hnbrrqo02j5ofre9tel76ui172i@developer.gserviceaccount.com
+Client secret   GC3rBLT2Sv7zh2PTFx7-XP5t
+Redirect URIs
 https://localhost:9000/oauth2callback
-Javascript Origins	
+Javascript Origins
 https://localhost:9000
