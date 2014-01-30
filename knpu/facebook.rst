@@ -212,7 +212,7 @@ in the session. So, everything is easy right now.
 But on the user's next session, the access token will be gone and we'll need
 to re-ask the user to authorize. If you want to avoid this, you could store
 the Facebook access token in the database. In a second, I'll show you how
-you'd use that access token. Of course, these tokes don't last forever, so 
+you'd use that access token. Of course, these tokens don't last forever, so 
 eventually you'll need to re-authorize them or use a :doc:`refresh token <refresh-token>`,
 the topic of an upcoming chapter!
 
@@ -245,7 +245,7 @@ Using the Facebook API
 ~~~~~~~~~~~~~~~~~~~~~~
 
 To post to someone's timeline, we'll use Facebook's API. Like with any API
-that uses OAuth, we just need to know the URL, the HTTP method,nany data we 
+that uses OAuth, we just need to know the URL, the HTTP method, any data we 
 need to send, and how the access token should be attached to the request.
 
 With some `quick googling`_, we see that we need to make a POST request to
