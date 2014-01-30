@@ -1,10 +1,10 @@
 OAuth with Facebook
 ===================
 
-Now that Brent has TopCluck up and running it is time to challenge Farmer
+Now that Brent has TopCluck up and running he can finally challenge Farmer
 Scott to an all out egg counting brawl. Brent knows that if they are both
-tracking egg collections on TopCluck everyone will see how awesome his hens
-really are.
+tracking egg collections on TopCluck Farmer Scott will be proven wrong and
+everyone will see how awesome his hens really are.
 
 But what fun is winning if no one else gets to see? So Brent hatches another 
 idea: having users share their chicken-laying progress on Facebook. 
