@@ -307,7 +307,7 @@ If you want to get information about the error, the exception object has
 a few useful methods, like ``getResult``, which gives you the raw API error
 response or ``getType`` and ``getCode``. Facebook has a helpful page called
 `Using the Graph API`_ that talks about the API and also the errors you might
-get back. If ``getType`` returns ``OAuthException``, or the if the code is
+get back. If ``getType`` returns ``OAuthException``, or if the code is
 190 or 102, the error is probably related to OAuth and we should try 
 re-authorizing them::
 
