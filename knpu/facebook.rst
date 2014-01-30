@@ -39,11 +39,11 @@ Let's start by adding a link on the homepage to "Connect with Facebook":
 
 When we click this, we hit the code in the first function. Just like before,
 our job is to redirect to the authorize URL on Facebook. If we `dig a little`_
-bit, we can see this is ``/dialog/oauth`` for Facebook. We could start building
+bit on Google, we can see this is ``/dialog/oauth``. We could start building
 this by hand, but the Facebook SDK can help us out.
 
-If we look at their simple usage example, we can see how to create the Facebook
-object. Copy this into the code for our page::
+If we look at their simple usage example of the PHP SDK, we can see how to 
+create the Facebook object. Copy this into the code for our page::
 
     TODO: Code: Facebook: create SDK object
 
@@ -65,9 +65,9 @@ Redirecting the User
 
 Now, to get the authorize URL, we can use the `getLoginUrl()`_ function on
 the SDK. Remember that this URL always has 3 important things on it: the
-client ID, redirect URI back to our site and the list of scopes we need.
-The object already has our client ID, so it makes sense that we'll pass
-the redirect URI and scopes here::
+client ID, the redirect URI back to our site and the list of scopes we need.
+The object already has our client ID, so lets pass the redirect URI and scopes
+here. For Facebook, these are called ``redirect_uri`` and ``scope``::
 
     TODO: Code: Facebook: Complete getLoginUrl
 
@@ -136,8 +136,8 @@ When we try the process again, we get a valid-looking user id. So, what just
 happened?
 
 The ``getUser`` method does a whole lot more than it looks like. It actually
-looks for the ``code`` query parameter and makes the API request to the get
-the access token automatically! This is awesome, but it's also magic! If you
+looks for the ``code`` query parameter and makes the API request to get the 
+access token automatically! This is awesome, but it's also magic! If you
 can keep in mind how OAuth works and what's happening behind the scenes at
 each step, you'll be in great shape when something goes wrong.
 
@@ -169,16 +169,16 @@ our valid userId is printed out as if it were successful. What just happened?
 
 Our OAuth flow *did* fail. But even still, the Facebook object looks and
 finds a valid access token that it stored in the session from the last, successful
-authorization we did. That's nice, but it's unexpected. Just remember that
+authorization. That's nice, but it's unexpected. Just remember that
 ``getUser`` tries many things: like exchanging the authorization code for
 an access token or simply finding an access token that it already stored
 in the session.
 
 To see the error page, clear out your session cookie to reset everything.
-Log back in, then connect with Facebook but deny the request again. Bam!
+Log back in, then connect with Facebook but deny the request again. Oh Cluck!
 Error page! Without any session data to fall back on, the Facebook object
-doesn't have an access token and so can't make the API request to ``/me``
-to get it.
+doesn't have an access token and so can't make an API request to get the user
+id.
 
 Saving the Facebook User ID
 ---------------------------
@@ -212,8 +212,8 @@ in the session. So, everything is easy right now.
 But on the user's next session, the access token will be gone and we'll need
 to re-ask the user to authorize. If you want to avoid this, you could store
 the Facebook access token in the database. In a second, I'll show you how
-you'd use that access token. Of course, an access token doesn't last forever,
-so eventually you'll need to to re-authorize them or use a :doc:`refresh token <refresh-token>`,
+you'd use that access token. Of course, these tokes don't last forever, so 
+eventually you'll need to re-authorize them or use a :doc:`refresh token <refresh-token>`,
 the topic of an upcoming chapter!
 
 Sharing on your Wall
