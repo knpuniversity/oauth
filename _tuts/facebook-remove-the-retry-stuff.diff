@@ -1,0 +1,28 @@
+diff --git a/client/src/OAuth2Demo/Client/Controllers/FacebookOAuthController.php b/client/src/OAuth2Demo/Client/Controllers/FacebookOAuthController.php
+index 94e0225..60c652f 100644
+--- a/client/src/OAuth2Demo/Client/Controllers/FacebookOAuthController.php
++++ b/client/src/OAuth2Demo/Client/Controllers/FacebookOAuthController.php
+@@ -88,22 +88,13 @@ class FacebookOAuthController extends BaseController
+         return $this->redirect($this->generateUrl('home'));
+     }
+ 
+-    private function makeApiRequest(\Facebook $facebook, $url, $method, $parameters, $retry = true)
++    private function makeApiRequest(\Facebook $facebook, $url, $method, $parameters)
+     {
+         try {
+             return $facebook->api($url, $method, $parameters);
+         } catch (\FacebookApiException $e) {
+             // https://developers.facebook.com/docs/graph-api/using-graph-api/#errors
+             if ($e->getType() == 'OAuthException' || (in_array($e->getCode(), array(190, 102)))) {
+-                if ($retry) {
+-                    $user = $this->getLoggedInUser();
+-                    // this is fake code - we don't have a facebookAccessToken
+-                    // property in our example project
+-                    $facebook->setAccessToken($user->facebookAccessToken);
+-
+-                    return $this->makeApiRequest($facebook, $url, $method, false);
+-                }
+-
+                 // our token is bad - reauthorize to get a new token
+                 return $this->redirect($this->generateUrl('facebook_authorize_start'));
+             }
