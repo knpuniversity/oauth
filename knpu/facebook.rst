@@ -72,7 +72,7 @@ the redirect URI and scopes here::
     TODO: Code: Facebook: Complete getLoginUrl
 
 To know which scopes you need, you have to check with the API you're using.
-If we google about Facebook API scopes, we find a page that explains all
+If we google about Facebook API scopes, we `find a page`_ that explains all
 of them. We'll ultimately want to be able to get basic user information *and*
 post to a user's timeline. These are ``email`` and ``publish_actions``.
 
@@ -121,8 +121,8 @@ When we finish, we're redirected back to our second page, which still has
 the original todo message. But we have a ``code`` query parameter, and we
 know that it can be exchanged for an access token.
 
-Start by creating a private function that creates the Facebook object and
-using it in both functions::
+Start by creating a private function that creates the Facebook object, and
+use it in both functions::
 
     TODO: Code: Facebook: Refactor to createFacebook
 
@@ -176,7 +176,7 @@ in the session.
 
 To see the error page, clear out your session cookie to reset everything.
 Log back in, then connect with Facebook but deny the request again. Bam!
-Error page! Without any session data to fallback to, the Facebook object
+Error page! Without any session data to fall back on, the Facebook object
 doesn't have an access token and so can't make the API request to ``/me``
 to get it.
 
@@ -198,9 +198,9 @@ the whole cycle out - this time approving our application's authorization
 request. We now know that a lot is happening behind the scenes.
 
 First, the Facebook object exchanges the authorization code for an access
-token and saves it on the session. This all happens when we call ``getUser()``.
+token and saves it in the session. This all happens when we call ``getUser()``.
 Next, we save the Facebook user ID into the database and redirect to the
-homepage. Clicking the "User Info" box, shows us that Facebook ID.
+homepage. Clicking the "User Info" box shows us the Facebook ID.
 
 Store the Access Token in the Database?
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -219,12 +219,12 @@ the topic of an upcoming chapter!
 Sharing on your Wall
 --------------------
 
-If the current user has a Facebook ID, let's replace replace the "Connect
+If the current user has a Facebook ID, let's replace the "Connect
 with Facebook" link with one called "Share" that will post to their timeline:
 
 .. code-block:: html+jinja
 
-    TODO: Code: 
+    TODO: Code:
 
 The URL I'm generating here is pointing to a function called ``shareProgressOnFacebook``
 in FacebookOAuthController::
@@ -249,7 +249,7 @@ that uses OAuth, we just need to know what URL we need, the HTTP method,
 any data we need to send, and how should attach the access token to the
 request.
 
-With some quick googling, we see that we need to make a POST request to
+With some `quick googling`_, we see that we need to make a POST request to
 ``/[USER_ID]/feed`` and send ``message`` and ``access_token`` POST data.
 
 We could *absolutely* do this manually, using the nice Guzzle library from
@@ -264,7 +264,7 @@ HTTP method, and any parameters we need to send::
 The handy ``$facebook->getUser()`` method gives us the right ``USER_ID`` for
 the URL. The only missing piece is the ``access_token`` parameter, which we
 can leave out because the Facebook class adds that automatically for us. Again,
-that's really cool - just don't lose sight of how things are reall working
+that's really cool - just don't lose sight of how things are really working
 behind the scenes.
 
 Let's set the return value to a variable and dump it::
@@ -289,7 +289,7 @@ would fail.
 Let's make the message more realistic by putting in my egg count and finish
 the flow by redirecting back to the homepage::
 
-    TODO: Code: 
+    TODO: Code:
 
 Refresh to try it all again. Check Facebook to see that we're bragging about
 our egg-laying progress!
@@ -307,7 +307,7 @@ we can wrap the API call in a try-catch block::
 If you want to get information about the error, you can use either the ``getResult``
 or ``getType`` method on the exception object. For example, if ``getType``
 is equal to ``TODO``, it means that we don't have an access token or it expired.
-In that case, let's actualy redirect the user and re-start the authorization
+In that case, let's actually redirect the user and re-start the authorization
 process::
 
     TODO: Code: Facebook: redirect to authorize on error
@@ -448,7 +448,7 @@ into our FacebookOAuthController::
         $facebook = $this->createFacebook();
         $userId = $facebook->getUser();
         // ...
-        
+
         if ($this->isUserLoggedIn()) {
             $user = $this->getLoggedInUser();
         } else {
@@ -475,7 +475,7 @@ into our FacebookOAuthController::
 
         $user = $this->createUser(
             $meData['email'],
-            // blank 
+            // blank
             '',
             $meData['firstName'],
             $meData['lastName']
@@ -530,7 +530,7 @@ about the user::
 
     TODO
 
-We're allow to ask for this information because when we redirect the user
+We're allowed to ask for this information because when we redirect the user
 for authorization, we're asking for the ``email`` scope. Let's update the
 ``findOrCreateUser`` method to use this data.
 
@@ -560,7 +560,7 @@ API response::
             $meData['first_name'],
             $meData['last_name']
         );
-        
+
         return $user;
     }
 
@@ -577,3 +577,5 @@ for you!
 .. _`dig a little`: https://developers.facebook.com/docs/facebook-login/manually-build-a-login-flow/
 .. _`developers.facebook.com`: https://developers.facebook.com
 .. _`getLoginUrl()`: https://developers.facebook.com/docs/reference/php/facebook-getLoginUrl/
+.. _`find a page`: https://developers.facebook.com/docs/reference/login/
+.. _`quick googling`: https://developers.facebook.com/docs/reference/api/publishing/
