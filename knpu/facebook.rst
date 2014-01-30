@@ -1,6 +1,8 @@
 OAuth with Facebook
 ===================
 
+CHECK TODOS!
+
 Farmers are going crazy for TopCluck, so Brent hatches another idea: having
 users share their chicken-laying progress on Facebook.
 
@@ -208,7 +210,7 @@ But on the user's next session, the access token will be gone and we'll need
 to re-ask the user to authorize. If you want to avoid this, you could store
 the Facebook access token in the database. In a second, I'll show you how
 you'd use that access token. Of course, an access token doesn't last forever,
-so eventually you'll need to to re-authorize them or use a :doc:`refresh token </refresh-token>`,
+so eventually you'll need to to re-authorize them or use a :doc:`refresh token <refresh-token>`,
 the topic of an upcoming chapter!
 
 Sharing on your Wall
@@ -271,6 +273,16 @@ a long number string. The response from ``api`` is specific to what you're
 trying to do. In this case, this is the ID of the new post it made. When
 I go to my Facebook page, there's my post!
 
+Remember that one of the reasons this works is that our authorization URL
+included the scope ``publish_actions``. Had we *not* done that, this request
+would fail.
+
+.. tip::
+
+    With Facebook and other OAuth servers, users are able to approve *some*
+    of the scopes requested by your application but deny others. So code
+    defensively - API requests may fail!
+
 Let's make the message more realistic by putting in my egg count and finish
 the flow by redirecting back to the homepage::
 
@@ -284,31 +296,281 @@ Handling Failure and Re-Authorizing
 
 Of course, the API request may fail, especially in the world of OAuth where
 the access token might be expired. If any API request fails, the Facebook
-class will throw a ``FacebookApiException`` exception. 
+class will throw a ``FacebookApiException`` exception. That's great, because
+we can wrap the API call in a try-catch block::
+
+    TODO: Code: Facebook: try-catch on API call
+
+If you want to get information about the error, you can use either the ``getResult``
+or ``getType`` method on the exception object. For example, if ``getType``
+is equal to ``TODO``, it means that we don't have an access token or it expired.
+In that case, let's actualy redirect the user and re-start the authorization
+process::
+
+    TODO: Code: Facebook: redirect to authorize on error
+
+If it's some other error, I'll just throw the original exception. You could
+also render some custom error page.
+
+With any API that uses OAuth, if you can be smart enough to detect when
+API requests fail due to an expired access token, you can give your users
+a better experience by having them re-authorize your application instead
+of just failing.
+
+Re-trying an API Request
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+Depending on the error, you might also want to re-try the request. Let's
+refactor the API call into a new private method::
+
+    public function shareProgressOnFacebook()
+    {
+        $eggCount = $this->getTodaysEggCountForUser($this->getLoggedInUser());
+        $facebook = $this->createFacebook();
+
+        $this->makeApiRequest(
+            $facebook,
+            '/'.$facebook->getUser().'/feed',
+            'POST',
+            array(
+                'message' => sprintf('Woh my chickens have laid %s eggs today!', $eggCount),
+            )
+        );
+
+        return $this->redirect($this->generateUrl('home'));
+    }
+
+    private function makeApiRequest(\Facebook $facebook, $url, $method, $parameters)
+    {
+        try {
+            return $facebook->api($url, $method, $parameters);
+        } catch (\FacebookApiException $e) {
+            if ($e->getType() == 'access_denied') {
+                // our token is bad - reauthorize to get a new token
+                return $this->redirect($this->generateUrl('facebook_authorize_start'));
+            }
+
+            // it failed for some odd reason...
+            throw $e;
+        }
+    }
+
+So far, this does exactly the same thing as before. But if we add a new ``$retry``
+argument, we could run the request 1 more time if it fails::
+
+    private function makeApiRequest(\Facebook $facebook, $url, $method, $parameters, $retry = true)
+    {
+        try {
+            return $facebook->api($url, $method, $parameters);
+        } catch (\FacebookApiException $e) {
+            if ($e->getType() == 'access_denied') {
+                // our token is bad - reauthorize to get a new token
+                return $this->redirect($this->generateUrl('facebook_authorize_start'));
+            }
+
+            // re-try one time
+            if ($retry) {
+                return $this->makeApiRequest($facebook, $url, $method, false);
+            }
+
+            // it failed for some odd reason...
+            throw $e;
+        }
+    }
+
+Of course, this is really only interesting if we expect Facebook to have
+a decent number of temporary failures. But the big idea is that you should
+do your best to figure out *why* a failure has happened and re-try if it
+makes sense.
+
+.. note::
+
+    If you're using the `Guzzle`_ library to make API requests (which the
+    Facebook class does *not* use), it has built-in support for re-trying
+    a request if it fails. See `Retrying Requests`_.
+
+This is especially useful in the world of OAuth. We *didn't* store the Facebook
+access token in the database. But if we had, we could use it right now and
+re-try the request again::
+
+    TODO: Code: [Facebook: Use access token from db
+
+So if the access token were missing from the session and the one in the database
+hasn't expired, this will make everything work perfectly smooth. Since this
+is fake code, let's remove all the retry code for now::
+
+    private function makeApiRequest(\Facebook $facebook, $url, $method, $parameters)
+    {
+        try {
+            return $facebook->api($url, $method, $parameters);
+        } catch (\FacebookApiException $e) {
+            if ($e->getType() == 'access_denied') {
+                // our token is bad - reauthorize to get a new token
+                return $this->redirect($this->generateUrl('facebook_authorize_start'));
+            }
+
+            // it failed for some odd reason...
+            throw $e;
+        }
+    }
+
+Logging in with Facebook
+------------------------
+
+Finally, let's make it so the farmers can login with the Facebook account.
+Let's start by adding a link on the login page. Just like with "Login with COOP",
+the URL is to the page that starts the Facebook authorization process:
+
+.. code-block:: html+jinja
+
+    {# views/user/login.twig #}
+    {# ... #}
+
+    <button type="submit" class="btn btn-primary">Login!</button>
+    OR
+    <div class="btn-group">
+        <a href="{{ path('coop_authorize_start') }}" class="btn btn-default">Login with COOP</a>
+        <a href="{{ path('facebook_authorize_start') }}" class="btn btn-default">Login with Facebook</a>
+    </div>
+
+Logging in with Facebook is going to work *exactly* like logging in with
+COOP. In fact, let's just copy all the related code from CoopOAuthController
+into our FacebookOAuthController::
+
+    // src/OAuth2Demo/Client/Controllers/FacebookOAuthController.php
+    // ...
+
+    public function receiveAuthorizationCode(Application $app, Request $request)
+    {
+        $facebook = $this->createFacebook();
+        $userId = $facebook->getUser();
+        // ...
+        
+        if ($this->isUserLoggedIn()) {
+            $user = $this->getLoggedInUser();
+        } else {
+            $user = $this->findOrCreateUser($meData);
+
+            $this->loginUser($user);
+        }
+
+        $user->facebookUserId = $userId;
+        $this->saveUser($user);
+        // ...
+    }
+
+    private function findOrCreateUser(array $meData)
+    {
+        if ($user = $this->findUserByFacebookId($meData['id'])) {
+            // this is an existing user. Yay!
+            return $user;
+        }
+
+        if ($user = $this->findUserByEmail($meData['email'])) {
+            return $user;
+        }
+
+        $user = $this->createUser(
+            $meData['email'],
+            // blank 
+            '',
+            $meData['firstName'],
+            $meData['lastName']
+        );
+
+        return $user;
+    }
+
+But to create a user, we need some basic information, like email, first name
+and last name. With COOP, we had made an API request to get this information.
+Let's do the same thing for Facebook, using the really important endpoint
+``/me``. And knowing that things can fail, let's make sure to wrap it in
+a try-catch block::
+
+    public function receiveAuthorizationCode(Application $app, Request $request)
+    {
+        // ..
+
+        try {
+            $json = $facebook->api('/me');
+        } catch (\FacebookApiException $e) {
+            return $this->render('failed_token_request.twig', array('response' => $e->getMessage()));
+        }
+
+        if ($this->isUserLoggedIn()) {
+            $user = $this->getLoggedInUser();
+        } else {
+            $user = $this->findOrCreateUser($json);
+
+            $this->loginUser($user);
+        }
+        // ...
+    }
+
+At this point, we *should* have a valid access token, so if the request fails,
+something is very strange. That's why I'm showing an error page instead of
+redirecting them to re-authorize. If there's a problem, that could cause
+an infinite loop of redirecting the user to authorize.
+
+I'm dumping the result of the API request, so let's logout and try out the
+process. But first, reset the database so that it doesn't find our existing
+user:
+
+.. code-block:: bash
+
+    rm data/topcluck.sqlite
+
+When we login with Facebook, we hit the dump, which holds a lot of nice information
+about the user::
+
+.. code-block:: json
+
+    TODO
+
+We're allow to ask for this information because when we redirect the user
+for authorization, we're asking for the ``email`` scope. Let's update the
+``findOrCreateUser`` method to use this data.
+
+First, change ``findUserByCOOPId`` to ``findUserByFacebookId``, which is
+a shortcut method in my app to find a user by the  ``facebookUserId`` column::
+
+    private function findOrCreateUser(array $meData)
+    {
+        if ($user = $this->findUserByFacebookId($meData['id'])) {
+            // this is an existing user. Yay!
+            return $user;
+        }
+        // ...
+    }
+
+Next, change the ``firstName`` and ``lastName`` keys to match Facebook's
+API response::
+
+    private function findOrCreateUser(array $meData)
+    {
+        // ...
+
+        $user = $this->createUser(
+            $meData['email'],
+            // a blank password - this user hasn't created a password yet!
+            '',
+            $meData['first_name'],
+            $meData['last_name']
+        );
+        
+        return $user;
+    }
+
+It's that easy! Go back to the login page and try the whole process. When
+it finishes, we can click on the "User Info" section to see that we're logged
+in as a new user.
+
+And that's it! Since Facebook uses OAuth, working with it is almost exactly
+like working with COOP. The biggest differene is that Facebook has a PHP
+SDK, which makes life easier, but hides some of the OAuth magic that's happening
+behind the scenes. But now that you truly understand things, that's no problem
+for you!
 
 .. _`dig a little`: https://developers.facebook.com/docs/facebook-login/manually-build-a-login-flow/
 .. _`developers.facebook.com`: https://developers.facebook.com
 .. _`getLoginUrl()`: https://developers.facebook.com/docs/reference/php/facebook-getLoginUrl/
-
-+ install the library
-+ look at its docs real quick?
-+ copy the whole controller, only with 2 methods
-+ create a Facebook object and setup the redirect
-+ create a Facebook app
-+ look up the scopes we need
-+ get the Facebook objec in the other method
-+ call getUser()
-+ handle no User
-- request to /me and handle failure
-- update logged in user
-+ redirect home
-+ add a link to share progress on facebook
-+ look up endpoint we need
-- do API request, with catch
-- redirect
-- get access token from the db
-- add a Facebook login URL
-- add single-sign on logic
-
-
-- de-authorizing for testing
