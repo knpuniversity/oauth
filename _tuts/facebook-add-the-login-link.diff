@@ -1,0 +1,16 @@
+diff --git a/client/views/user/login.twig b/client/views/user/login.twig
+index 87833e0..788b58b 100644
+--- a/client/views/user/login.twig
++++ b/client/views/user/login.twig
+@@ -33,7 +33,10 @@
+                     <div class="col-lg-10 col-lg-offset-2">
+                         <button type="submit" class="btn btn-primary">Login!</button>
+                         OR
+-                        <a href="{{ path('coop_authorize_start') }}" class="btn btn-default">Login with COOP</a>
++                        <div class="btn-group">
++                            <a href="{{ path('coop_authorize_start') }}" class="btn btn-default">Login with COOP</a>
++                            <a href="{{ path('facebook_authorize_start') }}" class="btn btn-default">Login with Facebook</a>
++                        </div>
+                     </div>
+                 </div>
+             </fieldset>
