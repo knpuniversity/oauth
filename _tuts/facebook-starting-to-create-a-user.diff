@@ -1,0 +1,50 @@
+diff --git a/client/src/OAuth2Demo/Client/Controllers/FacebookOAuthController.php b/client/src/OAuth2Demo/Client/Controllers/FacebookOAuthController.php
+index 60c652f..74029e1 100644
+--- a/client/src/OAuth2Demo/Client/Controllers/FacebookOAuthController.php
++++ b/client/src/OAuth2Demo/Client/Controllers/FacebookOAuthController.php
+@@ -58,7 +58,14 @@ class FacebookOAuthController extends BaseController
+             ));
+         }
+ 
+-        $user = $this->getLoggedInUser();
++        if ($this->isUserLoggedIn()) {
++            $user = $this->getLoggedInUser();
++        } else {
++            $user = $this->findOrCreateUser($json);
++
++            $this->loginUser($user);
++        }
++
+         $user->facebookUserId = $userId;
+         $this->saveUser($user);
+ 
+@@ -114,4 +121,29 @@ class FacebookOAuthController extends BaseController
+ 
+         return new \Facebook($config);
+     }
++
++    private function findOrCreateUser(array $meData)
++    {
++        if ($user = $this->findUserByCOOPId($meData['id'])) {
++            // this is an existing user. Yay!
++            return $user;
++        }
++
++        if ($user = $this->findUserByEmail($meData['email'])) {
++            // we match by email
++            // we have to think if we should trust this. Is it possible to
++            // register at COOP with someone else's email?
++            return $user;
++        }
++
++        $user = $this->createUser(
++            $meData['email'],
++            // a blank password - this user hasn't created a password yet!
++            '',
++            $meData['firstName'],
++            $meData['lastName']
++        );
++
++        return $user;
++    }
+ }
