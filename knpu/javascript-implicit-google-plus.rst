@@ -96,7 +96,193 @@ we won't be using the authorization code grant type and redirecting the user,
 we only really need to worry about the JavaScript origins. Google makes us
 fill these in for security purposes - a topic we'll cover later.
 
-When we're finished, we have a brand new Client ID and secret. Keep these handy.
+When we're finished, we have a brand new Client ID and secret. Keep these handy!
+
+Including the JavaScript SDK
+----------------------------
+
+The implicit OAuth flow can be done without any tools, but Google makes our
+life a lot easier by giving us a JavaScript SDK. `Copy the script`_ into
+our layout::
+
+.. code-block:: html+jinja
+
+    TODO: Code: Google: Include JS SDK
+
+This exposes a global ``gapi`` object we'll use in a second.
+
+Initiate the Sign-in Flow
+-------------------------
+
+Let's add a "Sign in with Google" button on the homepage and attach a jQuery
+click event listener to it:
+
+.. code-block:: html+jinja
+
+    TODO: Code: Google: Adding Sign in with Google button
+
+We can start the authentication process by using the ``signIn`` method of
+the ``gapi.authentication`` JavaScript object:
+
+.. code-block:: javascript
+
+    TODO: Code: Google: Starting the authentication process
+
+When we try it, nothing happens. In fact, there's a JavaScript error:
+
+.. code-block:: text
+
+    cookiepolicy is a required field.  See
+    https://developers.google.com/+/web/signin/#button_attr_cookiepolicy
+    for more information.
+
+What we're trying to do here is *similar* to the step in the authorization
+code grant type where we originally redirect the user to the OAuth server.
+There are details we need to send to Google+, like our client id and the
+scopes we want.
+
+In fact, the ``gapi.auth`` object has `nice documentation`_ and the ``signIn``
+method there shows us the common parameters we need:
+
+.. code-block:: javascript
+
+    // just the example copied from https://developers.google.com/+/web/api/javascript#gapiauthsigninparameters
+    function initiateSignIn() {
+      var myParams = {
+        'clientid' : 'xxxxxxxxxxxxxx..apps.googleusercontent.com',
+        'cookiepolicy' : 'single_host_origin',
+        'callback' : 'mySignInCallback',
+        'scope' : 'https://www.googleapis.com/auth/plus.login',
+        'requestvisibleactions' : 'http://schemas.google.com/AddActivity'
+        // Additional parameters
+      };
+      gapi.auth.signIn(myParams);
+    }
+
+Let's copy these into our JavaScript. Update the ``clientid`` but keep the
+``scope`` as it will let us access the user's social graph. The ``requestvisibleactions``
+parameter relates to posting activities - you can leave it, but we won't
+need to worry about it:
+
+.. code-block:: javascript::
+
+    Google: Add signIn parameters
+
+The ``cookiepolicy`` tells the SDK to set cookie data that's only accessible
+by our host name. This is a necessary detail just to make sure the data being
+passed around can't be read by anyone else.
+
+All of these parameters are explained nicely on the `documentation page`_.
+
+Let's try it again! Now we get the popup which asks us to authorize the app.
+And when we approve, we get a JavaScript error:
+
+.. code-block:: text
+
+    Callback function named "mySignInCallback" not found 
+
+That's actually great! Instead of redirecting the user back to a URL on our
+site, Google passes us the OAuth details by calling a JavaScript function.
+This isn't special to the implicit flow - the `Hybrid server-side flow`_
+we looked at earlier is an example of an authorization code grant type that
+does this part in JavaScript.
+
+Now we just need to write this function. If we look at `Step 5`_, we can
+see how this function should work. It's passed an ``authResult`` variable
+that contains authentication information.
+
+Let's create the ``mySignInCallback`` function and just prints these details:
+
+.. code-block:: javascript
+
+    TODO: Code: Google: Add basic callback function
+
+Refresh and try it again! Awesome, we see it print out an object with an
+``access_token``. This is the big difference between the implicit flow and
+the authorization code grant types. With authorization code, this step returns
+an authorization code, which we then still need to exchange for an access
+token by making an API request. But with implicit, the access token is given
+to us immediately.
+
+Choosing Authorization Code versus Implicit
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Remember that whether we're redirecting the user or using this popup method,
+we can *choose* to use the authorization code or implicit grant type. So
+then, when and how did we tell the Google OAuth server that we wanted to use
+the implicit flow? Why isn't it giving us an authorization code here instead?
+
+The answer for Google+ is a parameter called ``redirecturi``. Set this to
+``postmessage`` and try again:
+
+.. code-block:: javascript
+
+    TODO: Code: Google: Using authorization code temporarily
+
+This time, the ``authResult`` includes a ``code`` and *not* an ``access_token``.
+This is the authorization code grant type inside JavaScript. We would *still*
+need to AJAX this value back to the server so that it could exchange the
+authorization code for an access token. That can't be done from inside JavaScript
+since it requires the client secret, which we need to keep hidden away on
+the server.
+
+Setting the ``redirecturi`` to ``postmessage`` in order to get the authorization
+code grant type is special to the Google+ OAuth server. However, when we
+start the authorization process - whether we're redirecting the user or opening
+up a popup - all OAuth servers have a way for us to tell it that we want
+a code returned or the access token.
+
+Remember the ``response_type`` parameter we used with Coop? We set it to
+``code``, but we could also set it to ``token``. If we did that, the redirect
+would have contained the access token instead of the authorization code.
+Even Facebook has a ``response_type`` parameter on its login URL, which has
+the same 2 values.
+
+Authorization Code versus Implicit
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+So why would anyone choose authorization code over implicit since it has
+an extra step? The big answer is security, which we'll talk about more in
+the next chapter. Another disadvantage, which is also related to security,
+is that the implicit grant type can't give you a refresh token.
+
+Finishing the Login Callback
+----------------------------
+
+Remove the ``redirecturi`` parameter and finish the login callback function
+by copying the examle from `Step 5`_ of the docs and making some changes:
+
+.. code-block:: html+jinja
+
+    TODO: Code: [Google: Finishing the login callback
+
+When we refresh and try again, the sign in button disappears, proving that
+authentication was successful!
+
+Using the API
+-------------
+
+Just like with the Facebook PHP SDK, the Google JavaScript SDK now has an
+access token that it's storing. This means we can start making API calls.
+
+.. _`JavaScript Quick Start`: https://developers.google.com/+/quickstart/javascript
+.. _`Google+ Sign-In button`: https://developers.google.com/+/web/signin/
+.. _`Pure server-side flow`: https://developers.google.com/+/web/signin/server-side-flow
+.. _`Hybrid server-side flow`: https://developers.google.com/+/web/signin/server-side-flow
+.. _`Client-side Flow`: https://developers.google.com/+/web/signin/javascript-flow
+.. _`Developers Console`: https://cloud.google.com/console/project
+.. _`Copy the script`: https://developers.google.com/+/web/signin/javascript-flow#step_2_include_the_google_script_on_your_page
+.. _`nice documentation`: https://developers.google.com/+/web/api/javascript
+.. _`documentation page`: https://developers.google.com/+/web/api/javascript
+.. _`Step 5`: https://developers.google.com/+/web/signin/javascript-flow#step_5_handling_the_sign-in
+
+-- how are the client-side API requests being made behind the scenes?
+-- how does Facebook's JavaScript implementation differ and how does this
+    relate (or what should we mention about) the code versus token response
+    type when doing the authorization redirect.
+-- mention no refresh token
+-- token should be validated? (https://developers.google.com/accounts/docs/OAuth2?csw=1#scenarios)
+-- page-parameters
 
 
 Client ID	104029852624-a72k7hnbrrqo02j5ofre9tel76ui172i.apps.googleusercontent.com
@@ -106,18 +292,3 @@ Redirect URIs
 https://localhost:9000/oauth2callback
 Javascript Origins	
 https://localhost:9000
-
-
-.. _`JavaScript Quick Start`: https://developers.google.com/+/quickstart/javascript
-.. _`Google+ Sign-In button`: https://developers.google.com/+/web/signin/
-.. _`Pure server-side flow`: https://developers.google.com/+/web/signin/server-side-flow
-.. _`Hybrid server-side flow`: https://developers.google.com/+/web/signin/server-side-flow
-.. _`Client-side Flow`: https://developers.google.com/+/web/signin/javascript-flow
-.. _`Developers Console`: https://cloud.google.com/console/project
-
--- how are the client-side API requests being made behind the scenes?
--- how does Facebook's JavaScript implementation differ and how does this
-    relate (or what should we mention about) the code versus token response
-    type when doing the authorization redirect.
--- mention no refresh token
--- token should be validated? (https://developers.google.com/accounts/docs/OAuth2?csw=1#scenarios)
