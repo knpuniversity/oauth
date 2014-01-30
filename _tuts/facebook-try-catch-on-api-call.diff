@@ -1,0 +1,21 @@
+diff --git a/client/src/OAuth2Demo/Client/Controllers/FacebookOAuthController.php b/client/src/OAuth2Demo/Client/Controllers/FacebookOAuthController.php
+index 352c708..538ecb7 100644
+--- a/client/src/OAuth2Demo/Client/Controllers/FacebookOAuthController.php
++++ b/client/src/OAuth2Demo/Client/Controllers/FacebookOAuthController.php
+@@ -76,9 +76,13 @@ class FacebookOAuthController extends BaseController
+         $facebook = $this->createFacebook();
+         $eggCount = $this->getTodaysEggCountForUser($this->getLoggedInUser());
+ 
+-        $facebook->api('/'.$facebook->getUser().'/feed', 'POST', array(
+-            'message' => sprintf('Woh my chickens have laid %s eggs today!', $eggCount),
+-        ));
++        try {
++            $facebook->api('/'.$facebook->getUser().'/feed', 'POST', array(
++                'message' => sprintf('Woh my chickens have laid %s eggs today!', $eggCount),
++            ));
++        } catch (\FacebookApiException $e) {
++            // it failed!
++        }
+ 
+         return $this->redirect($this->generateUrl('home'));
+     }
