@@ -1,0 +1,14 @@
+diff --git a/client/views/dashboard.twig b/client/views/dashboard.twig
+index 48c5730..65d3448 100644
+--- a/client/views/dashboard.twig
++++ b/client/views/dashboard.twig
+@@ -54,7 +54,8 @@
+                     'cookiepolicy': 'single_host_origin',
+                     'callback': 'mySignInCallback',
+                     'scope': 'https://www.googleapis.com/auth/plus.login',
+-                    'requestvisibleactions': 'http://schemas.google.com/AddActivity'
++                    'requestvisibleactions': 'http://schemas.google.com/AddActivity',
++                    'redirecturi': 'postmessage'
+                 };
+                 gapi.auth.signIn(myParams);
+             });
