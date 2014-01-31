@@ -1,0 +1,47 @@
+diff --git a/client/views/dashboard.twig b/client/views/dashboard.twig
+index 929caa0..6384b3e 100644
+--- a/client/views/dashboard.twig
++++ b/client/views/dashboard.twig
+@@ -32,6 +32,7 @@
+             </div>
+ 
+             <a href="#" class="btn btn-lg btn-info js-google-signin">Sign in with Google+</a>
++            <div id="google-plus-people"></div>
+ 
+         </div>
+         <div class="col-md-6">
+@@ -65,6 +66,11 @@
+                 // Update the app to reflect a signed in user
+                 // Hide the sign-in button now that the user is authorized, for example:
+                 $('.js-google-signin').hide();
++
++                // loads the gapi.client.plus JavaScript object
++                gapi.client.load('plus','v1', function() {
++                    loadCirclesPeople();
++                });
+             } else {
+                 // Update the app to reflect a signed out user
+                 // Possible error values:
+@@ -74,6 +80,22 @@
+                 console.log('Sign-in state: ' + authResult['error']);
+             }
+         }
++
++        function loadCirclesPeople() {
++            var request = gapi.client.plus.people.list({
++                'userId': 'me',
++                'collection': 'visible'
++            });
++            request.execute(function (people) {
++                console.log(people);
++                var $people = $('#google-plus-people');
++                $people.empty();
++                for (var personIndex in people.items) {
++                    var person = people.items[personIndex];
++                    $people.append('<img src="' + person.image.url + '">');
++                }
++            });
++        }
+     </script>
+     {# Put any JavaScript here #}
+ {% endblock %}
