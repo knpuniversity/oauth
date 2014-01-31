@@ -1,34 +1,27 @@
 Implicit Grant Type with Google+
 ================================
 
-With Facebook integration done, Brent's super happy because he can post his
-major egg-collecting success on Facebook for all his farmer friends to see.
+With Facebook integration done, Brent can use it to brag about his major egg-collecting 
+success on Facebook for all his farmer friends to see .... including farmer Scott.
 
 Now he wants to go a step further and let people invite their Google+ connections
-to signup for a TopCluck account and get in on the fun. To make it really
-hipster, he wants to do this entirely on the frontend with JavaScript. The
-user will click a button to authorize their Google+ account, see a list of
-their connections, and select which ones to invite - all without any page
-reloads.
+to signup for a TopCluck account. To make it rural hipster, he wants to do this 
+entirely on the frontend with JavaScript. The user will click a button to authorize 
+their Google+ account, see a list of their connections, and select which ones to 
+invite - all without any page reloads.
 
 The Implicit Grant Type
 -----------------------
 
 So far we've seen 2 different grant types, or strategies for exchanging the
 access token. These were Client Credentials and Authorization Code. Unfortunately,
-neither works inside JavaScript. The problem is that both ultimately involve
-making a request to the OAuth server using your
-client secret. As the name suggests, that string is a secret. So, printing
-it inside an HTML page and using it in JavaScript would be a terrible idea.
+neither works inside JavaScript. The problem is that both involve making a request 
+to the OAuth server using your client secret. As the name suggests, that string is 
+a secret. So, printing it inside an HTML page and using it in JavaScript would be 
+a terrible idea.
 
 Instead, we need to look at one more grant type called Implicit. It's a lot
-like Authorization Code, but simpler. With Authorization Code, the user is
-redirected back to our app with an authorization code. We make another API
-request to the token endpoint to exchange it for an access token.
-
-With the Implicit flow, when the user is sent back to us, they come with
-the access token directly - instead of the authorization code. This eliminates
-one step of the process. But it also has some disadvantages as we'll see.
+like Authorization Code, but simpler.
 
 JavaScript OAuth with Google+
 -----------------------------
@@ -64,10 +57,10 @@ your app.
 The second big difference is how we get the authorization code. After the
 user authorizes our application, the popup closes. Instead of redirecting
 the user to a URL on our site, a JavaScript function is called and passed
-the authorization code. We then send this via AJAX to a page on our server,
-which exchanges it for an access token.
+the code. We then send this via AJAX to a page on our server, which exchanges 
+it for an access token.
 
-This approach *still* involves the server, but the work of getting the authorization
+This approach *still* involves the server, but the work of getting the
 code is delegated to JavaScript. In reality, it's just another version of
 the authorization code grant type.
 
@@ -76,7 +69,7 @@ Client-side Flow
 
 Finally, let's look at the `Client-side Flow`, which is where everything
 happens in JavaScript. There are 3 variants of this type, but they're all
-basically the same. When we click "Click me" demo button, we get a popup
+basically the same. When we press the "Click me" demo button, we get a popup
 asking for authorization. And immediately after approving, some JavaScript
 on the page shows us the ``access_token`` and some other details. This happens
 completely without the server.
@@ -130,7 +123,7 @@ This exposes a global ``gapi`` object we'll use in a second.
 Initiate the Sign-in Flow
 -------------------------
 
-Let's add a "Sign in with Google" button on the homepage and attach a jQuery
+Let's add a "Connect Google+" button on the homepage and attach a jQuery
 click event listener to it:
 
 .. code-block:: html+jinja
