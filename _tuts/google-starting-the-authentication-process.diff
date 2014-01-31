@@ -1,0 +1,12 @@
+diff --git a/client/views/dashboard.twig b/client/views/dashboard.twig
+index 98e256f..3bf55c3 100644
+--- a/client/views/dashboard.twig
++++ b/client/views/dashboard.twig
+@@ -49,6 +49,7 @@
+                 // prevent the click from going to #
+                 e.preventDefault();
+ 
++                gapi.auth.signIn();
+             });
+         });
+     </script>
