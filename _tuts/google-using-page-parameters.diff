@@ -1,0 +1,37 @@
+diff --git a/client/views/base.twig b/client/views/base.twig
+index b553abd..026c005 100644
+--- a/client/views/base.twig
++++ b/client/views/base.twig
+@@ -10,6 +10,12 @@
+     <meta name="description" content="">
+     <meta name="viewport" content="width=device-width">
+ 
++    <meta name="google-signin-clientid" content="104029852624-a72k7hnbrrqo02j5ofre9tel76ui172i.apps.googleusercontent.com" />
++    <meta name="google-signin-scope" content="https://www.googleapis.com/auth/plus.login" />
++    <meta name="google-signin-requestvisibleactions" content="http://schemas.google.com/AddActivity" />
++    <meta name="google-signin-cookiepolicy" content="single_host_origin" />
++    <meta name="google-signin-callback" content="mySignInCallback" />
++
+     <!-- Bootstrap core CSS -->
+     <link href="{{ app.request.basePath }}/css/bootstrap.css" rel="stylesheet" />
+ 
+diff --git a/client/views/dashboard.twig b/client/views/dashboard.twig
+index faf0750..d643b4d 100644
+--- a/client/views/dashboard.twig
++++ b/client/views/dashboard.twig
+@@ -50,14 +50,7 @@
+                 // prevent the click from going to #
+                 e.preventDefault();
+ 
+-                var myParams = {
+-                    'clientid': '104029852624-a72k7hnbrrqo02j5ofre9tel76ui172i.apps.googleusercontent.com',
+-                    'cookiepolicy': 'single_host_origin',
+-                    'callback': 'mySignInCallback',
+-                    'scope': 'https://www.googleapis.com/auth/plus.login',
+-                    'requestvisibleactions': 'http://schemas.google.com/AddActivity'
+-                };
+-                gapi.auth.signIn(myParams);
++                gapi.auth.signIn();
+             });
+         });
+ 
