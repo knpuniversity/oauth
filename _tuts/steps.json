@@ -269,6 +269,56 @@
             "id": "facebook-updating-findorcreateuser",
             "name": "Facebook: Updating findOrCreateUser",
             "description": null
+        },
+        {
+            "id": "google-include-js-sdk",
+            "name": "Google: Include JS SDK",
+            "description": null
+        },
+        {
+            "id": "google-adding-sign-in-with-google-button",
+            "name": "Google: Adding Sign in with Google button",
+            "description": null
+        },
+        {
+            "id": "google-starting-the-authentication-process",
+            "name": "Google: Starting the authentication process",
+            "description": null
+        },
+        {
+            "id": "google-add-signin-parameters",
+            "name": "Google: Add signIn parameters",
+            "description": null
+        },
+        {
+            "id": "google-add-basic-callback-function",
+            "name": "Google: Add basic callback function",
+            "description": null
+        },
+        {
+            "id": "google-using-authorization-code-temporarily",
+            "name": "Google: Using authorization code temporarily",
+            "description": null
+        },
+        {
+            "id": "google-finishing-the-login-callback",
+            "name": "Google: Finishing the login callback",
+            "description": null
+        },
+        {
+            "id": "google-circles-function",
+            "name": "Google: Circles function",
+            "description": null
+        },
+        {
+            "id": "google-variable-to-avoid-double-calls",
+            "name": "Google: Variable to avoid double-calls",
+            "description": null
+        },
+        {
+            "id": "google-using-page-parameters",
+            "name": "Google: Using page parameters",
+            "description": null
         }
     ]
 }
