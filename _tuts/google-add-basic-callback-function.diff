@@ -1,0 +1,15 @@
+diff --git a/client/views/dashboard.twig b/client/views/dashboard.twig
+index cc0cbb6..48c5730 100644
+--- a/client/views/dashboard.twig
++++ b/client/views/dashboard.twig
+@@ -59,6 +59,10 @@
+                 gapi.auth.signIn(myParams);
+             });
+         });
++
++        function mySignInCallback(authResult) {
++            console.log(authResult);
++        }
+     </script>
+     {# Put any JavaScript here #}
+ {% endblock %}
