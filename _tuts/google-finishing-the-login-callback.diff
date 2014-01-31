@@ -1,0 +1,33 @@
+diff --git a/client/views/dashboard.twig b/client/views/dashboard.twig
+index 65d3448..929caa0 100644
+--- a/client/views/dashboard.twig
++++ b/client/views/dashboard.twig
+@@ -54,15 +54,25 @@
+                     'cookiepolicy': 'single_host_origin',
+                     'callback': 'mySignInCallback',
+                     'scope': 'https://www.googleapis.com/auth/plus.login',
+-                    'requestvisibleactions': 'http://schemas.google.com/AddActivity',
+-                    'redirecturi': 'postmessage'
++                    'requestvisibleactions': 'http://schemas.google.com/AddActivity'
+                 };
+                 gapi.auth.signIn(myParams);
+             });
+         });
+ 
+         function mySignInCallback(authResult) {
+-            console.log(authResult);
++            if (authResult['status']['signed_in']) {
++                // Update the app to reflect a signed in user
++                // Hide the sign-in button now that the user is authorized, for example:
++                $('.js-google-signin').hide();
++            } else {
++                // Update the app to reflect a signed out user
++                // Possible error values:
++                //   "user_signed_out" - User is signed-out
++                //   "access_denied" - User denied access to your app
++                //   "immediate_failed" - Could not automatically log in the user
++                console.log('Sign-in state: ' + authResult['error']);
++            }
+         }
+     </script>
+     {# Put any JavaScript here #}
