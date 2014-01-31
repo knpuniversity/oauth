@@ -149,15 +149,16 @@ class Connection
         return $result;
     }
 
-    public function saveNewTokens($email, $accessToken, $accessTokenExpires, $refreshToken)
+    public function saveNewTokens($email, $accessToken, \DateTime $accessTokenExpires, $refreshToken)
     {
+        $expires = $accessTokenExpires->format('Y-m-d');
         $sql = sprintf('UPDATE %s SET coopAccessToken=:accessToken, coopAccessExpiresAt=:accessTokenExpires, coopRefreshToken=:refreshToken WHERE email=:email', self::TABLE_USER);
         $stmt = $this->db->prepare($sql);
 
         $stmt->execute(array(
             'email'              => $email,
             'accessToken'        => $accessToken,
-            'accessTokenExpires' => $accessTokenExpires,
+            'accessTokenExpires' => $expires,
             'refreshToken'       => $refreshToken,
         ));
     }
