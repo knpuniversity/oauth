@@ -1,0 +1,22 @@
+diff --git a/client/views/base.twig b/client/views/base.twig
+index 67e08e4..b553abd 100644
+--- a/client/views/base.twig
++++ b/client/views/base.twig
+@@ -112,6 +112,17 @@
+     {% block javascripts %}
+         <script src="http://code.jquery.com/jquery-2.0.3.min.js"></script>
+         <script src="{{ app.request.basePath }}/js/bootstrap.min.js"></script>
++
++        <script type="text/javascript">
++            (function () {
++                var po = document.createElement('script');
++                po.type = 'text/javascript';
++                po.async = true;
++                po.src = 'https://apis.google.com/js/client:plusone.js';
++                var s = document.getElementsByTagName('script')[0];
++                s.parentNode.insertBefore(po, s);
++            })();
++        </script>
+     {% endblock %}
+ </body>
+ </html>
