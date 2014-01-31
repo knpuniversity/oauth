@@ -262,8 +262,8 @@ code. So we can either choose to use the token in JavaScript, or do a little
 more work to send the code to our server via AJAX and exchange that for a
 token.
 
-Instead of being passed both an access token *and* an authorization code,
-other OAuth servers let you choose which one you want.
+Instead of sending us both, other OAuth servers let you choose between the code
+and the token.
 
 Remember the ``response_type`` parameter we used with Coop? We set it to
 ``code``, which is why we got back a ``code`` query parameter on the redirect.
@@ -285,8 +285,8 @@ is that the Implicit grant type can't give you a refresh token.
 Finishing the Login Callback
 ----------------------------
 
-Remove the ``redirecturi`` parameter and finish the login callback function
-by copying the examle from `Step 5`_ of the docs and making some changes:
+Finish the login callback function by copying the example from `Step 5`_ of 
+the docs and tweaking the code to use jQuery:
 
 .. code-block:: html+jinja
 
@@ -312,7 +312,7 @@ Using the API
 Just like with the Facebook PHP SDK, the Google JavaScript SDK now has an
 access token that it's storing. This means we can start making API calls.
 I'll copy in a function that uses the API to get a list of all of the people
-in my circles and prints their smiling faces:
+in my circles and print their smiling faces:
 
 .. code-block:: javascript
 
@@ -332,17 +332,18 @@ in my circles and prints their smiling faces:
         });
     }
 
-This looks for a div with the id ``google-plus-people``, so let's add that
+This looks for a div with the id ``google-plus-farmers``, so let's add that
 to our page:
 
     {# views/dashboard.twig #}
 
     <!-- ... -->
-    <a href="#" class="btn btn-lg btn-info js-google-signin">Sign in with Google+</a>
-    <div id="google-plus-people"></div>
+    <a href="#" class="btn btn-lg btn-info js-google-signin">Connect with Google+</a>
+    <div id="google-plus-farmers"></div>
     <!-- ... -->
 
-Let's call this function automatically after we authenticate:
+Let's call this function automatically after we authenticate. This code loads the
+Google+ part of the SDK and calls our function.:
 
     function mySignInCallback(authResult) {
         if (authResult['status']['signed_in']) {
@@ -358,7 +359,7 @@ Let's call this function automatically after we authenticate:
     }
 
 Ok, let's try it! When we refresh and sign in, we get a beautiful box of
-people in our circle! In my console, if we click on the AJAX call that was
+farmers in our circle! In my console, if we click on the AJAX call that was
 made, we can see that an access token was sent on the ``Authorization: Bearer``
 header. OAuth is happening behind the scenes!
 
