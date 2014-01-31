@@ -1,0 +1,28 @@
+diff --git a/client/views/dashboard.twig b/client/views/dashboard.twig
+index 3995d14..98e256f 100644
+--- a/client/views/dashboard.twig
++++ b/client/views/dashboard.twig
+@@ -31,6 +31,8 @@
+                 </div>
+             </div>
+ 
++            <a href="#" class="btn btn-lg btn-info js-google-signin">Sign in with Google+</a>
++
+         </div>
+         <div class="col-md-6">
+             {{ include('_leaderboard.twig', { 'egg_counts': egg_counts }) }}
+@@ -41,5 +43,14 @@
+ {% block javascripts %}
+     {{ parent() }}
+ 
++    <script>
++        jQuery(document).ready(function() {
++            $('.js-google-signin').on('click', function(e) {
++                // prevent the click from going to #
++                e.preventDefault();
++
++            });
++        });
++    </script>
+     {# Put any JavaScript here #}
+ {% endblock %}
