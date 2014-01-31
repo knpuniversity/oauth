@@ -149,7 +149,6 @@ click event listener to it:
                 $('.js-google-signin').on('click', function(e) {
                     // prevent the click from going to #
                     e.preventDefault();
-
                 });
             });
         </script>
@@ -178,8 +177,8 @@ When we try it, nothing happens. In fact, there's a JavaScript error:
     https://developers.google.com/+/web/signin/#button_attr_cookiepolicy
     for more information.
 
-What we're trying to do here is *similar* to the step in the authorization
-code grant type where we originally redirect the user to the OAuth server.
+What we're trying to do here is *similar* to the step in the Authorization
+Code grant type where we originally redirect the user to the OAuth server.
 There are details we need to send to Google+, like our client id and the
 scopes we want.
 
@@ -239,9 +238,11 @@ And when we approve, we get a JavaScript error:
 
 That's actually great! Instead of redirecting the user back to a URL on our
 site, Google passes us the OAuth details by calling a JavaScript function.
-This isn't special to the implicit flow - the `Hybrid server-side flow`_
-we looked at earlier is an example of an authorization code grant type that
-does this part in JavaScript.
+Calling the JavaScript function here serves the same purpose as a browser
+redirect: it hands off authorization data from the server to the client.
+This isn't special to the Implicit flow - the `Hybrid server-side flow`_
+we looked at earlier is an example of an Authorization Code grant type that
+does this part in JavaScript as well.
 
 Now we just need to write this function. If we look at `Step 5`_, we can
 see how this function should work. It's passed an ``authResult`` variable
@@ -256,17 +257,17 @@ Let's create the ``mySignInCallback`` function and just prints these details:
     }
 
 Refresh and try it again! Awesome, we see it print out an object with an
-``access_token``. This is the big difference between the implicit flow and
-the authorization code grant types. With authorization code, this step returns
+``access_token``. This is the big difference between the Implicit flow and
+the Authorization Code grant types. With Authorization Code, this step returns
 an authorization code, which we then still need to exchange for an access
-token by making an API request. But with implicit, the access token is given
+token by making an API request. But with Implicit, the access token is given
 to us immediately.
 
 Choosing Authorization Code versus Implicit
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Remember that whether we're redirecting the user or using this popup method,
-we can *choose* to use the authorization code or implicit grant type. So
+we can *choose* to use the Authorization Code or Implicit grant type. So
 then, when and how did we tell the Google OAuth server that we wanted to use
 the implicit flow? Why isn't it giving us an authorization code here instead?
 
@@ -308,10 +309,10 @@ the same 2 values.
 Authorization Code versus Implicit
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-So why would anyone choose authorization code over implicit since it has
+So why would anyone choose Authorization Code over Implicit since it has
 an extra step? The big answer is security, which we'll talk about more in
 the next chapter. Another disadvantage, which is also related to security,
-is that the implicit grant type can't give you a refresh token.
+is that the Implicit grant type can't give you a refresh token.
 
 Finishing the Login Callback
 ----------------------------
@@ -323,7 +324,7 @@ by copying the examle from `Step 5`_ of the docs and making some changes:
 
     function mySignInCallback(authResult) {
         if (authResult['status']['signed_in']) {
-            // Update the app to reflect a signed in userI
+            // Update the app to reflect a signed in user
             $('.js-google-signin').hide();
         } else {
             // Possible error values:
