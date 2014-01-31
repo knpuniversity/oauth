@@ -47,9 +47,21 @@
 
 <div class="bs-docs-section" role="main">
     <div class="row">
-        <h3> Call your own APIs</h3>
+        <h3>Create an Access Token via Client Credentials</h3>
         <p>
-            Get an <a target="_blank" href="{{ url('token_get', {client_id: client.client_id, client_secret: client.client_secret, user_id: client.user_id, grant_type: 'client_credentials' }) }}">Access Token</a>!
+            Client credentials gives you access to act on behalf of this application
+            (not as a particular user).
+            <br/>
+            BUT, we've also built COOP so that an application has control
+            over the User account that created it. So, this access token
+            will allow you to take actions for your user account.
+            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                <strong>Your User Id: {{ app.security.token.user.id }}</strong>
+            {% endif %}
+            <br/>
+            <a target="_blank" class="btn btn-primary" href="{{ url('token_get', {client_id: client.client_id, client_secret: client.client_secret, grant_type: 'client_credentials' }) }}">
+                Generate a Token!
+            </a>
         </p>
     </div>
     <div class="row">

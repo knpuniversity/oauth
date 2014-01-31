@@ -8,7 +8,6 @@
 <ul>
     <li>Client Credentials</li>
     <li>Authorization Code</li>
-    <li>Implicit Grant</li>
 </ul>
 
 <p>
@@ -24,6 +23,42 @@
     </thead>
     <tbody>
         <tr>
+            <td>POST {{ path('token_post') }}</td>
+            <th>
+                <p>
+                    The endpoint used for requesting an access token, using
+                    either the authorization_code or client_credentials grant
+                    type.
+                </p>
+
+                <code>
+                    {{ url('token_post') }}
+                </code>
+
+                <p>
+                    This accepts the following POST fields:
+                </p>
+
+                <ul>
+                    <li>
+                        <code>client_id</code>
+                    </li>
+                    <li>
+                        <code>client_secret</code>
+                    </li>
+                    <li>
+                        <code>grant_type</code> Either client_credentials or authorization_code
+                    </li>
+                    <li>
+                        <code>redirect_uri</code> (authorization_code only) Must match redirect_uri from the original /authorize call
+                    </li>
+                    <li>
+                        <code>code</code> (authorization_code only) The authorization code
+                    </li>
+                </ul>
+            </th>
+        </tr>
+        <tr>
             <td>GET {{ path('authorize') }}</td>
             <td>
                 <p>
@@ -32,22 +67,36 @@
                 </p>
 
                 <code>
-                    {{ url('authorize', {
-                        'client_id': 'CLIENT_ID',
-                        'response_type': 'code',
-                        'redirect_uri': 'http://yoursite.com/oauth/handle'
-                    }) }}
+                    {{ url('authorize') }}
                 </code>
 
-                <p style="margin-top: 20px;">
-                    The <code>response_type</code> parameter can be one of
-                    <code>code</code>, <code>token</code>.
+                <p>
+                    This accepts the following GET parameters
                 </p>
 
-                <p style="margin-top: 20px;">
-                    The <code>redirect_uri</code> is the URL that COOP will
-                    redirect the user back to after granting or denying authorization.
-                </p>
+                <ul>
+                    <li>
+                        <code>client_id</code>
+                    </li>
+                    <li>
+                        <code>response_type</code> Either code or token
+                    </li>
+                    <li>
+                        <code>redirect_uri</code> (authorization_code only)
+                        The URL that COOP will redirect the user back to after granting or denying authorization.
+                    </li>
+                    <li>
+                        <code>scope</code> The permissions the user should authorize, separated by a space (e.g. "eggs-count profile").
+                        One of:
+                        {% for action,message in app.scopes %}
+                            <br/>{{ action }}
+                        {% endfor %}
+                    </li>
+                    <li>
+                        (Optional) <code>state</code> A key that's returned on the redirect_uri
+                        that can be used as a CSRF token.
+                    </li>
+                </ul>
 
                 <p style="margin-top: 20px;">
                     Once the user is redirected back to <code>redirect_uri</code>,
@@ -57,27 +106,6 @@
                 </p>
 
             </td>
-        </tr>
-        <tr>
-            <td>POST {{ path('token_post') }}</td>
-            <th>
-                When using the authorization code grant type, after receiving
-                the authorization code, you'll use this endpoint to exchange
-                it for an access token:
-
-                <code>
-                    {{ url('token_post', {
-                        'client_id': 'CLIENT_ID',
-                        'client_secret': 'CLIENT_SECRET',
-                        'redirect_uri': 'http://yoursite.com/oauth/handle'
-                    }) }}
-                </code>
-
-                <p style="margin-top: 20px;">
-                    The <code>grant_type</code> parameter can be one of
-                    <code>client_credentials</code>, <code>authorization_code</code>.
-                </p>
-            </th>
         </tr>
     </tbody>
 </table>
