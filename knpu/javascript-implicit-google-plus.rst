@@ -123,7 +123,7 @@ This exposes a global ``gapi`` object we'll use in a second.
 Initiate the Sign-in Flow
 -------------------------
 
-Let's add a "Connect Google+" button on the homepage and attach a jQuery
+Let's add a "Connect with Google+" button on the homepage and attach a jQuery
 click event listener to it:
 
 .. code-block:: html+jinja
@@ -131,7 +131,7 @@ click event listener to it:
     {# views/dashboard.twig #}
 
     <!-- ... -->
-    <a href="#" class="btn btn-lg btn-info js-google-signin">Sign in with Google+</a>
+    <a href="#" class="btn btn-lg btn-info js-google-signin">Connect with Google+</a>
     <!-- ... -->
 
     {% block javascripts %}
@@ -237,11 +237,8 @@ This isn't special to the Implicit flow - the `Hybrid server-side flow`_
 we looked at earlier is an example of an Authorization Code grant type that
 does this part in JavaScript as well.
 
-Now we just need to write this function. If we look at `Step 5`_, we can
-see how this function should work. It's passed an ``authResult`` variable
-that contains authentication information.
-
-Let's create the ``mySignInCallback`` function and just prints these details:
+`Step 5`_ of the docs show us how the function might look. Let's create our
+``mySignInCallback`` function and dump the auth information.
 
 .. code-block:: javascript
 
@@ -252,9 +249,8 @@ Let's create the ``mySignInCallback`` function and just prints these details:
 Refresh and try it again! Awesome, we see it print out an object with an
 ``access_token``. This is the big difference between the Implicit flow and
 the Authorization Code grant types. With Authorization Code, this step returns
-an authorization code, which we then still need to exchange for an access
-token by making an API request. But with Implicit, the access token is given
-to us immediately.
+a code, which we then still need to exchange for an access token by making an 
+API request. But with Implicit, the access token is given to us immediately.
 
 Choosing Authorization Code versus Implicit
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
