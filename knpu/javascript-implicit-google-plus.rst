@@ -367,12 +367,12 @@ Page-Parameters
 ---------------
 
 Our ultimate goal is for the user to be able to choose from the people in
-your circles and invite them to join TopCluck. With all the OAuth stuff behind
+their circles and invite them to join TopCluck. With all the OAuth stuff behind
 us, this is just a matter of writing some JavaScript and figuring out exactly
 how to use the Google+ API to accomplish this. We'll leave this to you!
 
 But there's one more small thing that's bothering me. When we click to sign in,
-the ``mySignInCallback`` is called twice, which means ``loadCirclesPeople``
+the sign-in function is called twice, which means ``loadCirclesPeople``
 is called twice and 2 API requests are made to Google.
 
 Regardless of why this happens, we could of course avoid the double-calls
@@ -397,11 +397,13 @@ by using a simple variable:
 But the reason this is happening is more interesting. Rememember how the
 Facebook SDK stores the access token details in the session? The Google JavaScript
 SDK stores those details in a cookie. This means that since we've already
-signed in, we should *still* be signed in if we refresh. We shouldn't need
-to click the Sign in button each time.
+authorized with Google+, we should *still* be signed in if we refresh. The
+callback function is called twice since we were already authenticated *and* we
+clicked to authenticate again.
 
-To make this possible, we just need to move the ``signIn`` parameters to
-meta tags. This is actually what `Step 4`_ of the example does. Let's copy
+If we already authorized during this session, we can avoid making the user
+click the Connect button by moving the ``signIn`` parameters to meta tags.
+This is actually what `Step 4`_ of the example does. Let's copy
 these ``meta`` tags into our layout and update it with our client id. We
 can also add the callback parameter here:
 
@@ -421,7 +423,7 @@ can also add the callback parameter here:
     {# ... #}
 
 Google calls this page-level configuration. One big advantage is that if
-we already have an access token stored in a cookie, it will call the callback
+we already have an access token stored in a cookie, it will execute the callback
 function on page load. Now that we have these, remove the ``params`` entirely:
 
 .. code-block:: javascript
@@ -434,7 +436,7 @@ function on page load. Now that we have these, remove the ``params`` entirely:
         gapi.auth.signIn();
     });
 
-Refresh the page now. Instantly, the Sign in button disappears and our circles
+Refresh the page. Instantly, the Sign in button disappears and our circles
 show up. Whether we're managing the access token on the server or in JavaScript,
 we can make it persist throughout a session. This isn't always clear, since
 the Facebook and Google SDK's do a lot automatically for us. Just keep thinking
@@ -445,7 +447,7 @@ or implicit grant type when starting the authorization process. And although
 it has nothing to do with grant types, we also saw how the authorization
 process can be done by redirecting the user, like we saw in past chapters,
 *or* by opening a popup and communicating with JavaScript. Which method you'll
-use will laregely depend on the OAuth server and what it supports most easily.
+use will largely depend on the OAuth server and what it supports most easily.
 
 But if you need a *pure* JavaScript solution that never touches the server,
 then you need the implicit grant type. Even if you can keep much of the flow
