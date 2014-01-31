@@ -256,44 +256,23 @@ Choosing Authorization Code versus Implicit
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Remember that whether we're redirecting the user or using this popup method,
-we can *choose* to use the Authorization Code or Implicit grant type. So
-then, when and how did we tell the Google OAuth server that we wanted to use
-the implicit flow? Why isn't it giving us an authorization code here instead?
+we can *choose* to use the Authorization Code or Implicit grant type. In
+fact, the JavaScript object contains both the token *and* an authorization
+code. So we can either choose to use the token in JavaScript, or do a little
+more work to send the code to our server via AJAX and exchange that for a
+token.
 
-The answer for Google+ is a parameter called ``redirecturi``. Set this to
-``postmessage`` and try again:
-
-.. code-block:: javascript
-
-    var myParams = {
-        'clientid': '104029852624-a72k7hnbrrqo02j5ofre9tel76ui172i.apps.googleusercontent.com',
-        'cookiepolicy': 'single_host_origin',
-        'callback': 'mySignInCallback',
-        'scope': 'https://www.googleapis.com/auth/plus.login',
-        'requestvisibleactions': 'http://schemas.google.com/AddActivity',
-        // add this temporarily!
-        'redirecturi': 'postmessage'
-    };
-    gapi.auth.signIn(myParams);
-
-This time, the ``authResult`` includes a ``code`` and *not* an ``access_token``.
-This is the authorization code grant type inside JavaScript. We would *still*
-need to AJAX this value back to the server so that it could exchange the
-authorization code for an access token. That can't be done from inside JavaScript
-since it requires the client secret, which we need to keep hidden away on
-the server.
-
-Setting the ``redirecturi`` to ``postmessage`` in order to get the authorization
-code grant type is special to the Google+ OAuth server. However, when we
-start the authorization process - whether we're redirecting the user or opening
-up a popup - all OAuth servers have a way for us to tell it that we want
-a code returned or the access token.
+Instead of being passed both an access token *and* an authorization code,
+other OAuth servers let you choose which one you want.
 
 Remember the ``response_type`` parameter we used with Coop? We set it to
-``code``, but we could also set it to ``token``. If we did that, the redirect
-would have contained the access token instead of the authorization code.
-Even Facebook has a ``response_type`` parameter on its login URL, which has
-the same 2 values.
+``code``, which is why we got back a ``code`` query parameter on the redirect.
+But we could also set it to ``token``.  And if we did, the redirect would
+have contained a ``token`` parameter instead of the ``code``.
+
+The ``response_type`` is how we tell the OAuth server which grant type we
+want to use. Even Facebook has a ``response_type`` parameter on its login
+URL, which has the same 2 values.
 
 Authorization Code versus Implicit
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
