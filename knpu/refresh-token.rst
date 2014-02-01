@@ -142,3 +142,14 @@ And now that we've refreshed everyone's access tokens, we could loop through
 each user and send an API request to count their eggs. The code for that
 would look almost exactly like code in the ``CountEggs.php`` file, so we'll
 leave that to you.
+
+Nothing lasts Forever
+---------------------
+
+Of course, nothing lasts forever, and even the refresh token will eventually
+expire. These tokens commonly last for 14-60 days, and afterwards, you have
+no choice but to ask the user to re-authorize your application. This means
+that unless your OAuth server has some sort of key that lasts forever, our
+CRON job will eventually *not* be able to count the eggs for all of our farmers.
+We may need to send them an email to re-authorize or be ok that these inactive
+users aren't updated anymore.
