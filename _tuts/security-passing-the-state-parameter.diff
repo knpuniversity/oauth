@@ -1,0 +1,28 @@
+diff --git a/client/src/OAuth2Demo/Client/Controllers/CoopOAuthController.php b/client/src/OAuth2Demo/Client/Controllers/CoopOAuthController.php
+index cd737c3..f215c6e 100644
+--- a/client/src/OAuth2Demo/Client/Controllers/CoopOAuthController.php
++++ b/client/src/OAuth2Demo/Client/Controllers/CoopOAuthController.php
+@@ -26,11 +26,14 @@ class CoopOAuthController extends BaseController
+     {
+         $redirectUrl = $this->generateUrl('coop_authorize_redirect', array(), true);
+ 
++        $state = md5(uniqid(mt_rand(), true));
++        $request->getSession()->set('oauth.state', $state);
+         $url = 'http://coop.apps.knpuniversity.com/authorize?'.http_build_query(array(
+             'response_type' => 'code',
+             'client_id' => 'TopCluck',
+             'redirect_uri' => $redirectUrl,
+-            'scope' => 'eggs-count profile'
++            'scope' => 'eggs-count profile',
++            'state' => $state
+         ));
+ 
+         return $this->redirect($url);
+@@ -48,6 +51,7 @@ class CoopOAuthController extends BaseController
+      */
+     public function receiveAuthorizationCode(Application $app, Request $request)
+     {
++        die;
+         // equivalent to $_GET['code']
+         $code = $request->get('code');
+ 
