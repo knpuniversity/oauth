@@ -369,6 +369,16 @@
             "id": "refresh-debug-message",
             "name": "Refresh: Debug message",
             "description": null
+        },
+        {
+            "id": "security-passing-the-state-parameter",
+            "name": "Security: Passing the state parameter",
+            "description": null
+        },
+        {
+            "id": "security-checking-the-state-parameter",
+            "name": "Security: Checking the state parameter",
+            "description": null
         }
     ]
 }
