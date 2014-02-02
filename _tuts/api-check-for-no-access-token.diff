@@ -1,5 +1,5 @@
 diff --git a/client/src/OAuth2Demo/Client/Controllers/CoopOAuthController.php b/client/src/OAuth2Demo/Client/Controllers/CoopOAuthController.php
-index b045c47..0f7b3c1 100644
+index d44b4fe..319f5ba 100644
 --- a/client/src/OAuth2Demo/Client/Controllers/CoopOAuthController.php
 +++ b/client/src/OAuth2Demo/Client/Controllers/CoopOAuthController.php
 @@ -52,8 +52,14 @@ class CoopOAuthController extends BaseController
