@@ -20,6 +20,12 @@ get long-lived access tokens, with an expiration of 60 days. But those are
 really just access tokens, and when they expire, you'll need to send the
 user back through the login flow.
 
+Why do refresh tokens exist? If an attacker steals an access token, there is
+only a short window they can use it before it expires. If an attacker
+gains a refresh token, it is useless to them without the client's credentials.
+Having two keys instead of one is a method often used in security to make it
+harder for attackers to compromise a system.
+
 Fortunately, COOP *does* support refresh tokens. Open up the ``CoopOAuthController``
 where we make the API request to ``/token``. Let's dump this response and
 go through the process::
@@ -52,7 +58,7 @@ an access token instead of the authorization code:
         &token_type=Bearer
         &scope=eggs-count+profile
 
-Since this is hwo the implicit flow works, this no surprise. But notice
+Since this is how the implicit flow works, this no surprise. But notice
 that there's no refresh token. That's one major disadvantage of using the
 implicit grant type.
 
@@ -132,7 +138,10 @@ Since we didn't save the new refresh token, we're stuck and need to re-authorize
 the user.
 
 Go back to the site, log out, and log back in with COOP. This will get new
-access and refresh tokens for the user.
+access and refresh tokens for the user. Now we just need to modify our script
+to save the new refresh token as well::
+
+    TODO: Code: Save new Refresh Token
 
 When we try the script now, it works. In fact, we can run it over and over
 again without any issues. Since we're storing the new refresh token, we can
