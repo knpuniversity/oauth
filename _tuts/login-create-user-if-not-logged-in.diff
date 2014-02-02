@@ -1,23 +1,23 @@
 diff --git a/client/src/OAuth2Demo/Client/Controllers/CoopOAuthController.php b/client/src/OAuth2Demo/Client/Controllers/CoopOAuthController.php
-index 0f7b3c1..f18c325 100644
+index 319f5ba..27112fa 100644
 --- a/client/src/OAuth2Demo/Client/Controllers/CoopOAuthController.php
 +++ b/client/src/OAuth2Demo/Client/Controllers/CoopOAuthController.php
 @@ -98,7 +98,17 @@ class CoopOAuthController extends BaseController
          $response = $request->send();
-         $meData = json_decode($response->getBody(), true);
+         $json = json_decode($response->getBody(), true);
  
 -        $user = $this->getLoggedInUser();
 +        if ($this->isUserLoggedIn()) {
 +            $user = $this->getLoggedInUser();
 +        } else {
 +            $user = $this->createUser(
-+                $meData['email'],
++                $json['email'],
 +                // a blank password - this user hasn't created a password yet!
 +                '',
-+                $meData['firstName'],
-+                $meData['lastName']
++                $json['firstName'],
++                $json['lastName']
 +            );
 +        }
          $user->coopAccessToken = $accessToken;
-         $user->coopUserId = $meData['id'];
+         $user->coopUserId = $json['id'];
          $user->coopAccessExpiresAt = $expiresAt;
