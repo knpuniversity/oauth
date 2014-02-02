@@ -53,7 +53,12 @@ chapters:
         is_free:    false
         length:     7:00
     facebook:
-        title:      Facebook Integration
+        title:      Oauth with Facebook
+        is_free:    false
+        length:     00:00
+        is_finished: 0
+    facebook2:
+        title:      Facebook: Using the API, Logging in and Failure
         is_free:    false
         length:     00:00
         is_finished: 0
