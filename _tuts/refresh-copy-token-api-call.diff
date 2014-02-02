@@ -1,0 +1,26 @@
+diff --git a/client/data/refresh_tokens.php b/client/data/refresh_tokens.php
+index 7fd0fb2..670651e 100644
+--- a/client/data/refresh_tokens.php
++++ b/client/data/refresh_tokens.php
+@@ -15,3 +15,21 @@ $http = new Client('http://coop.apps.knpuniversity.com', array(
+ $conn = $app['connection'];
+ 
+ $expiringTokens = $conn->getExpiringTokens();
++
++foreach ($expiringTokens as $userInfo) {
++
++    $request = $http->post('/token', null, array(
++        'client_id'     => 'TopCluck',
++        'client_secret' => '2e2dfd645da38940b1ff694733cc6be6',
++        'grant_type'    => 'authorization_code',
++        'code'          => $code,
++        'redirect_uri'  => $this->generateUrl('coop_authorize_redirect', array(), true),
++    ));
++
++    // make a request to the token url
++    $response = $request->send();
++    $responseBody = $response->getBody(true);
++    var_dump($responseBody);die;
++    $responseArr = json_decode($responseBody, true);
++
++}
