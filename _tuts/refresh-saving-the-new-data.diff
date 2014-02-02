@@ -1,0 +1,24 @@
+diff --git a/client/data/refresh_tokens.php b/client/data/refresh_tokens.php
+index 0cfb0bd..e8b9e7d 100644
+--- a/client/data/refresh_tokens.php
++++ b/client/data/refresh_tokens.php
+@@ -28,7 +28,18 @@ foreach ($expiringTokens as $userInfo) {
+     // make a request to the token url
+     $response = $request->send();
+     $responseBody = $response->getBody(true);
+-    var_dump($responseBody);die;
++    var_dump($responseBody);
+     $responseArr = json_decode($responseBody, true);
+ 
++    $accessToken = $responseArr['access_token'];
++    $expiresIn = $responseArr['expires_in'];
++    $expiresAt = new \DateTime('+'.$expiresIn.' seconds');
++    $refreshToken = $responseArr['refresh_token'];
++
++    $conn->saveNewTokens(
++        $userInfo['email'],
++        $accessToken,
++        $expiresAt,
++        $refreshToken
++    );
+ }
