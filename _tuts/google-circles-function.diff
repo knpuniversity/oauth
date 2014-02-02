@@ -1,12 +1,12 @@
 diff --git a/client/views/dashboard.twig b/client/views/dashboard.twig
-index 929caa0..6384b3e 100644
+index 929caa0..8f62ff1 100644
 --- a/client/views/dashboard.twig
 +++ b/client/views/dashboard.twig
 @@ -32,6 +32,7 @@
              </div>
  
              <a href="#" class="btn btn-lg btn-info js-google-signin">Sign in with Google+</a>
-+            <div id="google-plus-people"></div>
++            <div id="google-plus-farmers"></div>
  
          </div>
          <div class="col-md-6">
@@ -22,7 +22,7 @@ index 929caa0..6384b3e 100644
              } else {
                  // Update the app to reflect a signed out user
                  // Possible error values:
-@@ -74,6 +80,22 @@
+@@ -74,6 +80,21 @@
                  console.log('Sign-in state: ' + authResult['error']);
              }
          }
@@ -33,8 +33,7 @@ index 929caa0..6384b3e 100644
 +                'collection': 'visible'
 +            });
 +            request.execute(function (people) {
-+                console.log(people);
-+                var $people = $('#google-plus-people');
++                var $people = $('#google-plus-farmers');
 +                $people.empty();
 +                for (var personIndex in people.items) {
 +                    var person = people.items[personIndex];
