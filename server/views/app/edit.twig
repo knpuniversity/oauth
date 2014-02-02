@@ -1,0 +1,9 @@
+{% extends "app/formLayout.twig" %}
+
+{% block header %}<h1>Edit {{ client.client_id }}</h1>{% endblock %}
+
+{% block app_form %}
+    <form class="bs-example form-horizontal" action="{{ path('app_update', {'name': client.client_id}) }}" method="post">
+        {{ include('app/_form.twig') }}
+    </form>
+{% endblock %}

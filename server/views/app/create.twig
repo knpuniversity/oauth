@@ -1,62 +1,9 @@
-{% extends "base.twig" %}
+{% extends "app/formLayout.twig" %}
 
 {% block header %}<h1>Create your Application</h1>{% endblock %}
 
-{% block content %}
-<div class="bs-docs-section" role="main">
-    {% if error is defined %}
-      <div class="row">
-          <div class="col-lg-12">
-              <div class="alert alert-dismissable alert-danger"><p>{{ error }}</p></div>
-          </div>
-      </div>
-    {% endif %}
-
-    <div class="row">
-        <form class="bs-example form-horizontal" action="{{ path('app_create') }}" method="post">
-            <fieldset>
-                <legend>Let's get you started</legend>
-                <div class="form-group">
-                    <label for="name" class="col-lg-2 control-label">Application Name</label>
-                    <div class="col-lg-10">
-                        <input type="text" class="form-control" name="name" placeholder="For Example: My Test App">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="description" class="col-lg-2 control-label">Application Description</label>
-                    <div class="col-lg-10">
-                        <textarea class="form-control" rows="3" name="description"></textarea>
-                        <span class="help-block">Tell us why your application is the best!</span>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="redirect_uri" class="col-lg-2 control-label">Redirect URI</label>
-                    <div class="col-lg-10">
-                        <input type="text" class="form-control" name="redirect_uri" placeholder="Don't worry about this yet">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-lg-2 control-label">Scope
-                        <span class="help-block"><em>What is it you want to do?</em></span>
-                    </label>
-                    <div class="col-lg-10">
-                        {% for action,message in app.scopes %}
-                            <div class="checkbox">
-                                <label>
-                                    <input type="checkbox" name="scope[]" value="{{ action }}"> {{ message }}
-                                </label>
-                            </div>
-                        {% endfor %}
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-lg-10 col-lg-offset-2">
-                        <a class="btn btn-default" href="{{ path('home') }}">Cancel</a>
-                        <button type="submit" class="btn btn-primary">Submit</button>
-                    </div>
-                </div>
-            </fieldset>
-        </form>
-    </div>
-<div>
+{% block app_form %}
+    <form class="bs-example form-horizontal" action="{{ path('app_create') }}" method="post">
+        {{ include('app/_form.twig') }}
+    </form>
 {% endblock %}
