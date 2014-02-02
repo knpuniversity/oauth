@@ -1,5 +1,5 @@
 diff --git a/client/src/OAuth2Demo/Client/Controllers/CoopOAuthController.php b/client/src/OAuth2Demo/Client/Controllers/CoopOAuthController.php
-index 0aa1a20..479f85d 100644
+index 0aa1a20..a28f62c 100644
 --- a/client/src/OAuth2Demo/Client/Controllers/CoopOAuthController.php
 +++ b/client/src/OAuth2Demo/Client/Controllers/CoopOAuthController.php
 @@ -75,7 +75,12 @@ class CoopOAuthController extends BaseController
@@ -7,11 +7,11 @@ index 0aa1a20..479f85d 100644
          $request->addHeader('Authorization', 'Bearer '.$accessToken);
          $response = $request->send();
 -        echo ($response->getBody(true));die;
-+        $meData = json_decode($response->getBody(), true);
++        $json = json_decode($response->getBody(), true);
 +
 +        $user = $this->getLoggedInUser();
 +        $user->coopAccessToken = $accessToken;
-+        $user->coopUserId = $meData['id'];
++        $user->coopUserId = $json['id'];
 +        $this->saveUser($user);
  
          die('Implement this in CoopOAuthController::receiveAuthorizationCode');
