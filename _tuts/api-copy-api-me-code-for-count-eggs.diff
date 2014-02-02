@@ -1,5 +1,5 @@
 diff --git a/client/src/OAuth2Demo/Client/Controllers/CountEggs.php b/client/src/OAuth2Demo/Client/Controllers/CountEggs.php
-index e1fdb7a..f18e421 100644
+index e1fdb7a..d187351 100644
 --- a/client/src/OAuth2Demo/Client/Controllers/CountEggs.php
 +++ b/client/src/OAuth2Demo/Client/Controllers/CountEggs.php
 @@ -2,6 +2,8 @@
@@ -24,7 +24,7 @@ index e1fdb7a..f18e421 100644
 +        $request = $http->post('/api/me');
 +        $request->addHeader('Authorization', 'Bearer '.$accessToken);
 +        $response = $request->send();
-+        $meData = json_decode($response->getBody(), true);
++        $json = json_decode($response->getBody(), true);
 +
          die('Implement this in CountEggs::countEggs');
  
