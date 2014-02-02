@@ -1,0 +1,10 @@
+diff --git a/client/data/refresh_tokens.php b/client/data/refresh_tokens.php
+index 7ae3212..7fd0fb2 100644
+--- a/client/data/refresh_tokens.php
++++ b/client/data/refresh_tokens.php
+@@ -14,4 +14,4 @@ $http = new Client('http://coop.apps.knpuniversity.com', array(
+ /** @var \OAuth2Demo\Client\Storage\Connection $conn */
+ $conn = $app['connection'];
+ 
+-echo 'TODO';
++$expiringTokens = $conn->getExpiringTokens();
