@@ -1,13 +1,13 @@
 diff --git a/client/src/OAuth2Demo/Client/Controllers/CoopOAuthController.php b/client/src/OAuth2Demo/Client/Controllers/CoopOAuthController.php
-index f18c325..4d02c1b 100644
+index 27112fa..ba27f99 100644
 --- a/client/src/OAuth2Demo/Client/Controllers/CoopOAuthController.php
 +++ b/client/src/OAuth2Demo/Client/Controllers/CoopOAuthController.php
 @@ -108,6 +108,8 @@ class CoopOAuthController extends BaseController
-                 $meData['firstName'],
-                 $meData['lastName']
+                 $json['firstName'],
+                 $json['lastName']
              );
 +
 +            $this->loginUser($user);
          }
          $user->coopAccessToken = $accessToken;
-         $user->coopUserId = $meData['id'];
+         $user->coopUserId = $json['id'];
