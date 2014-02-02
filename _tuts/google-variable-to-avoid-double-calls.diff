@@ -1,5 +1,5 @@
 diff --git a/client/views/dashboard.twig b/client/views/dashboard.twig
-index 6384b3e..faf0750 100644
+index 8f62ff1..71e162a 100644
 --- a/client/views/dashboard.twig
 +++ b/client/views/dashboard.twig
 @@ -61,8 +61,14 @@
