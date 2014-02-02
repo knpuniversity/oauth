@@ -1,5 +1,5 @@
 diff --git a/client/src/OAuth2Demo/Client/Controllers/FacebookOAuthController.php b/client/src/OAuth2Demo/Client/Controllers/FacebookOAuthController.php
-index 74029e1..51e51c4 100644
+index 7610d8c..843f90c 100644
 --- a/client/src/OAuth2Demo/Client/Controllers/FacebookOAuthController.php
 +++ b/client/src/OAuth2Demo/Client/Controllers/FacebookOAuthController.php
 @@ -58,6 +58,13 @@ class FacebookOAuthController extends BaseController
