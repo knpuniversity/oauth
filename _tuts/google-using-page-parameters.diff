@@ -16,7 +16,7 @@ index b553abd..026c005 100644
      <link href="{{ app.request.basePath }}/css/bootstrap.css" rel="stylesheet" />
  
 diff --git a/client/views/dashboard.twig b/client/views/dashboard.twig
-index faf0750..d643b4d 100644
+index 71e162a..367c3a4 100644
 --- a/client/views/dashboard.twig
 +++ b/client/views/dashboard.twig
 @@ -50,14 +50,7 @@
