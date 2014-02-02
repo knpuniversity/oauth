@@ -1,8 +1,8 @@
 diff --git a/client/src/OAuth2Demo/Client/Controllers/FacebookOAuthController.php b/client/src/OAuth2Demo/Client/Controllers/FacebookOAuthController.php
-index 60c652f..84fe21e 100644
+index d9781fa..d6bd69f 100644
 --- a/client/src/OAuth2Demo/Client/Controllers/FacebookOAuthController.php
 +++ b/client/src/OAuth2Demo/Client/Controllers/FacebookOAuthController.php
-@@ -88,7 +88,7 @@ class FacebookOAuthController extends BaseController
+@@ -93,7 +93,7 @@ class FacebookOAuthController extends BaseController
          return $this->redirect($this->generateUrl('home'));
      }
  
@@ -11,7 +11,7 @@ index 60c652f..84fe21e 100644
      {
          try {
              return $facebook->api($url, $method, $parameters);
-@@ -99,6 +99,11 @@ class FacebookOAuthController extends BaseController
+@@ -104,6 +104,11 @@ class FacebookOAuthController extends BaseController
                  return $this->redirect($this->generateUrl('facebook_authorize_start'));
              }
  
