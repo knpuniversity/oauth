@@ -1,11 +1,11 @@
 diff --git a/client/src/OAuth2Demo/Client/Controllers/FacebookOAuthController.php b/client/src/OAuth2Demo/Client/Controllers/FacebookOAuthController.php
-index 84fe21e..94e0225 100644
+index d6bd69f..ca2c42d 100644
 --- a/client/src/OAuth2Demo/Client/Controllers/FacebookOAuthController.php
 +++ b/client/src/OAuth2Demo/Client/Controllers/FacebookOAuthController.php
-@@ -95,15 +95,19 @@ class FacebookOAuthController extends BaseController
+@@ -100,15 +100,19 @@ class FacebookOAuthController extends BaseController
          } catch (\FacebookApiException $e) {
              // https://developers.facebook.com/docs/graph-api/using-graph-api/#errors
-             if ($e->getType() == 'OAuthException' || (in_array($e->getCode(), array(190, 102)))) {
+             if ($e->getType() == 'OAuthException' || in_array($e->getCode(), array(190, 102))) {
 +                if ($retry) {
 +                    $user = $this->getLoggedInUser();
 +                    // this is fake code - we don't have a facebookAccessToken
