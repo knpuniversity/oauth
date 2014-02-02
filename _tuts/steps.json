@@ -319,6 +319,56 @@
             "id": "google-using-page-parameters",
             "name": "Google: Using page parameters",
             "description": null
+        },
+        {
+            "id": "refresh-dump-token-response",
+            "name": "Refresh: Dump token response",
+            "description": null
+        },
+        {
+            "id": "refresh-save-the-refresh-token",
+            "name": "Refresh: Save the refresh token",
+            "description": null
+        },
+        {
+            "id": "refresh-implicit-flow-no-refresh-token",
+            "name": "Refresh: Implicit flow no refresh token",
+            "description": null
+        },
+        {
+            "id": "refresh-back-to-auth-code-flow",
+            "name": "Refresh: Back to auth code flow",
+            "description": null
+        },
+        {
+            "id": "refresh-use-getexpiringtokens",
+            "name": "Refresh: use getExpiringTokens",
+            "description": null
+        },
+        {
+            "id": "refresh-copy-token-api-call",
+            "name": "Refresh: Copy \/token API call",
+            "description": null
+        },
+        {
+            "id": "refresh-changing-to-refresh-token-grant-type",
+            "name": "Refresh: Changing to refresh_token grant type",
+            "description": null
+        },
+        {
+            "id": "refresh-changing-expiration-date-temporarily",
+            "name": "Refresh: Changing expiration date temporarily",
+            "description": null
+        },
+        {
+            "id": "refresh-saving-the-new-data",
+            "name": "Refresh: Saving the new data",
+            "description": null
+        },
+        {
+            "id": "refresh-debug-message",
+            "name": "Refresh: Debug message",
+            "description": null
         }
     ]
 }
