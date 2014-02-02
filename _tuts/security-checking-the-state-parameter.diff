@@ -1,0 +1,28 @@
+diff --git a/client/src/OAuth2Demo/Client/Controllers/CoopOAuthController.php b/client/src/OAuth2Demo/Client/Controllers/CoopOAuthController.php
+index f215c6e..f65cbd6 100644
+--- a/client/src/OAuth2Demo/Client/Controllers/CoopOAuthController.php
++++ b/client/src/OAuth2Demo/Client/Controllers/CoopOAuthController.php
+@@ -51,7 +51,6 @@ class CoopOAuthController extends BaseController
+      */
+     public function receiveAuthorizationCode(Application $app, Request $request)
+     {
+-        die;
+         // equivalent to $_GET['code']
+         $code = $request->get('code');
+ 
+@@ -67,6 +66,15 @@ class CoopOAuthController extends BaseController
+             ));
+         }
+ 
++        if ($request->get('state') !== $request->getSession()->get('oauth.state')) {
++            return $this->render(
++                'failed_authorization.twig',
++                array('response' => array(
++                    'error_description' => 'Your session has expired. Please try again.'
++                ))
++            );
++        }
++
+         $http = new Client('http://coop.apps.knpuniversity.com', array(
+             'request.options' => array(
+                 'exceptions' => false,
