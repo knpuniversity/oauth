@@ -14,7 +14,7 @@ Refresh Tokens
 --------------
 
 Fortunately, OAuth comes with an awesome idea called refresh tokens. If you
-have a refresh token, you can use it to get a fresh access token. Not all
+have a refresh token, you can use it to get a new access token. Not all
 OAuth servers support refresh tokens. Facebook, for example, allows you to
 get long-lived access tokens, with an expiration of 60 days. But those are
 really just access tokens, and when they expire, you'll need to send the
@@ -22,9 +22,9 @@ user back through the login flow.
 
 Why do refresh tokens exist? If an attacker steals an access token, there is
 only a short window they can use it before it expires. If an attacker
-gains a refresh token, it is useless to them without the client's credentials.
-Having two keys instead of one is a method often used in security to make it
-harder for attackers to compromise a system.
+gains a refresh token, it is useless to them without the client's credentials, 
+as you'll see. Having two keys instead of one is a method often used in security 
+to make it harder for attackers to compromise a system.
 
 Fortunately, COOP *does* support refresh tokens. Open up the ``CoopOAuthController``
 where we make the API request to ``/token``. Let's dump this response and
@@ -65,7 +65,7 @@ implicit grant type.
 Using the Refresh Token
 -----------------------
 
-Let's undo that code and change things back to ask for an authorization code.
+Let's undo our change and go back to asking for an authorization code.
 
 We can't see it visually, but when we try the whole process, the user record
 in the database now has a ``coopRefreshToken`` saved to it.
@@ -82,14 +82,14 @@ value is today or earlier::
     TODO: Code: Refresh: use getExpiringTokens
 
 Next, let's iterate over each expiring token. To get a refresh token, we'll
-make an API request to the very-familiar ``/token`` endpoint. In fact, we
-can start by copying the Guzzle API call from ``CoopOAuthController``::
+make an API request to the very-familiar ``/token`` endpoint. In fact, I'll
+start by copying the Guzzle API call from ``CoopOAuthController``::
 
     TODO: Code: Refresh: Copy /token API call
 
 Of course, we don't have a ``$code`` variable, but we *do* have the user's
 refresh token. Change ``grant_type`` to be ``refresh_token`` and replace
-the ``code`` parameter with ``refresh_token``. We can also remove the ``redirect_uri``,
+the ``code`` parameter with the ``refresh_token``. We can also remove the ``redirect_uri``,
 which isn't needed with this grant type::
 
     TODO: Code: Refresh: Changing to refresh_token grant type
@@ -132,20 +132,13 @@ Let's add a little message so we can see what's going on::
 
 But when we try it now, the script blows up! Since we're still dumping the
 raw response, above the exception we can see the message "Invalid refresh token".
-The problem is that we already used our refresh token a moment ago. When we
-did, the COOP API gave us a new refresh token and invalidated the old one.
-Since we didn't save the new refresh token, we're stuck and need to re-authorize
-the user.
+The problem is that when we used the refresh token a second ago, the COOP API
+gave us a new one and invalidated the old one. We weren't saving it yet, so
+now we're stuck and need to re-authorize the user.
 
-Go back to the site, log out, and log back in with COOP. This will get new
-access and refresh tokens for the user. Now we just need to modify our script
-to save the new refresh token as well::
-
-    TODO: Code: Save new Refresh Token
-
-When we try the script now, it works. In fact, we can run it over and over
-again without any issues. Since we're storing the new refresh token, we can
-use it again in the future.
+Go back to the site, log out, and log back in with COOP. This will get a new
+refresh token for the user. And since we're saving the new refresh token, in
+our script each time, we can run it over and over again without any issues.
 
 And now that we've refreshed everyone's access tokens, we could loop through
 each user and send an API request to count their eggs. The code for that
