@@ -12,7 +12,7 @@ idea: having users share their chicken-laying progress on Facebook.
 Fortunately, Facebook uses OAuth 2.0 for their API, so we're already dangerous.
 And like a lot of sites, they even have a PHP library to help us work with
 it. Installing it via Composer is easy. In fact, I already added it to our
-``composer.json``, so the library is downloaded and ready to go::
+``composer.json``, so the library is downloaded and ready to go:
 
 .. code-block:: json
 

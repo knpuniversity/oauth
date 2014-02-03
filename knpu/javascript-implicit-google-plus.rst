@@ -96,7 +96,7 @@ Including the JavaScript SDK
 
 The implicit OAuth flow can be done without any tools, but Google makes our
 life a lot easier by giving us a JavaScript SDK. `Copy the script`_ into
-our layout::
+our layout:
 
 .. code-block:: html+jinja
 
@@ -198,7 +198,7 @@ Let's copy these into our JavaScript. Update the ``clientid`` but keep the
 parameter relates to posting activities - you can leave it, but we won't
 need to worry about it:
 
-.. code-block:: javascript::
+.. code-block:: javascript
 
         jQuery(document).ready(function() {
             $('.js-google-signin').on('click', function(e) {
@@ -344,6 +344,8 @@ to our page:
 
 Let's call this function automatically after we authenticate. This code loads the
 Google+ part of the SDK and calls our function.:
+
+.. code-block:: javascript
 
     function mySignInCallback(authResult) {
         if (authResult['status']['signed_in']) {
