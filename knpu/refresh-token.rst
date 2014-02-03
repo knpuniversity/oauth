@@ -50,7 +50,7 @@ right at the top of the code that handles the redirect::
 When we try the process again, COOP redirects us back with a URL that contains
 an access token instead of the authorization code:
 
-.. code-block::
+.. code-block:: text
 
     http://localhost:9000/coop/oauth/handle#
         access_token=eaf215f677bea1562026df05ecca202163a6c69f
