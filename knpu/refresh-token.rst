@@ -1,7 +1,7 @@
 Using Refresh Tokens
 ====================
 
-Brent has a big problem. A user can already log in and click a link that
+Brent has a big problem. A user can already log in to TopCluck and click a link that
 uses the COOP API to count the number of eggs collected that day. But that's
 manual, and if a farmer forgets, his egg count will show up as zero.
 
