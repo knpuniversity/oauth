@@ -1,13 +1,13 @@
 Security
 ========
 
-Since TopCluck is handling a lot of access tokens for his farmer friends,
+Since TopCluck is handling a lot of access tokens for Brent's farmer friends,
 he wants to make sure it's secure. Nothing would be worse than for the access
-tokens of his users to get stolen - allowing some outsider to take control
-of people's farms!
+tokens of the TopCluck farmers to get stolen - allowing some city slicker to take control
+of the good people's farms!
 
 Exchanging tokens in a secure way isn't easy because there are a lot of opportunities
-for a hacker to be listening to the requests or doing something else clever.
+for a hacker to be listening to the requests or doing some other clever thing.
 
 CSRF Protection with the state Parameter
 ----------------------------------------
@@ -38,15 +38,15 @@ When we log in now, it all still works perfectly.
 
 Using the ``state`` parameter is just like using a CSRF token with a form:
 it prevents XSS attacks. Imagine I start the authorization process, but use
-a brower plugin to prevent COOP from redirecting me back to TopCluck. Then,
+a browser plugin to prevent COOP from redirecting me back to TopCluck. Then,
 I post the redirect URL with my valid authorization code to a forum somewhere,
 maybe embedded in an image tag. Assuming you're logged into TopCluck, when
 you view this page, the image tag will make a request to TopCluck, which exchanges
 the authorization code for an access token in the background.
 
-So what? Well, ``CoopOAuthController`` would end up saving the attacker's
-``coopUserId`` to *your* TopCluck account. This means when the attacker logs into
-TopCluck using COOP, they'll be logged in as *you*!
+So what? Well, ``CoopOAuthController`` would end up saving your
+``coopUserId`` to the attacker's TopCluck account. This means when 
+the attacker logs into TopCluck using COOP, they'll be logged in as *you*!
 
 So, *always* use a ``state`` parameter. Fortunately, when you work with something
 like Facebook's SDK, this happens automatically. We didn't realize it, but
@@ -88,15 +88,14 @@ The Insecurity of Implicit
 The implicit grant type is the least secure grant type because the access
 token can be read by other JavaScript on your page and could be a victim
 of XSS attacks. If you decide to use implicit, you must be *extra careful*
-in preventing XSS attacks on the pages where access tokens are used in
+in preventing the attacks on the pages where access tokens are used in
 JavaScript.
 
 This is another example of why registering an exact redirect URI is important.
 If an attacker locates just one XSS vulnerability on your site, they could
 manipulate the redirect URI to point there, and use it to steal access tokens.
+It's also even more important to validate your state parameter.
 
-The Implicit grant type is less secure, and there's not much you can do about
-it. Just be sure to set your exact redirect URI and validate the state parameter.
 If it's at all possible to use the authorization code grant type instead, this is
 much better because even if there was a man in the middle or piece of JavaScript
 reading your authorization code, the client secret is still needed to turn that into
@@ -119,22 +118,22 @@ need the client secret to do anything with it.
 Https
 -----
 
-An important of OAuth security is using SSL. This means all requests to an
+An important piece of OAuth security is using SSL. This means all requests to an
 OAuth server should be done using HTTPS. The reason is that the ``access_token``,
 is always sent in plain text. That's true when the OAuth server first gives
 us the access token and on *every single* API request we make back afterwards.
 This makes using OAuth APIs much more convenient for us developers, but if
-those requests aren't encrypted, you're asking for trouble.
+those requests aren't encrypted, you're asking for a fox in your hen house.
 
 In addition to calling the server using HTTPS, it is just as important that the
 call you make verifies the SSL certificate. Your http library will do this for
-you, but they also let you bypass SSL certificate verification. This is commonly
-done during development, or when you encounter an error along the lines
-of "Peer certificate cannot be authenticated with known CA certificates". It can
+you, but they also let you bypass verification. This is commonly
+done during development, or when you encounter an error such as
+"Peer certificate cannot be authenticated with known CA certificates". It can
 be tempting to do this, but you must remember with OAuth to *always* verify SSL
 certificates. Turning off SSL Verification is the same as sending the access token
 unencrypted. If you're worried about this, just remember unless you manually turn
-this off, you will be okay.
+this off, you'll be okay.
 
 Interestingly, *your* site doesn't technically need to use HTTPS. When the
 user is redirected back with the authorization code, it's ok if someone reads
