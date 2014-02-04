@@ -28,7 +28,7 @@ Log out and click to login via COOP. Of course, when we redirect to COOP,
 the new ``state`` parameter is there. Interestingly, after we authorize, COOP
 redirects back to us and *also* includes that exact ``state`` parameter.
 
-In ``receiveAuthorizationCode``, we ust need to make sure that ``state``
+In ``receiveAuthorizationCode``, we just need to make sure that ``state``
 matches the string that we set in the session exactly. If it doesn't, let's
 render an error page: this could be an attack::
 
@@ -38,16 +38,15 @@ When we log in now, it all still works perfectly.
 
 Using the ``state`` parameter is just like using a CSRF token with a form:
 it prevents XSS attacks. Imagine I start the authorization process, but use
-a brower plugin to prevent COOP from preventing me back to TopCluck. Then,
+a brower plugin to prevent COOP from redirecting me back to TopCluck. Then,
 I post the redirect URL with my valid authorization code to a forum somewhere,
-maybe with embedded in an image tag. Assuming you're logged into COOP, when
-you view this page, the image tag makes a request to COOP, which exchanges
+maybe embedded in an image tag. Assuming you're logged into TopCluck, when
+you view this page, the image tag will make a request to TopCluck, which exchanges
 the authorization code for an access token in the background.
 
-So what? Well, in addition to getting the access token, ``CoopOAuthController``
-would also save the attacker's ``coopUserId`` to *your* TopCluck account.
-I can now log into TopCluck using my COOP account. And when I do, I'll be
-logged into *your* TopCluck account.
+So what? Well, ``CoopOAuthController`` would end up saving the attacker's
+``coopUserId`` to *your* TopCluck account. This means when the attacker logs into
+TopCluck using COOP, they'll be logged in as *you*!
 
 So, *always* use a ``state`` parameter. Fortunately, when you work with something
 like Facebook's SDK, this happens automatically. We didn't realize it, but
@@ -80,7 +79,7 @@ is much more difficult to fake.
 
 In a client-side environment where the code or token is passed via JavaScript,
 the OAuth server may just ask you for your hostname or a list of JavaScript
-origins. These function the same way: to prevent JavaScript form any other
+origins. These function the same way: to prevent JavaScript on some other
 hostname from using your client id.
 
 The Insecurity of Implicit
@@ -88,13 +87,20 @@ The Insecurity of Implicit
 
 The implicit grant type is the least secure grant type because the access
 token can be read by other JavaScript on your page and could be a victim
-of XSS attacks.
+of XSS attacks. If you decide to use implicit, you must be *extra careful*
+in preventing XSS attacks on the pages where access tokens are used in
+JavaScript.
 
-There's not much you can do about this,, other than setting your redirect
-URI or using the authorization code grant type instead. This is better because
-even if there was a man in the middle or piece of JavaScript reading your
-authorization code, the client secret is still needed to turn that into an
-access token.
+This is another example of why registering an exact redirect URI is important.
+If an attacker locates just one XSS vulnerability on your site, they could
+manipulate the redirect URI to point there, and use it to steal access tokens.
+
+The Implicit grant type is less secure, and there's not much you can do about
+it. Just be sure to set your exact redirect URI and validate the state parameter.
+If it's at all possible to use the authorization code grant type instead, this is
+much better because even if there was a man in the middle or piece of JavaScript
+reading your authorization code, the client secret is still needed to turn that into
+an access token.
 
 One interesting thing about the implicit grant type is that the access token
 is passed back as a URL fragment instead of a query parameter:
@@ -107,30 +113,36 @@ for us. But this is really important because anything after the hash in a
 URL isn't actually sent when your browser requests a page. The JavaScript
 on your page can read this, but since it's not sent over the web, anyone
 listening between the user and the server won't be able to intercept it.
-That's not important with the code, because the man-in-the-middle would still
+That's not as important with the code, because the man-in-the-middle would still
 need the client secret to do anything with it.
-
-Like this illustrates, the biggest challenge with OAuth security is thinking
-about who else might be able to read your access tokens - whether it's some
-JavaScript on your page or someone reading the traffic between your user
-and your server.
 
 Https
 -----
 
-A big part of OAuth security is using https. Actually, the most important
-thing is that you always communicate with the OAuth API using ``http``. In
-fact, most OAuth servers *only* allow https. The reason is that the ``access_token``,
+An important of OAuth security is using SSL. This means all requests to an
+OAuth server should be done using HTTPS. The reason is that the ``access_token``,
 is always sent in plain text. That's true when the OAuth server first gives
 us the access token and on *every single* API request we make back afterwards.
-If those requests aren't encrypted, you're asking for trouble.
+This makes using OAuth APIs much more convenient for us developers, but if
+those requests aren't encrypted, you're asking for trouble.
 
-Interestingly, *your* site doesn't technically need to use https. When the
+In addition to calling the server using HTTPS, it is just as important that the
+call you make verifies the SSL certificate. Your http library will do this for
+you, but they also let you bypass SSL certificate verification. This is commonly
+done during development, or when you encounter an error along the lines
+of "Peer certificate cannot be authenticated with known CA certificates". It can
+be tempting to do this, but you must remember with OAuth to *always* verify SSL
+certificates. Turning off SSL Verification is the same as sending the access token
+unencrypted. If you're worried about this, just remember unless you manually turn
+this off, you will be okay.
+
+Interestingly, *your* site doesn't technically need to use HTTPS. When the
 user is redirected back with the authorization code, it's ok if someone reads
-this, as long as your client secret stays very safe.
-
-Of course, there are a lot of other good reasons in general to use https,
-so don't let this be an excuse not to!
+this, as long as your client secret stays very safe. However, any time you
+have a logged in user, it is important to have their session information sent
+over HTTPS. Otherwise, their session could be snatched by someone else on the
+same network! For this reason, and many other general security reasons, you
+should be sure to have your site on HTTPS as well.
 
 Authentication with OAuth
 -------------------------
@@ -149,7 +161,7 @@ with the token?
 
 Now, what if some other site also allows you to authorize your COOP account
 with them. They now also have an access token for your COOP account. If they're
-nasty, of if your ``access_token`` gets stolen, someone pass it directly
+nasty, or if your ``access_token`` gets stolen, someone could pass it directly
 to our AJAX endpoint and become authenticated on TopCluck in your account.
 
 That's right - any site that has an access token to your Coop or Facebook
@@ -157,8 +169,9 @@ account could use it to log into any other site that has this flawed login
 mechanism.
 
 The moral is this: since OAuth is not meant for authentication, you need
-to be extra careful when you do this. Fortunately, it's a well-established
-pattern that tons of sites use, just be cautious when you do it!
+to be extra careful when you do this. Most importantly, stay away from
+the implicit grant type for authenticating users, as we have done in this
+tutorial.
 
 The End
 -------
