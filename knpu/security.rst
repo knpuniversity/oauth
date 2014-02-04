@@ -137,12 +137,13 @@ coop! Turning off SSL Verification is the same as sending the access token
 unencrypted. Don't manually turn this off and you'll be okay.
 
 Interestingly, *your* site doesn't technically need to use HTTPS. When the
-user is redirected back with the authorization code, it's ok if someone reads
-this, as long as your client secret stays very safe. However, any time you
-have a logged in user, it is important to have their session information sent
-over HTTPS. Otherwise, their session could be snatched by someone else on the
-same network! For this reason, and many other general security reasons, you
-should be sure to have your site on HTTPS as well.
+user is redirected back with the auth code, it's ok if someone intercepts this,
+since they won't also have your client secret.
+
+But any time you have a logged in user, you should really use HTTPS. Without
+it, your user's session could be stolen by someone else on the same network!
+And all your hard work making your OAuth implementation secure will go to
+waste.
 
 Authentication with OAuth
 -------------------------
