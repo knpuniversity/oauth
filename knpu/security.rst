@@ -155,10 +155,10 @@ authorization process. So when we're given an access token for Brent's account,
 we think "This must be Brent, let's log him into his TopCluck account".
 
 With this authorization code grant type and the state parameter, this is
-safe. But suppose insetad that we decide to use the implicit flow in JavaScript.
+safe. But suppose instead that we decide to use the implicit flow in JavaScript.
 After success, we'll send the new ``access_token`` via AJAX to the TopCluck
 server and authenticate the user by looking up the ``coopUserId`` associated
-with the token?
+with the token.
 
 Now, what if some other site also allows you to authorize your COOP account
 with them. They now also have an access token for your COOP account. If they're
@@ -182,6 +182,6 @@ CRON script, his chickens are getting fed everyday. And with the TopCluck
 site, he's well on his way to victory over farmer Scott *and* sharing his
 glory all over Facebook. All of this was possible by getting a deep understanding
 of OAuth, which unleashed us to do all kinds of interesting integrations
-with third-party sites. I hope you have as much success as Brent has!
+with third-party sites. I know that you will have just as much success as Brent!
 
 See you next time!
