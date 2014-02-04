@@ -133,7 +133,7 @@ you get an error like:
     Peer certificate cannot be authenticated with known CA certificates
 
 But don't disable verification! That's like keeping the door open on your chicken
-coup! Turning off SSL Verification is the same as sending the access token
+coop! Turning off SSL Verification is the same as sending the access token
 unencrypted. Don't manually turn this off and you'll be okay.
 
 Interestingly, *your* site doesn't technically need to use HTTPS. When the
