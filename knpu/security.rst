@@ -125,15 +125,16 @@ us the access token and on *every single* API request we make back afterwards.
 This makes using OAuth APIs much more convenient for us developers, but if
 those requests aren't encrypted, you're asking for a fox in your hen house.
 
-In addition to calling the server using HTTPS, it is just as important that the
-call you make verifies the SSL certificate. Your http library will do this for
-you, but they also let you bypass verification. This is commonly
-done during development, or when you encounter an error such as
-"Peer certificate cannot be authenticated with known CA certificates". It can
-be tempting to do this, but you must remember with OAuth to *always* verify SSL
-certificates. Turning off SSL Verification is the same as sending the access token
-unencrypted. If you're worried about this, just remember unless you manually turn
-this off, you'll be okay.
+And when you make those calls over HTTPS, make sure you actually verify the SSL
+certificate. Your HTTP library will do this for you, but it will also give you
+the option to skip verification. This is tempting when developing locally or if
+you get an error like:
+
+    Peer certificate cannot be authenticated with known CA certificates
+
+But don't disable verification! That's like keeping the door open on your chicken
+coup! Turning off SSL Verification is the same as sending the access token
+unencrypted. Don't manually turn this off and you'll be okay.
 
 Interestingly, *your* site doesn't technically need to use HTTPS. When the
 user is redirected back with the authorization code, it's ok if someone reads
