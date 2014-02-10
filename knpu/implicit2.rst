@@ -173,3 +173,4 @@ in JavaScript, the authorization code *still* needs a server so that it can
 use the client secret to exchange the code for the token.
 
 .. _`Step 4`: https://developers.google.com/+/web/signin/javascript-flow#step_4_initiate_the_sign-in_flow_with_javascript
+.. _`Step 5`: https://developers.google.com/+/web/signin/javascript-flow#step_5_handling_the_sign-in
