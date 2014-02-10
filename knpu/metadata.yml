@@ -1,6 +1,6 @@
 title:  OAuth2 in 8 Steps
 price:  12
-length: 1:01:08
+length: 1:15:55
 summary: |
     OAuth2: that mystical beast that you kind of understand and occasionally
     wrestle to integrate with some social media site.
@@ -63,8 +63,11 @@ chapters:
     javascript-implicit-google-plus:
         title:      Implicit Grant Type with Google+
         is_free:    false
-        length:     00:00
-        is_finished: 0
+        length:     9:45
+    implicit2:
+        title:      Implicit+Google Round 2
+        is_free:    false
+        length:     5:02
     refresh-token:
         title:      Using Refresh Tokens
         is_free:    false
