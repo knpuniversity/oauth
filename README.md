@@ -11,13 +11,12 @@ Inside this fine repository, you'll find a few things:
 Depending on which branch you're on, you may be seeing
 the code and different "steps" along the way:
 
-* `_tuts/start` - The beginning stage of the project
-* `master` - The ending stage of the project
-* Every other branch - Some middle-step
+* `master` - The beginning stage of the project
+* `finish` - The ending stage of the project
 
 If you want to code along with the tutorial, start with the
-code on the `_tuts/start` branch. If you want to see the finished
-product, go to the `master` branch.
+code on the `master` branch. If you want to see the finished
+product, go to the `finish` branch.
 
 This tutorial actually has a few pieces:
 
@@ -42,3 +41,4 @@ And as always, thanks so much for your support and letting us do what
 we love!
 
 <3 Your friends at KnpUniversity
+
