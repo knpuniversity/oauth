@@ -1,6 +1,6 @@
 title:  OAuth2 in 8 Steps
 price:  12
-length: 1:35:13
+length: 1:33:17
 summary: |
     OAuth2: that mystical beast that you kind of understand and occasionally
     wrestle to integrate with some social media site.
@@ -42,19 +42,19 @@ chapters:
     authorization-code:
         title:      Authorization Code Grant Type
         is_free:    false
-        length:     10:21
+        length:     10:22
     authorization-code2:
         title:      Authorization Code: Saving the Token & Handling Failures
         is_free:    false
-        length:     10:36
+        length:     10:37
     logging-in:
         title:      User Login with OAuth
         is_free:    false
-        length:     7:00
+        length:     7:01
     facebook:
         title:      Oauth with Facebook
         is_free:    false
-        length:     11:27
+        length:     11:28
     facebook2:
         title:      Facebook: Using the API, Logging in and Failure
         is_free:    false
@@ -66,12 +66,12 @@ chapters:
     implicit2:
         title:      Implicit+Google Round 2
         is_free:    false
-        length:     5:02
+        length:     5:03
     refresh-token:
         title:      Using Refresh Tokens
         is_free:    false
-        length:     7:09
+        length:     7:08
     security:
         title:      Tightening up Security
         is_free:    false
-        length:     10:09
+        length:     10:10
