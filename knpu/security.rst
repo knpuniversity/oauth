@@ -15,7 +15,7 @@ CSRF Protection with the state Parameter
 Open up ``CoopOAuthController`` so that we can squash a really common attack.
 In the authorize redirect URL, add a ``state`` parameter and set its value
 to something that's only known to the session for *this user*. We can do
-that by generating a random string and storing it in the session.
+that by generating a random string and storing it in the session::
 
     // src/OAuth2Demo/Client/Controllers/CoopOAuthController.php
     public function redirectToAuthorization(Request $request)
