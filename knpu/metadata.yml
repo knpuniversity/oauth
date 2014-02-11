@@ -38,7 +38,7 @@ chapters:
     client-credentials:
         title:      Client Credentials
         is_free:    true
-        length:     8:56
+        length:     8:55
     authorization-code:
         title:      Authorization Code Grant Type
         is_free:    false
