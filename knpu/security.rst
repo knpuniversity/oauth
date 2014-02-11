@@ -17,12 +17,32 @@ In the authorize redirect URL, add a ``state`` parameter and set its value
 to something that's only known to the session for *this user*. We can do
 that by generating a random string and storing it in the session.
 
-    TODO: Code: Security: Passing the state parameter
+    // src/OAuth2Demo/Client/Controllers/CoopOAuthController.php
+    public function redirectToAuthorization(Request $request)
+    {
+        $redirectUrl = $this->generateUrl('coop_authorize_redirect', array(), true);
+
+        $state = md5(uniqid(mt_rand(), true));
+        $request->getSession()->set('oauth.state', $state);
+        $url = 'http://coop.apps.knpuniversity.com/authorize?'.http_build_query(array(
+            'response_type' => 'code',
+            'client_id' => 'TopCluck',
+            'redirect_uri' => $redirectUrl,
+            'scope' => 'eggs-count profile',
+            'state' => $state
+        ));
+
+        return $this->redirect($url);
+    }
 
 Let's also add a ``die`` statement in the ``receiveAuthorizationCode`` function
 that's executed after COOP redirects back to us::
 
-    TODO: Code: Security: Passing the state parameter
+    public function receiveAuthorizationCode(Application $app, Request $request)
+    {
+        die;
+        // ...
+    }
 
 Log out and click to login via COOP. Of course, when we redirect to COOP,
 the new ``state`` parameter is there. Interestingly, after we authorize, COOP
@@ -32,17 +52,31 @@ In ``receiveAuthorizationCode``, we just need to make sure that ``state``
 matches the string that we set in the session exactly. If it doesn't, let's
 render an error page: this could be an attack::
 
-    TODO: Code: Security: Checking the state parameter
+    public function receiveAuthorizationCode(Application $app, Request $request)
+    {
+        if ($request->get('state') !== $request->getSession()->get('oauth.state')) {
+            return $this->render(
+                'failed_authorization.twig',
+                array('response' => array(
+                    'error_description' => 'Your session has expired. Please try again.'
+                ))
+            );
+        }
+
+        // ...
+    }
+
+Using the ``state`` parameter is just like using a CSRF token with a form:
+it prevents XSS attacks.
 
 When we log in now, it all still works perfectly.
 
-Using the ``state`` parameter is just like using a CSRF token with a form:
-it prevents XSS attacks. Imagine I start the authorization process, but use
-a browser plugin to prevent COOP from redirecting me back to TopCluck. Then,
-I post the redirect URL with my valid authorization code to a forum somewhere,
-maybe embedded in an image tag. Assuming you're logged into TopCluck, when
-you view this page, the image tag will make a request to TopCluck, which exchanges
-the authorization code for an access token in the background.
+Imagine I start the authorization process, but use a browser plugin to prevent
+COOP from redirecting me back to TopCluck. Then, I post the redirect URL with
+my valid authorization code to a forum somewhere, maybe embedded in an image
+tag. Assuming you're logged into TopCluck, when you view this page, the image
+tag will make a request to TopCluck, which exchanges the authorization code
+for an access token in the background.
 
 So what? Well, ``CoopOAuthController`` would end up saving your
 ``coopUserId`` to the attacker's TopCluck account. This means when 
