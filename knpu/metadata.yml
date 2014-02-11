@@ -1,6 +1,6 @@
 title:  OAuth2 in 8 Steps
 price:  12
-length: 1:25:04
+length: 1:35:13
 summary: |
     OAuth2: that mystical beast that you kind of understand and occasionally
     wrestle to integrate with some social media site.
@@ -28,7 +28,6 @@ illustration: oauth.png
 priority: 170
 tags:
     - { name: php }
-status: unfinished
 hasVideoDownload: 0
 
 chapters:
@@ -75,5 +74,4 @@ chapters:
     security:
         title:      Tightening up Security
         is_free:    false
-        length:     00:00
-        is_finished: 0
+        length:     10:09
