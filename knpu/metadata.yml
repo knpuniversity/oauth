@@ -28,7 +28,7 @@ illustration: oauth.png
 priority: 170
 tags:
     - { name: php }
-hasVideoDownload: 0
+hasVideoDownload: 1
 
 chapters:
     intro:
