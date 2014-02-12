@@ -5,7 +5,7 @@ php:
 
 branches:
   only:
-    - master
+    - finish
 
 before_script:
   - sudo apt-get update 
