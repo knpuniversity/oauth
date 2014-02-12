@@ -19,11 +19,11 @@ Feature: Coop Authorization
     And I click "Yes, I Authorize This Request"
     Then I should see "Your Basket of Eggs"
     # the name of the fixture user, now showing on the leaderboard
-    And I should see "Edgar Cat"
+    And I should see "Farmer Scott"
 
   Scenario: Updating your egg count
     Given I am authorized with Coop
     And I am on "/"
-    When I click "Update today's egg count"
+    When I click "Count Eggs"
     # not a great test, but unless we failed, we're redirected back to the homepage
     Then I should see "Your Basket of Eggs"
