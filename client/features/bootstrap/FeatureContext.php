@@ -47,7 +47,7 @@ class FeatureContext extends MinkContext
      */
     public function reloadDatabase()
     {
-        self::$app['fixtures_manager']->resetDatabase();
+        self::$app['fixtures_manager']->clearTables();
         self::$app['fixtures_manager']->populateSqliteDb();
     }
 

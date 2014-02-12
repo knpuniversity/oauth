@@ -182,6 +182,15 @@ class Connection
         return $weekly;
     }
 
+    public function truncateTable($tbl)
+    {
+        $sql = 'DELETE FROM '.$tbl;
+
+        $stmt = $this->db->prepare($sql);
+
+        $stmt->execute();
+    }
+
     private function getWeeklyEggCounts()
     {
         $sql = 'SELECT email, SUM(count) AS weekly

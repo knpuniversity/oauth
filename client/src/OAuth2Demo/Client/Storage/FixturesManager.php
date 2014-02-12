@@ -18,6 +18,14 @@ class FixturesManager
         include_once(__DIR__.'/../../../../data/rebuild_db.php');
     }
 
+    public function clearTables()
+    {
+        /** @var Connection $conn */
+        $conn = $this->app['connection'];
+        $conn->truncateTable('users');
+        $conn->truncateTable('egg_count');
+    }
+
     public function populateSqliteDb()
     {
         // user emails
