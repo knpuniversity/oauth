@@ -10,4 +10,8 @@ $http = new Client('http://coop.apps.knpuniversity.com', array(
     )
 ));
 
+$request = $http->post('/api/2/eggs-collect');
+$response = $request->send();
+echo $response->getBody();
 
+echo "\n\n";
