@@ -14,7 +14,7 @@ $http = new Client('http://coop.apps.knpuniversity.com', array(
 /** @var \OAuth2Demo\Client\Storage\Connection $conn */
 $conn = $app['connection'];
 
-$expiringTokens = $conn->getExpiringTokens();
+$expiringTokens = $conn->getExpiringTokens(new \DateTime('+1 month'));
 
 foreach ($expiringTokens as $userInfo) {
 
