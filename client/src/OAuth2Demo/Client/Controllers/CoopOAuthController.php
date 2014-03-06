@@ -75,7 +75,12 @@ class CoopOAuthController extends BaseController
         $request = $http->get('/api/me');
         $request->addHeader('Authorization', 'Bearer '.$accessToken);
         $response = $request->send();
-        echo ($response->getBody(true));die;
+        $json = json_decode($response->getBody(), true);
+
+        $user = $this->getLoggedInUser();
+        $user->coopAccessToken = $accessToken;
+        $user->coopUserId = $json['id'];
+        $this->saveUser($user);
 
         die('Implement this in CoopOAuthController::receiveAuthorizationCode');
     }
