@@ -98,7 +98,17 @@ class CoopOAuthController extends BaseController
         $response = $request->send();
         $json = json_decode($response->getBody(), true);
 
-        $user = $this->getLoggedInUser();
+        if ($this->isUserLoggedIn()) {
+            $user = $this->getLoggedInUser();
+        } else {
+            $user = $this->createUser(
+                $json['email'],
+                // a blank password - this user hasn't created a password yet!
+                '',
+                $json['firstName'],
+                $json['lastName']
+            );
+        }
         $user->coopAccessToken = $accessToken;
         $user->coopUserId = $json['id'];
         $user->coopAccessExpiresAt = $expiresAt;
