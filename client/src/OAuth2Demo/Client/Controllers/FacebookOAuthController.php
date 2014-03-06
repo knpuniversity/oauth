@@ -51,6 +51,13 @@ class FacebookOAuthController extends BaseController
         $facebook = $this->createFacebook();
 
         $userId = $facebook->getUser();
+
+        if (!$userId) {
+            return $this->render('failed_authorization.twig', array(
+                'response' => $request->query->all()
+            ));
+        }
+
         var_dump($userId);die;
 
         die('Todo: Handle after Facebook redirects to us');
