@@ -24,7 +24,7 @@ class AppManagement
      */
     public function create(Application $app)
     {
-        return $app['twig']->render('app\create.twig');
+        return $this->renderForm(true, array(), $app);
     }
 
     /**
@@ -33,19 +33,14 @@ class AppManagement
     public function add(Application $app)
     {
         if (!$name = $app['request']->request->get('name')) {
-            return $app['twig']->render('app\create.twig', ['error' => '"name" is required']);
+            return $this->renderForm(true, array('name' => 'name is required!'), $app);
         }
 
-        $this->saveClientDetailsFromRequest(
-            $name,
+        return $this->saveClientDetailsFromRequest(
+            null,
             $app['request'],
             $app
         );
-
-        return $app['twig']->render('app\show.twig', [
-            'client' => $app['storage']->getClientDetails($name),
-            'message' => 'Congratulations!  You\'ve created your application!'
-        ]);
     }
 
     /**
@@ -53,9 +48,7 @@ class AppManagement
      */
     public function show(Application $app, $name)
     {
-        if (!$client = $app['storage']->getClientDetails(urldecode($name))) {
-            $app->abort(404, "Application \"$name\" does not exist.");
-        }
+        $client = $this->getClientDetailsOr404($name, $app);
 
         return $app['twig']->render('app\show.twig', [
             'client' => $client,
@@ -64,51 +57,114 @@ class AppManagement
 
     public function edit(Application $app, $name)
     {
-        if (!$client = $app['storage']->getClientDetails(urldecode($name))) {
-            $app->abort(404, "Application \"$name\" does not exist.");
-        }
+        $client = $this->getClientDetailsOr404($name, $app);
 
-        $client['scope_arr'] = explode(' ', $client['scope']);
-
-        return $app['twig']->render('app\edit.twig', array(
-            'client' => $client,
-            'editName' => false,
-        ));
+        return $this->renderForm(false, array(), $app, $name);
     }
 
     public function update(Application $app, $name)
     {
-        if (!$client = $app['storage']->getClientDetails(urldecode($name))) {
-            $app->abort(404, "Application \"$name\" does not exist.");
-        }
-
-        $this->saveClientDetailsFromRequest($name, $app['request'], $app);
-
-        $url = $app['url_generator']->generate('app_show', array('name' => $name));
-
-        return new RedirectResponse($url);
+        return $this->saveClientDetailsFromRequest($name, $app['request'], $app);
     }
 
+    /**
+     * @param string|null $clientId The client name for an existing client, else null
+     * @param Request $request
+     * @param Application $app
+     * @return Response
+     */
     private function saveClientDetailsFromRequest($clientId, Request $request, Application $app)
     {
-        // get the requested client scope
-        $scope = implode(' ', $request->request->get('scope', []));
+        $isNew = !$clientId;
+        $errors = array();
 
-        // get the requested redirect_uri
-        $redirect_uri = $request->request->get('redirect_uri');
+        if ($clientId) {
+            // an existing app!
+            $clientDetails = $this->getClientDetailsOr404($clientId, $app);
 
-        $clientDetails = $app['storage']->getClientDetails(urldecode($clientId));
-        if ($clientDetails) {
             $secret = $clientDetails['client_secret'];
         } else {
-            // generate a random secret
+            // new app!
+            $clientId = $request->request->get('name');
+
+            // see if the app exists
+            $clientDetails = $this->getClientDetails($clientId, $app);
+            if ($clientDetails) {
+                $errors['name'] = 'This application name is already taken - choose a unique application name!';
+            }
+
             $secret = substr(md5(microtime()), 0, 32);
         }
+
+        // get the requested client scope
+        $scope = implode(' ', $request->request->get('scope', []));
+        // get the requested redirect_uri
+        $redirect_uri = $request->request->get('redirect_uri');
 
         // get the logged-in user and tie it to the newly-created client
         $user = $app['security']->getToken()->getUser();
 
-        // create the client
-        $app['storage']->setClientDetails($clientId, $secret, $redirect_uri, null, $scope, $user->getUsername());
+        if (empty($errors)) {
+            // create the client
+            $app['storage']->setClientDetails($clientId, $secret, $redirect_uri, null, $scope, $user->getUsername());
+        }
+
+        // regardless, now return either the form or the show page
+        if (empty($errors)) {
+            return $app['twig']->render('app/show.twig', [
+                'client' => $this->getClientDetails($clientId, $app),
+                'message' => 'Congratulations!  You\'ve created your application!'
+            ]);
+        } else {
+            return $this->renderForm($isNew, $errors, $app, $clientId);
+        }
+    }
+
+    /**
+     * Renders a new or edit form
+     *
+     * @param $isNew
+     * @param array $errors
+     * @param Application $app
+     * @param null $clientId
+     * @return mixed
+     */
+    private function renderForm($isNew, array $errors, Application $app, $clientId = null)
+    {
+        $formTemplate = 'app/' . ($isNew ? 'create.twig' : 'edit.twig');
+
+        return $app['twig']->render($formTemplate, array(
+            'client' => $this->getClientDetails($clientId, $app),
+            'errors' => $errors,
+            'editName' => $isNew,
+        ));
+    }
+
+    /**
+     * @param $clientId
+     * @param Application $app
+     * @return array|null
+     */
+    private function getClientDetails($clientId, Application $app)
+    {
+        if ($clientId) {
+            $clientDetails = $clientDetails = $app['storage']->getClientDetails(urldecode($clientId));
+            if ($clientDetails) {
+                $clientDetails['scope_arr'] = explode(' ', $clientDetails['scope']);
+            }
+
+            return $clientDetails;
+        } else {
+            return;
+        }
+    }
+
+    private function getClientDetailsOr404($name, Application $app)
+    {
+        if (!$client = $this->getClientDetails($name, $app)) {
+            $app->abort(404, "Application \"$name\" does not exist.");
+        }
+
+        return $client;
     }
 }

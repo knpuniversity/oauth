@@ -2,6 +2,7 @@
 
 namespace OAuth2Demo\Server;
 
+use OAuth2Demo\Server\Storage\FixturesManager;
 use Silex\Application;
 use Silex\ControllerProviderInterface;
 use OAuth2\HttpFoundationBridge\Response as BridgeResponse;
@@ -20,14 +21,23 @@ class Server implements ControllerProviderInterface
      */
     public function setup(Application $app)
     {
-        // ensure our Sqlite database exists
-        if (!file_exists($sqliteFile = __DIR__.'/../../../data/coop.sqlite')) {
-            $this->generateSqliteDb();
-            $this->populateSqliteDb($sqliteFile);
+        $app['fixtures_manager'] = new FixturesManager($app);
+
+        // make sure the sqlite file is initialized
+        $sqliteFile = __DIR__.'/../../../data/coop.sqlite';
+        $dbFileExists = file_exists($sqliteFile);
+        if (!$dbFileExists) {
+            $app['fixtures_manager']->resetDatabase();
         }
 
         // create PDO-based sqlite storage
         $storage = new Pdo(array('dsn' => 'sqlite:'.$sqliteFile));
+        $app['storage'] = $storage;
+
+        // if we created the db, lets put in some data
+        if (!$dbFileExists) {
+            $app['fixtures_manager']->populateSqliteDb();
+        }
 
         // create array of supported grant types
         // todo - update the documentation in _authentication.twig when we add more
@@ -61,7 +71,6 @@ class Server implements ControllerProviderInterface
 
         // add the server to the silex "container" so we can use it in our controllers (see src/OAuth2Demo/Server/Controllers/.*)
         $app['oauth_server'] = $server;
-        $app['storage'] = $storage;
 
         /**
          * add HttpFoundataionBridge Response to the container, which returns a silex-compatible response object
@@ -92,40 +101,5 @@ class Server implements ControllerProviderInterface
         Controllers\Resource::addRoutes($routing);
 
         return $routing;
-    }
-
-    private function generateSqliteDb()
-    {
-        include_once(__DIR__.'/../../../data/rebuild_db.php');
-    }
-
-    private function populateSqliteDb($sqliteFile)
-    {
-        $pdo = new \Pdo('sqlite:'.$sqliteFile);
-
-        // create an application
-        $sql = 'INSERT INTO oauth_clients (client_id, client_secret, scope)
-            VALUES (:client_id, :client_secret, :scope)';
-
-        $stmt = $pdo->prepare($sql);
-
-        $stmt->execute(array(
-            'client_id'     => 'TopCluck',
-            'client_secret' => '2e2dfd645da38940b1ff694733cc6be6',
-            'scope'         => 'eggs-collect profile',
-        ));
-
-        // create a dummy user
-        $sql = 'INSERT INTO oauth_users (username, password, first_name, last_name)
-            VALUES (:username, :password, :firstName, :lastName)';
-
-        $stmt = $pdo->prepare($sql);
-
-        $stmt->execute(array(
-            'username'     => 'test@knpuniversity.com',
-            'password' => sha1('test'),
-            'firstName' => 'Edgar',
-            'lastName'  => 'Cat',
-        ));
     }
 }

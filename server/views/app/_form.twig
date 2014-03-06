@@ -1,17 +1,26 @@
 {% set editName = editName is defined ? editName : true %}
+{% set errors = errors is defined ? errors : {} %}
+
+{% macro print_errors(errors, key) %}
+    {% if attribute(errors, key) is defined %}
+        <div class="alert alert-danger">{{ attribute(errors, key) }}</div>
+    {% endif %}
+{% endmacro %}
 
 <fieldset>
     <legend>Let's get you started</legend>
     <div class="form-group">
-        <label for="name" class="col-lg-2 control-label">Application Name</label>
+        <label for="app-name" class="col-lg-2 control-label">Application Name</label>
         <div class="col-lg-10">
-            <input type="text" class="form-control" name="name" placeholder="For Example: My Test App" value="{{ client is defined ? client.client_id : '' }}" {{ editName ? '' : ' disabled' }}>
+            {{ _self.print_errors(errors, 'name') }}
+            <input type="text" class="form-control" name="name" id="app-name" placeholder="For Example: My Test App" value="{{ client ? client.client_id : '' }}" {{ editName ? '' : ' disabled' }}>
         </div>
     </div>
     <div class="form-group">
-        <label for="redirect_uri" class="col-lg-2 control-label">Redirect URI</label>
+        <label for="app-redirect_uri" class="col-lg-2 control-label">Redirect URI</label>
         <div class="col-lg-10">
-            <input type="text" class="form-control" name="redirect_uri" value="{{ client is defined ? client.redirect_uri : '' }}">
+            {{ _self.print_errors(errors, 'redirect_uri') }}
+            <input type="text" class="form-control" name="redirect_uri" id="app-redirect_uri" value="{{ client ? client.redirect_uri : '' }}">
         </div>
     </div>
     <div class="form-group">
@@ -22,7 +31,7 @@
             {% for action,message in app.scopes %}
                 <div class="checkbox">
                     <label>
-                        <input type="checkbox" name="scope[]" value="{{ action }}"{{ (client is defined and action in client.scope_arr) ? ' checked' : '' }}> {{ message }}
+                        <input type="checkbox" name="scope[]" value="{{ action }}"{{ (client and action in client.scope_arr) ? ' checked' : '' }}> {{ message }}
                     </label>
                 </div>
             {% endfor %}
