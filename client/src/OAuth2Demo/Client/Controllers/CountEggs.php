@@ -32,7 +32,8 @@ class CountEggs extends BaseController
         $request = $http->post('/api/'.$user->coopUserId.'/eggs-count');
         $request->addHeader('Authorization', 'Bearer '.$user->coopAccessToken);
         $response = $request->send();
-        $json = json_decode($response->getBody(), true);
+        echo ($response->getBody(true));die;
+        $countEggsData = json_decode($response->getBody(), true);
 
         die('Implement this in CountEggs::countEggs');
 
