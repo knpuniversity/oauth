@@ -50,6 +50,9 @@ class FacebookOAuthController extends BaseController
     {
         $facebook = $this->createFacebook();
 
+        $userId = $facebook->getUser();
+        var_dump($userId);die;
+
         die('Todo: Handle after Facebook redirects to us');
     }
 
