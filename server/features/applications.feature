@@ -28,6 +28,12 @@ Feature: Applications
     Then the "Redirect URI" value in the table should be "http://knpuniversity.com"
 
   Scenario: Cannot create an application with the same name
+    Given an application called "Existing app2" exists
+    When I go to "/api"
+    And I click "Create another Application"
+    And I fill in "Application Name" with "Existing app2"
+    And I press "Submit"
+    Then I should see "This application name is already taken"
 
   Scenario: Only list my applications
 
