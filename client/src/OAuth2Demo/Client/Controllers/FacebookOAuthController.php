@@ -58,9 +58,11 @@ class FacebookOAuthController extends BaseController
             ));
         }
 
-        var_dump($userId);die;
+        $user = $this->getLoggedInUser();
+        $user->facebookUserId = $userId;
+        $this->saveUser($user);
 
-        die('Todo: Handle after Facebook redirects to us');
+        return $this->redirect($this->generateUrl('home'));
     }
 
     /**
