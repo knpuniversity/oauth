@@ -1,3 +1,23 @@
+diff --git a/client/features/coop.feature b/client/features/coop.feature
+index 67dd3b7..bd63be0 100644
+--- a/client/features/coop.feature
++++ b/client/features/coop.feature
+@@ -11,7 +11,6 @@ Feature: Coop Authorization
+     And I click "Yes, I Authorize This Request"
+     Then I should see "Your Basket of Eggs"
+ 
+-  @NotImplementedYet
+   Scenario: Logging in with Coop
+     Given I am on "/"
+     And I click "Login"
+@@ -22,7 +21,6 @@ Feature: Coop Authorization
+     # the name of the fixture user, now showing on the leaderboard
+     And I should see "Farmer Scott"
+ 
+-  @NotImplementedYet
+   Scenario: Updating your egg count
+     Given I am authorized with Coop
+     And I am on "/"
 diff --git a/client/views/user/login.twig b/client/views/user/login.twig
 index 5bf225d..87833e0 100644
 --- a/client/views/user/login.twig
