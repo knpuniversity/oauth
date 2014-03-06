@@ -81,7 +81,6 @@ class CoopOAuthController extends BaseController
         $response = $request->send();
         $responseBody = $response->getBody(true);
         $responseArr = json_decode($responseBody, true);
-        var_dump($responseArr);die;
 
         // if there is no access_token, we have a problem!!!
         if (!isset($responseArr['access_token'])) {
@@ -93,6 +92,7 @@ class CoopOAuthController extends BaseController
         $accessToken = $responseArr['access_token'];
         $expiresIn = $responseArr['expires_in'];
         $expiresAt = new \DateTime('+'.$expiresIn.' seconds');
+        $refreshToken = $responseArr['refresh_token'];
 
         $request = $http->get('/api/me');
         $request->addHeader('Authorization', 'Bearer '.$accessToken);
@@ -109,6 +109,7 @@ class CoopOAuthController extends BaseController
         $user->coopAccessToken = $accessToken;
         $user->coopUserId = $json['id'];
         $user->coopAccessExpiresAt = $expiresAt;
+        $user->coopRefreshToken = $refreshToken;
         $this->saveUser($user);
 
         // redirect back to the homepage
