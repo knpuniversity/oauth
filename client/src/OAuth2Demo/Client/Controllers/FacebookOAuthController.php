@@ -63,7 +63,6 @@ class FacebookOAuthController extends BaseController
         } catch (\FacebookApiException $e) {
             return $this->render('failed_token_request.twig', array('response' => $e->getMessage()));
         }
-        var_dump($json);die;
 
         if ($this->isUserLoggedIn()) {
             $user = $this->getLoggedInUser();
@@ -136,7 +135,7 @@ class FacebookOAuthController extends BaseController
 
     private function findOrCreateUser(array $meData)
     {
-        if ($user = $this->findUserByCOOPId($meData['id'])) {
+        if ($user = $this->findUserByFacebookId($meData['id'])) {
             // this is an existing user. Yay!
             return $user;
         }
@@ -152,8 +151,8 @@ class FacebookOAuthController extends BaseController
             $meData['email'],
             // a blank password - this user hasn't created a password yet!
             '',
-            $meData['firstName'],
-            $meData['lastName']
+            $meData['first_name'],
+            $meData['last_name']
         );
 
         return $user;
