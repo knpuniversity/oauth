@@ -20,14 +20,20 @@ class Server implements ControllerProviderInterface
      */
     public function setup(Application $app)
     {
-        // ensure our Sqlite database exists
-        if (!file_exists($sqliteFile = __DIR__.'/../../../data/coop.sqlite')) {
+        // make sure the sqlite file is initialized
+        $sqliteFile = __DIR__.'/../../../data/coop.sqlite';
+        $dbFileExists = file_exists($sqliteFile);
+        if (!$dbFileExists) {
             $this->generateSqliteDb();
-            $this->populateSqliteDb($sqliteFile);
         }
 
         // create PDO-based sqlite storage
         $storage = new Pdo(array('dsn' => 'sqlite:'.$sqliteFile));
+
+        // if we created the db, lets put in some data
+        if (!$dbFileExists) {
+            $this->populateSqliteDb($storage);
+        }
 
         // create array of supported grant types
         // todo - update the documentation in _authentication.twig when we add more
@@ -99,33 +105,23 @@ class Server implements ControllerProviderInterface
         include_once(__DIR__.'/../../../data/rebuild_db.php');
     }
 
-    private function populateSqliteDb($sqliteFile)
+    private function populateSqliteDb(Pdo $pdo)
     {
-        $pdo = new \Pdo('sqlite:'.$sqliteFile);
+        $pdo->setClientDetails(
+            'TopCluck',
+            '2e2dfd645da38940b1ff694733cc6be6',
+            null,
+            null,
+            'eggs-collect profile',
+            null
+        );
 
-        // create an application
-        $sql = 'INSERT INTO oauth_clients (client_id, client_secret, scope)
-            VALUES (:client_id, :client_secret, :scope)';
-
-        $stmt = $pdo->prepare($sql);
-
-        $stmt->execute(array(
-            'client_id'     => 'TopCluck',
-            'client_secret' => '2e2dfd645da38940b1ff694733cc6be6',
-            'scope'         => 'eggs-collect profile',
-        ));
-
-        // create a dummy user
-        $sql = 'INSERT INTO oauth_users (username, password, first_name, last_name)
-            VALUES (:username, :password, :firstName, :lastName)';
-
-        $stmt = $pdo->prepare($sql);
-
-        $stmt->execute(array(
-            'username'     => 'test@knpuniversity.com',
-            'password' => sha1('test'),
-            'firstName' => 'Edgar',
-            'lastName'  => 'Cat',
-        ));
+        $pdo->setUser(
+            'test@knpuniversity.com',
+            'test',
+            'Edgar',
+            'Cat',
+            null
+        );
     }
 }
