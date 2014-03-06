@@ -24,13 +24,7 @@ class FacebookOAuthController extends BaseController
      */
     public function redirectToAuthorization()
     {
-        $config = array(
-          'appId' => '1386038978283395',
-          'secret' => '9ec32a48f1ad1988e0d4b9e80a17d5bc',
-          'allowSignedRequest' => false // optional but should be set to false for non-canvas apps
-        );
-
-        $facebook = new \Facebook($config);
+        $facebook = $this->createFacebook();
 
         $redirectUrl = $this->generateUrl('facebook_authorize_redirect', array(), true);
 
@@ -54,6 +48,8 @@ class FacebookOAuthController extends BaseController
      */
     public function receiveAuthorizationCode(Application $app, Request $request)
     {
+        $facebook = $this->createFacebook();
+
         die('Todo: Handle after Facebook redirects to us');
     }
 
@@ -68,5 +64,16 @@ class FacebookOAuthController extends BaseController
         die('Todo: Use Facebook\'s API to post to someone\'s feed');
 
         return $this->redirect($this->generateUrl('home'));
+    }
+
+    private function createFacebook()
+    {
+        $config = array(
+          'appId' => '1386038978283395',
+          'secret' => '9ec32a48f1ad1988e0d4b9e80a17d5bc',
+          'allowSignedRequest' => false // optional but should be set to false for non-canvas apps
+        );
+
+        return new \Facebook($config);
     }
 }
