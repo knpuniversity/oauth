@@ -54,7 +54,8 @@
                     'cookiepolicy': 'single_host_origin',
                     'callback': 'mySignInCallback',
                     'scope': 'https://www.googleapis.com/auth/plus.login',
-                    'requestvisibleactions': 'http://schemas.google.com/AddActivity'
+                    'requestvisibleactions': 'http://schemas.google.com/AddActivity',
+                    'redirecturi': 'postmessage'
                 };
                 gapi.auth.signIn(myParams);
             });
