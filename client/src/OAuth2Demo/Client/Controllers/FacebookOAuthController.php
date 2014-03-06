@@ -81,7 +81,14 @@ class FacebookOAuthController extends BaseController
                 'message' => sprintf('Woh my chickens have laid %s eggs today!', $eggCount),
             ));
         } catch (\FacebookApiException $e) {
-            // it failed!
+            // https://developers.facebook.com/docs/graph-api/using-graph-api/#errors
+            if ($e->getType() == 'OAuthException' || in_array($e->getCode(), array(190, 102))) {
+                // our token is bad - reauthorize to get a new token
+                return $this->redirect($this->generateUrl('facebook_authorize_start'));
+            }
+
+            // it failed for some odd reason...
+            throw $e;
         }
 
         return $this->redirect($this->generateUrl('home'));
