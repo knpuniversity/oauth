@@ -13,14 +13,14 @@
         <label for="app-name" class="col-lg-2 control-label">Application Name</label>
         <div class="col-lg-10">
             {{ _self.print_errors(errors, 'name') }}
-            <input type="text" class="form-control" name="name" id="app-name" placeholder="For Example: My Test App" value="{{ client ? client.client_id : '' }}" {{ editName ? '' : ' disabled' }}>
+            <input type="text" class="form-control" name="name" id="app-name" placeholder="For Example: My Test App" value="{{ client.client_id is defined ? client.client_id : '' }}" {{ editName ? '' : ' disabled' }}>
         </div>
     </div>
     <div class="form-group">
         <label for="app-redirect_uri" class="col-lg-2 control-label">Redirect URI</label>
         <div class="col-lg-10">
             {{ _self.print_errors(errors, 'redirect_uri') }}
-            <input type="text" class="form-control" name="redirect_uri" id="app-redirect_uri" value="{{ client ? client.redirect_uri : '' }}">
+            <input type="text" class="form-control" name="redirect_uri" id="app-redirect_uri" value="{{ client.redirect_uri is defined ? client.redirect_uri : '' }}">
         </div>
     </div>
     <div class="form-group">
@@ -31,7 +31,7 @@
             {% for action,message in app.scopes %}
                 <div class="checkbox">
                     <label>
-                        <input type="checkbox" name="scope[]" value="{{ action }}"{{ (client and action in client.scope_arr) ? ' checked' : '' }}> {{ message }}
+                        <input type="checkbox" name="scope[]" value="{{ action }}"{{ (client.scope_arr is defined and action in client.scope_arr) ? ' checked' : '' }}> {{ message }}
                     </label>
                 </div>
             {% endfor %}
