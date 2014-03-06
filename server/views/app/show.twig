@@ -15,7 +15,7 @@
     <div class="bs-example table-responsive">
         <a href="{{ path('app_edit', {'name': client.client_id}) }}" class="btn pull-right">Edit</a>
         <h3>{{ client.client_id }}</h3>
-        <table class="table table-striped table-bordered table-hover ">
+        <table class="table table-striped table-bordered table-hover app-details-table">
             <tbody>
                 <tr>
                     <td>Client ID</td>
@@ -33,7 +33,7 @@
                     <td>Scope</td>
                     <td>
                         {% if client.scope %}
-                            <ul>
+                            <ul class="app-details-scopes">
                                 {% for scope in client.scope|split(' ') %}
                                     <li>{{ scope }}</li>
                                 {% endfor %}

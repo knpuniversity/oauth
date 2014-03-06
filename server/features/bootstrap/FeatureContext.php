@@ -11,12 +11,13 @@ use Behat\MinkExtension\Context\MinkContext;
 
 use Behat\Behat\Context\Step\Given;
 use Behat\Behat\Context\Step\When;
+use OAuth2Demo\Server\Storage\FixturesManager;
+
 //
 // Require 3rd-party libraries here:
 //
-//   require_once 'PHPUnit/Autoload.php';
-//   require_once 'PHPUnit/Framework/Assert/Functions.php';
-//
+require_once __DIR__.'/../../vendor/phpunit/phpunit/PHPUnit/Autoload.php';
+require_once __DIR__.'/../../vendor/phpunit/phpunit/PHPUnit/Framework/Assert/Functions.php';
 
 /**
  * Features context.
@@ -47,8 +48,11 @@ class FeatureContext extends MinkContext
      */
     public function reloadDatabase()
     {
-        self::$app['fixtures_manager']->clearTables();
-        self::$app['fixtures_manager']->populateSqliteDb();
+        /** @var FixturesManager $fixturesManager */
+        $fixturesManager = self::$app['fixtures_manager'];
+
+        $fixturesManager->clearTables();
+        $fixturesManager->populateSqliteDb();
     }
 
     /**
@@ -65,6 +69,34 @@ class FeatureContext extends MinkContext
     public function iClick($linkName)
     {
         return new Given(sprintf('I follow "%s"', $linkName));
+    }
+
+    /**
+     * @Then /^I should see the following scopes listed:$/
+     *
+     * Verify that certain scopes are listed on the app view page
+     */
+    public function iShouldSeeTheFollowingScopesListed(TableNode $table)
+    {
+        $tbl = $this->getSession()->getPage()->find('css', '.app-details-table');
+        assertNotNull($tbl, 'Cannot find the app details table!');
+
+        $ul = $tbl->find('css', 'ul.app-details-scopes');
+        assertNotNull($ul, 'Cannot find the scopes ul!');
+
+        $lis = $ul->findAll('css', 'li');
+        $actualScopes = array();
+        foreach ($lis as $li) {
+            $actualScopes[] = trim($li->getText());
+        }
+
+        // get the expected rows - just the first column of each table
+        $expectedScopes = array();
+        foreach ($table->getRows() as $row) {
+            $expectedScopes[] = $row[0];
+        }
+
+        assertEquals($expectedScopes, $actualScopes);
     }
 
     /**
@@ -93,7 +125,7 @@ class FeatureContext extends MinkContext
     private function createUser($email, $plainPassword)
     {
         /** @var \OAuth2Demo\Server\Storage\Pdo $storage */
-        $storage = self::$app['connection'];
+        $storage = self::$app['storage'];
 
         return $storage->setUser($email, $plainPassword, 'John'.rand(1, 999), 'Doe'.rand(1, 999));
     }

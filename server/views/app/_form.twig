@@ -3,15 +3,15 @@
 <fieldset>
     <legend>Let's get you started</legend>
     <div class="form-group">
-        <label for="name" class="col-lg-2 control-label">Application Name</label>
+        <label for="app-name" class="col-lg-2 control-label">Application Name</label>
         <div class="col-lg-10">
-            <input type="text" class="form-control" name="name" placeholder="For Example: My Test App" value="{{ client is defined ? client.client_id : '' }}" {{ editName ? '' : ' disabled' }}>
+            <input type="text" class="form-control" name="name" id="app-name" placeholder="For Example: My Test App" value="{{ client is defined ? client.client_id : '' }}" {{ editName ? '' : ' disabled' }}>
         </div>
     </div>
     <div class="form-group">
-        <label for="redirect_uri" class="col-lg-2 control-label">Redirect URI</label>
+        <label for="app-redirect_uri" class="col-lg-2 control-label">Redirect URI</label>
         <div class="col-lg-10">
-            <input type="text" class="form-control" name="redirect_uri" value="{{ client is defined ? client.redirect_uri : '' }}">
+            <input type="text" class="form-control" name="redirect_uri" id="app-redirect_uri" value="{{ client is defined ? client.redirect_uri : '' }}">
         </div>
     </div>
     <div class="form-group">
