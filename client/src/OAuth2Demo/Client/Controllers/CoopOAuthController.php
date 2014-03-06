@@ -101,13 +101,7 @@ class CoopOAuthController extends BaseController
         if ($this->isUserLoggedIn()) {
             $user = $this->getLoggedInUser();
         } else {
-            $user = $this->createUser(
-                $json['email'],
-                // a blank password - this user hasn't created a password yet!
-                '',
-                $json['firstName'],
-                $json['lastName']
-            );
+            $user = $this->findOrCreateUser($json);
 
             $this->loginUser($user);
         }
@@ -118,5 +112,23 @@ class CoopOAuthController extends BaseController
 
         // redirect back to the homepage
         return $this->redirect($this->generateUrl('home'));
+    }
+
+    private function findOrCreateUser(array $meData)
+    {
+        if ($user = $this->findUserByCOOPId($meData['id'])) {
+            // this is an existing user. Yay!
+            return $user;
+        }
+
+        $user = $this->createUser(
+            $meData['email'],
+            // a blank password - this user hasn't created a password yet!
+            '',
+            $meData['firstName'],
+            $meData['lastName']
+        );
+
+        return $user;
     }
 }
