@@ -93,7 +93,7 @@ class FacebookOAuthController extends BaseController
         return $this->redirect($this->generateUrl('home'));
     }
 
-    private function makeApiRequest(\Facebook $facebook, $url, $method, $parameters)
+    private function makeApiRequest(\Facebook $facebook, $url, $method, $parameters, $retry = true)
     {
         try {
             return $facebook->api($url, $method, $parameters);
@@ -102,6 +102,11 @@ class FacebookOAuthController extends BaseController
             if ($e->getType() == 'OAuthException' || in_array($e->getCode(), array(190, 102))) {
                 // our token is bad - reauthorize to get a new token
                 return $this->redirect($this->generateUrl('facebook_authorize_start'));
+            }
+
+            // re-try one time
+            if ($retry) {
+                return $this->makeApiRequest($facebook, $url, $method, false);
             }
 
             // it failed for some odd reason...
