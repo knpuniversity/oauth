@@ -73,6 +73,12 @@ class FacebookOAuthController extends BaseController
      */
     public function shareProgressOnFacebook()
     {
+        $facebook = $this->createFacebook();
+
+        $facebook->api('/'.$facebook->getUser().'/feed', 'POST', array(
+            'message' => 'TEST',
+        ));
+
         die('Todo: Use Facebook\'s API to post to someone\'s feed');
 
         return $this->redirect($this->generateUrl('home'));
