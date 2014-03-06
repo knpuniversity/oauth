@@ -73,13 +73,30 @@ class FacebookOAuthController extends BaseController
      */
     public function shareProgressOnFacebook()
     {
-        $facebook = $this->createFacebook();
         $eggCount = $this->getTodaysEggCountForUser($this->getLoggedInUser());
+        $facebook = $this->createFacebook();
 
-        try {
-            $facebook->api('/'.$facebook->getUser().'/feed', 'POST', array(
+        $ret = $this->makeApiRequest(
+            $facebook,
+            '/'.$facebook->getUser().'/feed',
+            'POST',
+            array(
                 'message' => sprintf('Woh my chickens have laid %s eggs today!', $eggCount),
-            ));
+            )
+        );
+
+        // if makeApiRequest returns a redirect, do it! The user needs to re-authorize
+        if ($ret instanceof RedirectResponse) {
+            return $ret;
+        }
+
+        return $this->redirect($this->generateUrl('home'));
+    }
+
+    private function makeApiRequest(\Facebook $facebook, $url, $method, $parameters)
+    {
+        try {
+            return $facebook->api($url, $method, $parameters);
         } catch (\FacebookApiException $e) {
             // https://developers.facebook.com/docs/graph-api/using-graph-api/#errors
             if ($e->getType() == 'OAuthException' || in_array($e->getCode(), array(190, 102))) {
@@ -90,8 +107,6 @@ class FacebookOAuthController extends BaseController
             // it failed for some odd reason...
             throw $e;
         }
-
-        return $this->redirect($this->generateUrl('home'));
     }
 
     private function createFacebook()
