@@ -59,6 +59,10 @@
                 gapi.auth.signIn(myParams);
             });
         });
+
+        function mySignInCallback(authResult) {
+            console.log(authResult);
+        }
     </script>
     {# Put any JavaScript here #}
 {% endblock %}
