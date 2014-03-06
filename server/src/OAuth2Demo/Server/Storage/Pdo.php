@@ -14,6 +14,17 @@ class Pdo extends OAuth2Pdo
         return $stmt->fetchAll();
     }
 
+    /**
+     * Creates/updates a client/application
+     *
+     * @param $client_id
+     * @param null $client_secret
+     * @param null $redirect_uri
+     * @param null $grant_types
+     * @param null $scope
+     * @param null $user_id
+     * @return bool
+     */
     public function setClientDetails($client_id, $client_secret = null, $redirect_uri = null, $grant_types = null, $scope = null, $user_id = null)
     {
         // if it exists, update it.
