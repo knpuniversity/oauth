@@ -39,7 +39,7 @@ class FacebookOAuthController extends BaseController
             'scope' => array('publish_actions', 'email')
         ));
 
-        die('Todo: Redirect to Facebook');
+        return $this->redirect($url);
     }
 
     /**
