@@ -81,6 +81,7 @@ class CoopOAuthController extends BaseController
         $response = $request->send();
         $responseBody = $response->getBody(true);
         $responseArr = json_decode($responseBody, true);
+        var_dump($responseArr);die;
 
         // if there is no access_token, we have a problem!!!
         if (!isset($responseArr['access_token'])) {
