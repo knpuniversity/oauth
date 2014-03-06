@@ -100,13 +100,17 @@ class FacebookOAuthController extends BaseController
         } catch (\FacebookApiException $e) {
             // https://developers.facebook.com/docs/graph-api/using-graph-api/#errors
             if ($e->getType() == 'OAuthException' || in_array($e->getCode(), array(190, 102))) {
+                if ($retry) {
+                    $user = $this->getLoggedInUser();
+                    // this is fake code - we don't have a facebookAccessToken
+                    // property in our example project
+                    $facebook->setAccessToken($user->facebookAccessToken);
+
+                    return $this->makeApiRequest($facebook, $url, $method, false);
+                }
+
                 // our token is bad - reauthorize to get a new token
                 return $this->redirect($this->generateUrl('facebook_authorize_start'));
-            }
-
-            // re-try one time
-            if ($retry) {
-                return $this->makeApiRequest($facebook, $url, $method, false);
             }
 
             // it failed for some odd reason...
