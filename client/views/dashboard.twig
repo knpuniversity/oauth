@@ -61,8 +61,14 @@
             });
         });
 
+        var isSignedIn = false;
         function mySignInCallback(authResult) {
             if (authResult['status']['signed_in']) {
+                if (isSignedIn) {
+                    return;
+                }
+                isSignedIn = true;
+
                 // Update the app to reflect a signed in user
                 // Hide the sign-in button now that the user is authorized, for example:
                 $('.js-google-signin').hide();
