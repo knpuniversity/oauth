@@ -21,14 +21,16 @@ class CountEggs extends BaseController
      */
     public function countEggs()
     {
+        $user = $this->getLoggedInUser();
+
         $http = new Client('http://coop.apps.knpuniversity.com', array(
             'request.options' => array(
                 'exceptions' => false,
             )
         ));
 
-        $request = $http->post('/api/me');
-        $request->addHeader('Authorization', 'Bearer '.$accessToken);
+        $request = $http->post('/api/'.$user->coopUserId.'/eggs-count');
+        $request->addHeader('Authorization', 'Bearer '.$user->coopAccessToken);
         $response = $request->send();
         $json = json_decode($response->getBody(), true);
 
