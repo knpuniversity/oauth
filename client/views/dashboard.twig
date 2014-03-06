@@ -50,14 +50,7 @@
                 // prevent the click from going to #
                 e.preventDefault();
 
-                var myParams = {
-                    'clientid': '104029852624-a72k7hnbrrqo02j5ofre9tel76ui172i.apps.googleusercontent.com',
-                    'cookiepolicy': 'single_host_origin',
-                    'callback': 'mySignInCallback',
-                    'scope': 'https://www.googleapis.com/auth/plus.login',
-                    'requestvisibleactions': 'http://schemas.google.com/AddActivity'
-                };
-                gapi.auth.signIn(myParams);
+                gapi.auth.signIn();
             });
         });
 
