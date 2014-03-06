@@ -112,4 +112,13 @@ class Pdo extends OAuth2Pdo
 
         return $userInfo['username'];
     }
+
+    public function truncateTable($tbl)
+    {
+        $sql = 'DELETE FROM '.$tbl;
+
+        $stmt = $this->db->prepare($sql);
+
+        $stmt->execute();
+    }
 }

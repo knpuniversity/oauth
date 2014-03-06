@@ -2,6 +2,7 @@
 
 namespace OAuth2Demo\Server;
 
+use OAuth2Demo\Server\Storage\FixturesManager;
 use Silex\Application;
 use Silex\ControllerProviderInterface;
 use OAuth2\HttpFoundationBridge\Response as BridgeResponse;
@@ -20,19 +21,22 @@ class Server implements ControllerProviderInterface
      */
     public function setup(Application $app)
     {
+        $app['fixtures_manager'] = new FixturesManager($app);
+
         // make sure the sqlite file is initialized
         $sqliteFile = __DIR__.'/../../../data/coop.sqlite';
         $dbFileExists = file_exists($sqliteFile);
         if (!$dbFileExists) {
-            $this->generateSqliteDb();
+            $app['fixtures_manager']->resetDatabase();
         }
 
         // create PDO-based sqlite storage
         $storage = new Pdo(array('dsn' => 'sqlite:'.$sqliteFile));
+        $app['storage'] = $storage;
 
         // if we created the db, lets put in some data
         if (!$dbFileExists) {
-            $this->populateSqliteDb($storage);
+            $app['fixtures_manager']->populateSqliteDb();
         }
 
         // create array of supported grant types
@@ -67,7 +71,6 @@ class Server implements ControllerProviderInterface
 
         // add the server to the silex "container" so we can use it in our controllers (see src/OAuth2Demo/Server/Controllers/.*)
         $app['oauth_server'] = $server;
-        $app['storage'] = $storage;
 
         /**
          * add HttpFoundataionBridge Response to the container, which returns a silex-compatible response object
@@ -98,30 +101,5 @@ class Server implements ControllerProviderInterface
         Controllers\Resource::addRoutes($routing);
 
         return $routing;
-    }
-
-    private function generateSqliteDb()
-    {
-        include_once(__DIR__.'/../../../data/rebuild_db.php');
-    }
-
-    private function populateSqliteDb(Pdo $pdo)
-    {
-        $pdo->setClientDetails(
-            'TopCluck',
-            '2e2dfd645da38940b1ff694733cc6be6',
-            null,
-            null,
-            'eggs-collect profile',
-            null
-        );
-
-        $pdo->setUser(
-            'test@knpuniversity.com',
-            'test',
-            'Edgar',
-            'Cat',
-            null
-        );
     }
 }
