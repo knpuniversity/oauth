@@ -30,5 +30,8 @@ before_script:
   - chmod 777 -R data
 
 script:
+    # at this point, we're in the client directory already
     - ./vendor/bin/behat --verbose --tags=~NotImplementedYet
-
+    # now go run the server
+    - cd ../server
+    - ./vendor/bin/behat --verbose
