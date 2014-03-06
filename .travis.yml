@@ -6,6 +6,7 @@ php:
 branches:
   only:
     - finish
+    - master
 
 before_script:
   - sudo apt-get update 
@@ -29,4 +30,5 @@ before_script:
   - chmod 777 -R data
 
 script:
-    - ./vendor/bin/behat --verbose
+    - ./vendor/bin/behat --verbose --tags=~NotImplementedYet
+
