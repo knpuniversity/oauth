@@ -58,6 +58,13 @@ class FacebookOAuthController extends BaseController
             ));
         }
 
+        try {
+            $json = $facebook->api('/me');
+        } catch (\FacebookApiException $e) {
+            return $this->render('failed_token_request.twig', array('response' => $e->getMessage()));
+        }
+        var_dump($json);die;
+
         if ($this->isUserLoggedIn()) {
             $user = $this->getLoggedInUser();
         } else {
