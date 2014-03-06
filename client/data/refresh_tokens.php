@@ -14,4 +14,4 @@ $http = new Client('http://coop.apps.knpuniversity.com', array(
 /** @var \OAuth2Demo\Client\Storage\Connection $conn */
 $conn = $app['connection'];
 
-echo 'TODO';
+$expiringTokens = $conn->getExpiringTokens();
