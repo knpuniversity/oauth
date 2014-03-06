@@ -1,3 +1,15 @@
+diff --git a/client/features/coop.feature b/client/features/coop.feature
+index 310a06d..67dd3b7 100644
+--- a/client/features/coop.feature
++++ b/client/features/coop.feature
+@@ -3,7 +3,6 @@ Feature: Coop Authorization
+   As a user
+   I need to be able to authorize TopCluck to count my Coop eggs
+ 
+-  @NotImplementedYet
+   Scenario: Authorizing
+     Given I am logged in
+     And I am on "/"
 diff --git a/client/src/OAuth2Demo/Client/Controllers/CoopOAuthController.php b/client/src/OAuth2Demo/Client/Controllers/CoopOAuthController.php
 index 5d6adbe..d44b4fe 100644
 --- a/client/src/OAuth2Demo/Client/Controllers/CoopOAuthController.php
