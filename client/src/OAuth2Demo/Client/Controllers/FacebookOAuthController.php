@@ -75,9 +75,11 @@ class FacebookOAuthController extends BaseController
     {
         $facebook = $this->createFacebook();
 
-        $facebook->api('/'.$facebook->getUser().'/feed', 'POST', array(
+        $result = $facebook->api('/'.$facebook->getUser().'/feed', 'POST', array(
             'message' => 'TEST',
         ));
+
+        var_dump($result);
 
         die('Todo: Use Facebook\'s API to post to someone\'s feed');
 
