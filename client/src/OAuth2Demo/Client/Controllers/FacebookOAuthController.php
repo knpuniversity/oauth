@@ -76,9 +76,13 @@ class FacebookOAuthController extends BaseController
         $facebook = $this->createFacebook();
         $eggCount = $this->getTodaysEggCountForUser($this->getLoggedInUser());
 
-        $facebook->api('/'.$facebook->getUser().'/feed', 'POST', array(
-            'message' => sprintf('Woh my chickens have laid %s eggs today!', $eggCount),
-        ));
+        try {
+            $facebook->api('/'.$facebook->getUser().'/feed', 'POST', array(
+                'message' => sprintf('Woh my chickens have laid %s eggs today!', $eggCount),
+            ));
+        } catch (\FacebookApiException $e) {
+            // it failed!
+        }
 
         return $this->redirect($this->generateUrl('home'));
     }
