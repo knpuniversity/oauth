@@ -27,6 +27,10 @@ class CountEggs extends BaseController
             throw new \Exception('Somehow you got here, but without a valid COOP access token! Re-authorize!');
         }
 
+        if ($user->hasCoopAccessTokenExpired()) {
+            return $this->redirect($this->generateUrl('coop_authorize_start'));
+        }
+
         $http = new Client('http://coop.apps.knpuniversity.com', array(
             'request.options' => array(
                 'exceptions' => false,
