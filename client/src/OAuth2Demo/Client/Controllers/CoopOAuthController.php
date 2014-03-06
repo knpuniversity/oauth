@@ -51,7 +51,6 @@ class CoopOAuthController extends BaseController
      */
     public function receiveAuthorizationCode(Application $app, Request $request)
     {
-        die;
         // equivalent to $_GET['code']
         $code = $request->get('code');
 
@@ -65,6 +64,15 @@ class CoopOAuthController extends BaseController
                     'error_description' => $errorDescription
                 )
             ));
+        }
+
+        if ($request->get('state') !== $request->getSession()->get('oauth.state')) {
+            return $this->render(
+                'failed_authorization.twig',
+                array('response' => array(
+                    'error_description' => 'Your session has expired. Please try again.'
+                ))
+            );
         }
 
         $http = new Client('http://coop.apps.knpuniversity.com', array(
