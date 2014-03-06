@@ -14,7 +14,7 @@
             </div>
 
             {% if user.coopUserId %}
-
+                <a class="btn btn-primary btn-lg" href="{{ path('count_eggs') }}">Count Eggs</a>
             {% else %}
                 <a class="btn btn-primary btn-lg" href="{{ path('coop_authorize_start') }}">Authorize</a>
             {% endif %}
