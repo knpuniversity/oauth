@@ -27,7 +27,7 @@ class CoopOAuthController extends BaseController
         $redirectUrl = $this->generateUrl('coop_authorize_redirect', array(), true);
 
         $url = 'http://coop.apps.knpuniversity.com/authorize?'.http_build_query(array(
-            'response_type' => 'token',
+            'response_type' => 'code',
             'client_id' => 'TopCluck',
             'redirect_uri' => $redirectUrl,
             'scope' => 'eggs-count profile'
@@ -50,7 +50,6 @@ class CoopOAuthController extends BaseController
     {
         // equivalent to $_GET['code']
         $code = $request->get('code');
-        die;
 
         if (!$code) {
             $error = $request->get('error');
