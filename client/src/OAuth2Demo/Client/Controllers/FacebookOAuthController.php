@@ -24,6 +24,14 @@ class FacebookOAuthController extends BaseController
      */
     public function redirectToAuthorization()
     {
+        $config = array(
+          'appId' => 'YOUR_APP_ID',
+          'secret' => 'YOUR_APP_SECRET',
+          'allowSignedRequest' => false // optional but should be set to false for non-canvas apps
+        );
+
+        $facebook = new \Facebook($config);
+
         die('Todo: Redirect to Facebook');
     }
 
