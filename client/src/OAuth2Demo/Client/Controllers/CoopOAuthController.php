@@ -52,8 +52,14 @@ class CoopOAuthController extends BaseController
         $code = $request->get('code');
 
         if (!$code) {
+            $error = $request->get('error');
+            $errorDescription = $request->get('error_description');
+
             return $this->render('failed_authorization.twig', array(
-                'response' => $request->query->all()
+                'response' => array(
+                    'error' => $error,
+                    'error_description' => $errorDescription
+                )
             ));
         }
 

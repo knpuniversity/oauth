@@ -23,6 +23,10 @@ class CountEggs extends BaseController
     {
         $user = $this->getLoggedInUser();
 
+        if (!$user->coopAccessToken || !$user->coopUserId) {
+            throw new \Exception('Somehow you got here, but without a valid COOP access token! Re-authorize!');
+        }
+
         $http = new Client('http://coop.apps.knpuniversity.com', array(
             'request.options' => array(
                 'exceptions' => false,
