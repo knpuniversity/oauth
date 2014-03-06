@@ -3,7 +3,6 @@ Feature: Coop Authorization
   As a user
   I need to be able to authorize TopCluck to count my Coop eggs
 
-  @NotImplementedYet
   Scenario: Authorizing
     Given I am logged in
     And I am on "/"
