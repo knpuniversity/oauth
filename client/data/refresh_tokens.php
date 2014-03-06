@@ -36,6 +36,12 @@ foreach ($expiringTokens as $userInfo) {
     $expiresAt = new \DateTime('+'.$expiresIn.' seconds');
     $refreshToken = $responseArr['refresh_token'];
 
+    echo sprintf(
+        "Refreshing token for user %s: now expires %s\n\n",
+        $userInfo['email'],
+        $expiresAt->format('Y-m-d H:i:s')
+    );
+
     $conn->saveNewTokens(
         $userInfo['email'],
         $accessToken,
