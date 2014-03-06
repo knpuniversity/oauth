@@ -108,6 +108,8 @@ class CoopOAuthController extends BaseController
                 $json['firstName'],
                 $json['lastName']
             );
+
+            $this->loginUser($user);
         }
         $user->coopAccessToken = $accessToken;
         $user->coopUserId = $json['id'];
