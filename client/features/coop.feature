@@ -11,7 +11,6 @@ Feature: Coop Authorization
     And I click "Yes, I Authorize This Request"
     Then I should see "Your Basket of Eggs"
 
-  @NotImplementedYet
   Scenario: Logging in with Coop
     Given I am on "/"
     And I click "Login"
@@ -22,7 +21,6 @@ Feature: Coop Authorization
     # the name of the fixture user, now showing on the leaderboard
     And I should see "Farmer Scott"
 
-  @NotImplementedYet
   Scenario: Updating your egg count
     Given I am authorized with Coop
     And I am on "/"
