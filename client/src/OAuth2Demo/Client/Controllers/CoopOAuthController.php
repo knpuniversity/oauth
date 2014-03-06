@@ -51,6 +51,12 @@ class CoopOAuthController extends BaseController
         // equivalent to $_GET['code']
         $code = $request->get('code');
 
+        if (!$code) {
+            return $this->render('failed_authorization.twig', array(
+                'response' => $request->query->all()
+            ));
+        }
+
         $http = new Client('http://coop.apps.knpuniversity.com', array(
             'request.options' => array(
                 'exceptions' => false,
