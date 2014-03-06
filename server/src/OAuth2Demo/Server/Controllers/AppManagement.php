@@ -133,9 +133,15 @@ class AppManagement
     {
         $formTemplate = 'app/' . ($isNew ? 'create.twig' : 'edit.twig');
 
+        if ($isNew) {
+            $clientDetails = array('client_id' => $clientId);
+        } else {
+            $clientDetails = $this->getClientDetails($clientId, $app);
+        }
+
         return $app['twig']->render($formTemplate, array(
             // only show the existing client information on an edit
-            'client' => $isNew ? false : $this->getClientDetails($clientId, $app),
+            'client' => $clientDetails,
             'errors' => $errors,
             'editName' => $isNew,
         ));
