@@ -121,6 +121,13 @@ class CoopOAuthController extends BaseController
             return $user;
         }
 
+        if ($user = $this->findUserByEmail($meData['email'])) {
+            // we match by email
+            // we have to think if we should trust this. Is it possible to
+            // register at COOP with someone else's email?
+            return $user;
+        }
+
         $user = $this->createUser(
             $meData['email'],
             // a blank password - this user hasn't created a password yet!
