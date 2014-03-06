@@ -29,6 +29,8 @@ class FeatureContext extends MinkContext
      */
     private static $app;
 
+    private $currentUserId;
+
     /**
      * Initializes context.
      * Every scenario gets its own context object.
@@ -100,6 +102,31 @@ class FeatureContext extends MinkContext
     }
 
     /**
+     * @Given /^an application called "([^"]*)" exists$/
+     */
+    public function anApplicationCalledExists($applicationName)
+    {
+        /** @var \OAuth2Demo\Server\Storage\Pdo $storage */
+        $storage = self::$app['storage'];
+
+        $storage->setClientDetails($applicationName, null, null, null, 'chickens-feed', $this->currentUserId);
+    }
+
+    /**
+     * @Then /^the "([^"]*)" value in the table should be "([^"]*)"$/
+     */
+    public function theValueInTheTableShouldBe($column, $value)
+    {
+        $tbl = $this->getSession()->getPage()->find('css', 'table.table');
+        assertNotNull($tbl, 'Cannot find a table.table!');
+
+        $row = $tbl->find('css', sprintf('tr:contains("%s")', $column));
+        assertNotNull($row, 'Cannot find the row with the text '.$column);
+
+        assertContains($value, $row->getText());
+    }
+
+    /**
      * @Given /^there is a user "([^"]*)" with password "([^"]*)"$/
      */
     public function thereIsAUserWithPassword($email, $plainPassword)
@@ -112,7 +139,7 @@ class FeatureContext extends MinkContext
      */
     public function iAmLoggedIn()
     {
-        $this->createUser('ryan@knplabs.com', 'foo');
+        $this->currentUserId = $this->createUser('ryan@knplabs.com', 'foo');
 
         return array(
             new Given('I am on "/login"'),
@@ -127,6 +154,8 @@ class FeatureContext extends MinkContext
         /** @var \OAuth2Demo\Server\Storage\Pdo $storage */
         $storage = self::$app['storage'];
 
-        return $storage->setUser($email, $plainPassword, 'John'.rand(1, 999), 'Doe'.rand(1, 999));
+        $storage->setUser($email, $plainPassword, 'John'.rand(1, 999), 'Doe'.rand(1, 999));
+
+        return $email;
     }
 }

@@ -5,10 +5,10 @@ Feature: Applications
 
   Background:
     Given I am logged in
-    And I am on "/api"
 
   Scenario: Create an application
-    When I click "Create your Application"
+    When I go to "/api"
+    And I click "Create your Application"
     And I fill in "Application Name" with "Foo app"
     And I check "Unlock the Barn"
     And I check "Feed Your Chickens"
@@ -18,8 +18,14 @@ Feature: Applications
       | barn-unlock   |
       | chickens-feed |
 
-
   Scenario: Edit an application
+    Given an application called "Existing app" exists
+    When I go to "/api"
+    And I click "Existing app"
+    And I click "Edit"
+    And I fill in "Redirect URI" with "http://knpuniversity.com"
+    And I press "Submit"
+    Then the "Redirect URI" value in the table should be "http://knpuniversity.com"
 
   Scenario: Cannot create an application with the same name
 
