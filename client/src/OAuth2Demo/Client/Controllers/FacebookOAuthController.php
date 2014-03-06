@@ -58,7 +58,14 @@ class FacebookOAuthController extends BaseController
             ));
         }
 
-        $user = $this->getLoggedInUser();
+        if ($this->isUserLoggedIn()) {
+            $user = $this->getLoggedInUser();
+        } else {
+            $user = $this->findOrCreateUser($json);
+
+            $this->loginUser($user);
+        }
+
         $user->facebookUserId = $userId;
         $this->saveUser($user);
 
@@ -118,5 +125,30 @@ class FacebookOAuthController extends BaseController
         );
 
         return new \Facebook($config);
+    }
+
+    private function findOrCreateUser(array $meData)
+    {
+        if ($user = $this->findUserByCOOPId($meData['id'])) {
+            // this is an existing user. Yay!
+            return $user;
+        }
+
+        if ($user = $this->findUserByEmail($meData['email'])) {
+            // we match by email
+            // we have to think if we should trust this. Is it possible to
+            // register at COOP with someone else's email?
+            return $user;
+        }
+
+        $user = $this->createUser(
+            $meData['email'],
+            // a blank password - this user hasn't created a password yet!
+            '',
+            $meData['firstName'],
+            $meData['lastName']
+        );
+
+        return $user;
     }
 }
