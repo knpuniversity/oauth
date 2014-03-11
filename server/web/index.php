@@ -1,6 +1,6 @@
 <?php
 
-use Symfony\Component\HttpFoundation\Request;
+use OAuth2\HttpFoundationBridge\Request;
 
 $app = require_once __DIR__.'/../bootstrap.php';
 
