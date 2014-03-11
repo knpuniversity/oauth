@@ -39,7 +39,7 @@ class FeatureContext extends MinkContext
      */
     public function __construct(array $parameters)
     {
-        // Initialize your context here
+        $this->useContext('api', new ApiContext());
     }
 
     /**
@@ -128,10 +128,11 @@ class FeatureContext extends MinkContext
 
     /**
      * @Given /^there is a user "([^"]*)" with password "([^"]*)"$/
+     * @Given /^there is a user "([^"]*)"$/
      */
-    public function thereIsAUserWithPassword($email, $plainPassword)
+    public function thereIsAUserWithPassword($email, $plainPassword = 'foo')
     {
-        $this->createUser($email, $plainPassword);
+        $this->currentUserId = $this->createUser($email, $plainPassword);
     }
 
     /**
@@ -157,5 +158,15 @@ class FeatureContext extends MinkContext
         $storage->setUser($email, $plainPassword, 'John'.rand(1, 999), 'Doe'.rand(1, 999));
 
         return $email;
+    }
+
+    public function getApp()
+    {
+        return self::$app;
+    }
+
+    public function getCurrentUserId()
+    {
+        return $this->currentUserId;
     }
 }
