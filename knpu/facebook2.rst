@@ -258,7 +258,7 @@ makes sense.
 
     If you're using the `Guzzle`_ library to make API requests (which the
     Facebook class does *not* use), it has built-in support for re-trying
-    a request if it fails. See `Retrying Requests`_.
+    a request if it fails. See `Guzzle Retry Subscriber`_ (for Guzzle version 4).
 
 This is especially useful in the world of OAuth. We *didn't* store the Facebook
 access token in the database. But if we had, we could use it right now and
@@ -320,8 +320,12 @@ the URL is to the page that starts the Facebook authorization process:
     <button type="submit" class="btn btn-primary">Login!</button>
     OR
     <div class="btn-group">
-        <a href="{{ path('coop_authorize_start') }}" class="btn btn-default">Login with COOP</a>
-        <a href="{{ path('facebook_authorize_start') }}" class="btn btn-default">Login with Facebook</a>
+        <a href="{{ path('coop_authorize_start') }}" class="btn btn-default">
+            Login with COOP
+        </a>
+        <a href="{{ path('facebook_authorize_start') }}" class="btn btn-default">
+            Login with Facebook
+        </a>
     </div>
 
 Logging in with Facebook is going to work *exactly* like logging in with
@@ -459,3 +463,5 @@ for you!
 .. _`quick googling`: https://developers.facebook.com/docs/reference/api/publishing/
 .. _`Using the Graph API`: https://developers.facebook.com/docs/graph-api/using-graph-api
 .. _`another page`: https://developers.facebook.com/docs/facebook-login/access-tokens#errors
+.. _`Guzzle`: http://guzzle.readthedocs.org/
+.. _`Guzzle Retry Subscriber`: https://github.com/guzzle/retry-subscriber
