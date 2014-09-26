@@ -30,55 +30,44 @@ chapters:
     intro:
         title:      Introduction
         is_free:    true
-        length:     2:43
         video_key:  mmxu01p6ir
     client-credentials:
         title:      Client Credentials
         is_free:    true
-        length:     8:55
         video_key:  3agaxjymqe
     authorization-code:
         title:      Authorization Code Grant Type
         is_free:    false
-        length:     10:22
         video_key:  i9if5mvrrk
     authorization-code2:
         title:      Authorization Code: Saving the Token & Handling Failures
         is_free:    false
-        length:     10:37
         video_key:  o90heb6gma
     logging-in:
         title:      User Login with OAuth
         is_free:    false
-        length:     7:01
         video_key:  4rsdudrgrs
     facebook:
         title:      Oauth with Facebook
         is_free:    false
-        length:     11:28
         video_key:  8n1v796k60
     facebook2:
         title:      Facebook: Using the API, Logging in and Failure
         is_free:    false
-        length:     10:05
         video_key:  50be9e529j
     javascript-implicit-google-plus:
         title:      Implicit Grant Type with Google+
         is_free:    false
-        length:     9:45
         video_key:  3tzgy9t6ub
     implicit2:
         title:      Implicit+Google Round 2
         is_free:    false
-        length:     5:03
         video_key:  jcsvj9topd
     refresh-token:
         title:      Using Refresh Tokens
         is_free:    false
-        length:     7:08
         video_key:  2390xgw7g5
     security:
         title:      Tightening up Security
         is_free:    false
-        length:     10:10
         video_key:  oojikulbcs
