@@ -25,6 +25,7 @@ summary: |
 
 illustration: oauth.png
 hasVideoDownload: 1
+videoDownloadExtension: mov
 
 chapters:
     intro:
