@@ -1,5 +1,4 @@
 title:  OAuth2 in 8 Steps
-length: 1:33:17
 summary: |
     OAuth2: that mystical beast that you kind of understand and occasionally
     wrestle to integrate with some social media site.
@@ -24,51 +23,38 @@ summary: |
     * What to look out for with security and how you can tighten things.
 
 illustration: oauth.png
-hasVideoDownload: 1
-videoDownloadExtension: mov
 
 chapters:
     intro:
-        title:      Introduction
         is_free:    true
         video_key:  140184467
     client-credentials:
-        title:      Client Credentials
         is_free:    true
         video_key:  140184465
     authorization-code:
-        title:      Authorization Code Grant Type
         is_free:    false
         video_key:  140184469
     authorization-code2:
-        title:      Authorization Code: Saving the Token & Handling Failures
         is_free:    false
         video_key:  140184471
     logging-in:
-        title:      User Login with OAuth
         is_free:    false
         video_key:  140184472
     facebook:
-        title:      Oauth with Facebook
         is_free:    false
         video_key:  140184473
     facebook2:
-        title:      Facebook: Using the API, Logging in and Failure
         is_free:    false
         video_key:  140184466
     javascript-implicit-google-plus:
-        title:      Implicit Grant Type with Google+
         is_free:    false
         video_key:  140184462
     implicit2:
-        title:      Implicit+Google Round 2
         is_free:    false
         video_key:  140184470
     refresh-token:
-        title:      Using Refresh Tokens
         is_free:    false
         video_key:  140184464
     security:
-        title:      Tightening up Security
         is_free:    false
         video_key:  140184463
