@@ -71,7 +71,7 @@ Notice I'm giving the new user a blank password. Does that mean someone could
 login as the user by entering a blank password? That would be a huge security
 hole!
 
-The probem is that the user isn't choosing a password. In fact, they're
+The problem is that the user isn't choosing a password. In fact, they're
 opt'ing to *not* have one and to use their COOP account instead. So one way
 or another, it should *not* be possible to login to this account using *any*
 password. Normally, my passwords are encoded before being saved, like all
