@@ -51,6 +51,8 @@ in my circles and print their smiling faces:
 This looks for a div with the id ``google-plus-farmers``, so let's add that
 to our page:
 
+.. code-block:: html+jinja
+
     {# views/dashboard.twig #}
 
     <!-- ... -->
@@ -81,7 +83,7 @@ farmers in our circle! In my console, if we click on the AJAX call that was
 made, we can see that an access token was sent on the ``Authorization: Bearer``
 header. OAuth is happening behind the scenes!
 
-Page-Parameters
+Page parameters
 ---------------
 
 Our ultimate goal is for the user to be able to choose from the people in

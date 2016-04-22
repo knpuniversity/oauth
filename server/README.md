@@ -20,6 +20,6 @@ This code represents the OAuth2.0 server used in the screencast.  Here is how to
   $ php -S localhost:9000
 ```
 
-4) Pop open `http://localhost:9999` in your browser!
+4) Pop open `http://localhost:9000` in your browser!
 
 

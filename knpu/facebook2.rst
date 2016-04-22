@@ -405,7 +405,7 @@ But first, reset the database so that it doesn't find our existing user:
     rm data/topcluck.sqlite
 
 When we login with Facebook, we hit the dump, which holds a lot of nice information
-about the user::
+about the user:
 
 .. code-block:: text
 

@@ -183,8 +183,8 @@ including the ability to post. One nice thing about Facebook is that we can
 choose to grant this scope, but make any posts show only to us. That's a
 great way to test things.
 
-Getting the Acess Token
------------------------
+Getting the Access Token
+------------------------
 
 When we finish, we're redirected back to our second page, which still has
 the original todo message. But we have a ``code`` query parameter, and we
