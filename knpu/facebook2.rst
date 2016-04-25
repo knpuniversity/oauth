@@ -393,7 +393,10 @@ a try-catch block::
         // ...
     }
 
-> Request fields you want explicitly due to Facebook API changes.
+.. note::
+
+    Due to recent Facebook API changes, you now need to add `?fields=` to explicitly
+    ask for which fields you want.
 
 At this point, we *should* have a valid access token, so if the request fails,
 something is very strange. That's why I'm showing an error page instead of
