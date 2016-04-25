@@ -24,6 +24,9 @@ summary: |
 
 illustration: oauth.png
 
+tuts_hero:
+    start_step: start
+    finish_step: security-checking-the-state-parameter
 chapters:
     intro:
         is_free:    true
