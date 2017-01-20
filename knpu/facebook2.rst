@@ -385,13 +385,18 @@ a try-catch block::
         // ...
 
         try {
-            $json = $facebook->api('/me');
+            $json = $facebook->api('/me?fields=email,first_name,last_name');
         } catch (\FacebookApiException $e) {
             return $this->render('failed_token_request.twig', array('response' => $e->getMessage()));
         }
         var_dump($json);die;
         // ...
     }
+
+.. note::
+
+    Due to recent Facebook API changes, you now need to add `?fields=` to explicitly
+    ask for which fields you want.
 
 At this point, we *should* have a valid access token, so if the request fails,
 something is very strange. That's why I'm showing an error page instead of
@@ -405,7 +410,7 @@ But first, reset the database so that it doesn't find our existing user:
     rm data/topcluck.sqlite
 
 When we login with Facebook, we hit the dump, which holds a lot of nice information
-about the user::
+about the user:
 
 .. code-block:: text
 

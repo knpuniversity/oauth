@@ -138,6 +138,8 @@ an access token.
 One interesting thing about the implicit grant type is that the access token
 is passed back as a URL fragment instead of a query parameter:
 
+.. code-block:: text
+
     http://localhost:9000/coop/oauth/handle?code=abcd123
     http://localhost:9000/coop/oauth/handle#access_token=wxyz5678
 
