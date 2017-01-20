@@ -94,9 +94,11 @@ OAuth Applications
 ------------------
 
 But before we think about getting a token, we need to create an application
-on COOP. The application represents the external app or website that we want
-to build. In our case, it's the little command-line script. In OAuth-speak,
-it's this application that will actually ask for access to a user's COOP account.
+on COOP (http://coop.apps.knpuniversity.com/api - click "Your Applications" and
+then "Create your Application"). The application represents the external app or
+website that we want to build. In our case, it's the little command-line script.
+In OAuth-speak, it's this application that will actually ask for access to a user's
+COOP account.
 
 Give it a name like "Brent's Lazy CRON Job", a description, and check only
 the box for "Collect Eggs from Your Chickens". These are "scopes", or basically
