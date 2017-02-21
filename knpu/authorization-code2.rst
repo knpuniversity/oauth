@@ -1,11 +1,9 @@
-Authorization Code: Saving the Token & Handling Failures
-========================================================
+# Authorization Code: Saving the Token & Handling Failures
 
 What if we want to make other API requests on behalf of Brent later? Where
 should we store the access token?
 
-Saving the Access Token Somewhere
----------------------------------
+## Saving the Access Token Somewhere
 
 Some access tokens last an hour or two, and are well suited for storing in the
 session. Others are long-term tokens, for example facebook provides a 60-day token, 
@@ -30,14 +28,13 @@ In our app, we're going to store it in the database::
     }
 
 This code is specific to my app, but the end result is that I've updated
-the ``coopAccessToken`` column on the user table for the currently-authenticated
-user. I'm also saving the ``coopUserId``, which we'll need since most API
+the `coopAccessToken` column on the user table for the currently-authenticated
+user. I'm also saving the `coopUserId`, which we'll need since most API
 calls have the user's ID in the URI.
 
-Recording the Expires Time
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+### Recording the Expires Time
 
-We can also store the time when the token will expire. I'll create a ``DateTime``
+We can also store the time when the token will expire. I'll create a `DateTime`
 object that represents the expiration time. We can check this
 later before trying to make API requests. If the token is expired, we'll
 need to send the user through the authorization process again::
@@ -60,25 +57,24 @@ need to send the user through the authorization process again::
 
 Again, the code here is special to my app, but the end result is just to
 update a column in the database for the current user. When we try it, it
-runs and hits our ``die`` statement. But if you go to the homepage, the
+runs and hits our `die` statement. But if you go to the homepage, the
 user drop-down shows us that the COOP user id was saved! Eggcellent...
 
-When Authorization Fails
-------------------------
+## When Authorization Fails
 
 But what if the user declines to authorize our app? If this happens, an OAuth server will
-redirect the user back to our ``redirect_uri``. If we start from the homepage
+redirect the user back to our `redirect_uri`. If we start from the homepage
 again but deny access on COOP, we can see this. But this time, the page explodes
-because our request to ``/token`` is *not* returning an access token. In
-fact, COOP hasn't included a ``code`` query parameter in the URL on the
+because our request to `/token` is *not* returning an access token. In
+fact, COOP hasn't included a `code` query parameter in the URL on the
 redirect.
 
 This is what a canceled authorization looks like: no authorization code.
 
 Unfortunately, we can't just assume that the user authorized our application.
-As we've seen when this happens, the ``code`` query parameter will be missing, 
+As we've seen when this happens, the `code` query parameter will be missing, 
 but the OAuth server should include a few extra query parameters explaining what 
-went wrong. These are commonly called ``error`` and ``error_description``. Let's 
+went wrong. These are commonly called `error` and `error_description`. Let's 
 grab these and pass them into a template I've already prepared::
 
     public function receiveAuthorizationCode(Application $app, Request $request)
@@ -108,11 +104,10 @@ that the user will decline your app's request.
 These errors should be documented by the OAuth server, but the standard set
 includes "temporarily_unavailable", "server_error", and "access_denied".
 
-When Fetching the Access Token Fails
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+### When Fetching the Access Token Fails
 
-There's one other spot where things can fail: when requesting out to ``/token``.
-What if the response doesn't have an ``access_token`` field? Under normal
+There's one other spot where things can fail: when requesting out to `/token`.
+What if the response doesn't have an `access_token` field? Under normal
 circumstances, this really shouldn't happen, but let's render a different
 error template in case it does. Don't worry about the variables I'm passing
 into the template, I'm just trying to pass enough information so that we
@@ -140,12 +135,11 @@ can see what the problem was::
 
 Try the whole cycle again, but approve the app this time. It works the first
 time of course. But if you refresh, you'll see this error in action. The
-code parameter exists, but it's expired. So, the request to ``/token`` fails.
+code parameter exists, but it's expired. So, the request to `/token` fails.
 
-Redirecting after Success
--------------------------
+## Redirecting after Success
 
-Until now, we've had an ugly ``die`` statement at the bottom of the code
+Until now, we've had an ugly `die` statement at the bottom of the code
 that handles the OAuth redirect. What you'll actually want to do here is
 redirect to some other page. Our work is done for now, so we want to help
 the user to continue on our site::
@@ -162,63 +156,61 @@ In our application, this code simply redirects us to the homepage. And just
 like that, we're done! This is the authorization grant type, which has 2
 distinct steps to it:
 
-#. First, redirect the user to the OAuth server using its ``/authorize``
-   endpoint, your application's ``client_id``, a ``redirect_uri`` and the
+#. First, redirect the user to the OAuth server using its `/authorize`
+   endpoint, your application's `client_id`, a `redirect_uri` and the
    scopes you want permission for. The URL and how the parameters look may
    be different on other OAuth servers, but the idea will be the same.
 
 #. After authorizing our app, the OAuth server redirects back to a URL on
-   our site with a ``code`` query parameter. We can use this, along with our
-   ``client_id`` and ``client_secret`` to make an API request to the ``/token``
+   our site with a `code` query parameter. We can use this, along with our
+   `client_id` and `client_secret` to make an API request to the `/token`
    endpoint. Now, we have an access token.
 
 Let's finally use it to count some eggs!
 
-Couting Eggs
-------------
+## Couting Eggs
 
 On the homepage, we still have the "Authorize" button. But now that we have
 an access token for the user, we really don't need this anymore. The template
-that displays this page is at ``views/dashboard.twig``, and I'm already passing
-a ``user`` variable here, which is the currently-authenticated user object.
-Let's hide the "Authorize" link if the user has a ``coopUserId`` stored in
+that displays this page is at `views/dashboard.twig`, and I'm already passing
+a `user` variable here, which is the currently-authenticated user object.
+Let's hide the "Authorize" link if the user has a `coopUserId` stored in
 the database:
 
-.. code-block:: html+jinja
+```html+jinja
+{# views/dashboard.twig #}
+{# ... #}
 
-    {# views/dashboard.twig #}
-    {# ... #}
+{% if user.coopUserId %}
 
-    {% if user.coopUserId %}
+{% else %}
+    <a class="btn btn-primary btn-lg" href="{{ path('coop_authorize_start') }}">Authorize</a>
+{% endif %}
+```
 
-    {% else %}
-        <a class="btn btn-primary btn-lg" href="{{ path('coop_authorize_start') }}">Authorize</a>
-    {% endif %}
-
-If we *do* have a ``coopUserId``, let's add a link the user can click that
+If we *do* have a `coopUserId`, let's add a link the user can click that
 will count their daily eggs. Don't worry if you're not familiar with the
 code here, we're just generating a URL to a new page that I've already setup:
 
-.. code-block:: html+jinja
+```html+jinja
+{# views/dashboard.twig #}
+{# ... #}
 
-    {# views/dashboard.twig #}
-    {# ... #}
-
-    {% if user.coopUserId %}
-        <a class="btn btn-primary btn-lg" href="{{ path('count_eggs') }}">Count Eggs</a>
-    {% else %}
-        <a class="btn btn-primary btn-lg" href="{{ path('coop_authorize_start') }}">Authorize</a>
-    {% endif %}
+{% if user.coopUserId %}
+    <a class="btn btn-primary btn-lg" href="{{ path('count_eggs') }}">Count Eggs</a>
+{% else %}
+    <a class="btn btn-primary btn-lg" href="{{ path('coop_authorize_start') }}">Authorize</a>
+{% endif %}
+```
 
 When we refresh, we see the new link. Clicking it gives us another todo message.
-Open up ``src/OAuth2Demo/Client/Controllers/CountEggs.php``, which is the
+Open up `src/OAuth2Demo/Client/Controllers/CountEggs.php`, which is the
 code behind this new page.
 
-Making the eggs-count API Request
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+### Making the eggs-count API Request
 
-Start by copying the ``/api/me`` code from ``CoopOAuthController``, and changing
-the method from ``get`` to ``post``, since the ``eggs-count`` endpoint requires
+Start by copying the `/api/me` code from `CoopOAuthController`, and changing
+the method from `get` to `post`, since the `eggs-count` endpoint requires
 POST::
 
     // src/OAuth2Demo/Client/Controllers/CountEggs.php
@@ -246,9 +238,9 @@ POST::
         }
     }
 
-The endpoint we want to hit now is ``/api/USER_ID/eggs-count``. Fortunately,
+The endpoint we want to hit now is `/api/USER_ID/eggs-count`. Fortunately,
 we've already saved the COOP user id and access token for the currently logged-in
-user to the database. Get that data by using our app's ``$this->getLoggedInUser()``
+user to the database. Get that data by using our app's `$this->getLoggedInUser()`
 method and update the URL::
 
     public function countEggs()
@@ -285,8 +277,8 @@ eggs! That'll show Farmer Scott!
 Since the purpose of TopCluck is to keep track of how many eggs each
 farmer has collected each day, let's save the new count to the database.
 Like before, I've already done all the hard work, so that we can focus on
-just the OAuth pieces. Just call ``setTodaysEggCountForUser`` and pass it
-the current user and the egg count. While we're here, we can remove the ``die``
+just the OAuth pieces. Just call `setTodaysEggCountForUser` and pass it
+the current user and the egg count. While we're here, we can remove the `die`
 statement and redirect the user back to the homepage once we're done::
 
     public function countEggs()
@@ -307,12 +299,11 @@ right, Farmer Brent's egg count isn't going up. Let's go to COOP and
 collect a few more eggs manually. Back on FCL, if we count our eggs again,
 we get the updated count. Sweet!
 
-All the Things that can Go Wrong
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+### All the Things that can Go Wrong
 
 The "Count Eggs" page we created works great, but we're not handling any
 of the things that might go wrong. First, we're hiding its link, but what
-if a user somehow ends up on the page without a ``coopUserId`` or ``coopAccessToken``?
+if a user somehow ends up on the page without a `coopUserId` or `coopAccessToken`?
 Let's code for this case::
 
     public function countEggs()
@@ -369,7 +360,7 @@ like this::
 
 Of course, you may want to do something more sophisticated. The response could
 also have some error information on it, which you can play around with. For OAuth,
-this is important because the call *may* have failed because the ``access_token``
+this is important because the call *may* have failed because the `access_token`
 expired. What, I thought we just checked for that? Well, in the real world,
 there's no guarantee that the token won't expire before its scheduled time.
 Plus, the user may have decided to revoke your token -- what a bully. Be aware, 
