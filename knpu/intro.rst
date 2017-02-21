@@ -1,5 +1,4 @@
-Serious OAuth in 8 Steps
-========================
+# Serious OAuth in 8 Steps
 
 Hey guys and gals! In this tutorial, we're going to get serious with OAuth by building
 an app with some complex and real-life features, like Facebook authentication,
@@ -17,8 +16,7 @@ a barebones starting app into a complex, OAuth machine:
 
 As we go through these, we'll give you any theory and background you need.
 
-Tiny Crash Course in OAuth
---------------------------
+## Tiny Crash Course in OAuth
 
 For now, you just need to understand that OAuth is an Authorization Framework.
 In human-speak, it means that it defines the different ways two parties,
@@ -26,23 +24,22 @@ like your cool web site and a *user* on your website, can exchange tokens
 securely. Each of these ways is known as a grant type and though they look
 different, each grant type will always deliver an access token. 
 
-OAuth Token
-~~~~~~~~~~~
+### OAuth Token
 
 So what's this token? It's just a unique string tied to my account that gives
 *you* access to make API requests on my behalf. It's like a username and
-password all rolled into one. For example, if ``ABCD1234`` is a valid token
+password all rolled into one. For example, if `ABCD1234` is a valid token
 to my Facebook account, then an HTTP request that looks like this would post
 to my timeline:
 
-.. code-block:: text
+```text
+POST /weaverryan/feed HTTP/1.1
+Host: graph.facebook.com
+Content-Type: application/x-www-form-urlencoded
+Content-Length: length
 
-    POST /weaverryan/feed HTTP/1.1
-    Host: graph.facebook.com
-    Content-Type: application/x-www-form-urlencoded
-    Content-Length: length
-
-    access_token=ABCD1234&message=Hello
+access_token=ABCD1234&message=Hello
+```
 
 Exactly *how* you pass the access token in an API request is different between
 Facebook, Twitter, or any other API. But it's always there 
