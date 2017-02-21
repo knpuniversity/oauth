@@ -1,5 +1,4 @@
-Security
-========
+# Security
 
 Since TopCluck is handling a lot of access tokens for Brent's farmer friends,
 he wants to make sure it's secure. Nothing would be worse than for the access
@@ -9,11 +8,10 @@ of the good people's farms!
 Exchanging tokens in a secure way isn't easy because there are a lot of opportunities
 for a hacker to be listening to the requests or doing some other clever thing.
 
-CSRF Protection with the state Parameter
-----------------------------------------
+## CSRF Protection with the state Parameter
 
-Open up ``CoopOAuthController`` so that we can squash a really common attack.
-In the authorize redirect URL, add a ``state`` parameter and set its value
+Open up `CoopOAuthController` so that we can squash a really common attack.
+In the authorize redirect URL, add a `state` parameter and set its value
 to something that's only known to the session for *this user*. We can do
 that by generating a random string and storing it in the session::
 
@@ -35,7 +33,7 @@ that by generating a random string and storing it in the session::
         return $this->redirect($url);
     }
 
-Let's also add a ``die`` statement in the ``receiveAuthorizationCode`` function
+Let's also add a `die` statement in the `receiveAuthorizationCode` function
 that's executed after COOP redirects back to us::
 
     public function receiveAuthorizationCode(Application $app, Request $request)
@@ -45,10 +43,10 @@ that's executed after COOP redirects back to us::
     }
 
 Log out and click to login via COOP. Of course, when we redirect to COOP,
-the new ``state`` parameter is there. Interestingly, after we authorize, COOP
-redirects back to us and *also* includes that exact ``state`` parameter.
+the new `state` parameter is there. Interestingly, after we authorize, COOP
+redirects back to us and *also* includes that exact `state` parameter.
 
-In ``receiveAuthorizationCode``, we just need to make sure that ``state``
+In `receiveAuthorizationCode`, we just need to make sure that `state`
 matches the string that we set in the session exactly. If it doesn't, let's
 render an error page: this could be an attack::
 
@@ -66,7 +64,7 @@ render an error page: this could be an attack::
         // ...
     }
 
-Using the ``state`` parameter is just like using a CSRF token with a form:
+Using the `state` parameter is just like using a CSRF token with a form:
 it prevents XSS attacks.
 
 When we log in now, it all still works perfectly.
@@ -78,18 +76,17 @@ tag. Assuming you're logged into TopCluck, when you view this page, the image
 tag will make a request to TopCluck, which exchanges the authorization code
 for an access token in the background.
 
-So what? Well, ``CoopOAuthController`` would end up saving your
-``coopUserId`` to the attacker's TopCluck account. This means when 
+So what? Well, `CoopOAuthController` would end up saving your
+`coopUserId` to the attacker's TopCluck account. This means when 
 the attacker logs into TopCluck using COOP, they'll be logged in as *you*!
 
-So, *always* use a ``state`` parameter. Fortunately, when you work with something
+So, *always* use a `state` parameter. Fortunately, when you work with something
 like Facebook's SDK, this happens automatically. We didn't realize it, but
 it was generating a state parameter, saving it to the session, and checking
 it when we exchanged the authorization code for the access token. That's
 pretty nice.
 
-Registering the Redirect URI
-----------------------------
+## Registering the Redirect URI
 
 Head over to COOP and check out our application there. One field we left
 blank was the Redirect URI. Let's fill it in now with a made-up URL.
@@ -103,11 +100,11 @@ your client ID, which is public, to authorize users and redirect with the
 authorization code or access token back to *their* site. Many OAuth servers
 require this to be filled in. In fact, we saw that with Facebook earlier
 
-I'll re-edit the application and put in our exact ``redirect_uri`` value.
+I'll re-edit the application and put in our exact `redirect_uri` value.
 When we try to login in now, it works.
 
 Most OAuth servers will require this value. Sometimes, the URL we put here
-must match the ``redirect_uri`` parameter *exactly*. Other times, it's a
+must match the `redirect_uri` parameter *exactly*. Other times, it's a
 fuzzy match. This is up to the OAuth server you're using, but exact matching
 is much more difficult to fake.
 
@@ -116,8 +113,7 @@ the OAuth server may just ask you for your hostname or a list of JavaScript
 origins. These function the same way: to prevent JavaScript on some other
 hostname from using your client id.
 
-The Insecurity of Implicit
---------------------------
+## The Insecurity of Implicit
 
 The implicit grant type is the least secure grant type because the access
 token can be read by other JavaScript on your page and could be a victim
@@ -138,10 +134,10 @@ an access token.
 One interesting thing about the implicit grant type is that the access token
 is passed back as a URL fragment instead of a query parameter:
 
-.. code-block:: text
-
-    http://localhost:9000/coop/oauth/handle?code=abcd123
-    http://localhost:9000/coop/oauth/handle#access_token=wxyz5678
+```text
+http://localhost:9000/coop/oauth/handle?code=abcd123
+http://localhost:9000/coop/oauth/handle#access_token=wxyz5678
+```
 
 We didn't see this with Google+ because it was all being handled in the background
 for us. But this is really important because anything after the hash in a
@@ -151,11 +147,10 @@ listening between the user and the server won't be able to intercept it.
 That's not as important with the code, because the man-in-the-middle would still
 need the client secret to do anything with it.
 
-Https
------
+## Https
 
 An important piece of OAuth security is using SSL. This means all requests to an
-OAuth server should be done using HTTPS. The reason is that the ``access_token``,
+OAuth server should be done using HTTPS. The reason is that the `access_token`,
 is always sent in plain text. That's true when the OAuth server first gives
 us the access token and on *every single* API request we make back afterwards.
 This makes using OAuth APIs much more convenient for us developers, but if
@@ -181,8 +176,7 @@ it, your user's session could be stolen by someone else on the same network!
 And all your hard work making your OAuth implementation secure will go to
 waste.
 
-Authentication with OAuth
--------------------------
+## Authentication with OAuth
 
 In our tutorial, we allow people to log in with COOP and Facebook. But this
 isn't the purpose of OAuth. Usually, we think that the only way for us to
@@ -192,13 +186,13 @@ we think "This must be Brent, let's log him into his TopCluck account".
 
 With this authorization code grant type and the state parameter, this is
 safe. But suppose instead that we decide to use the implicit flow in JavaScript.
-After success, we'll send the new ``access_token`` via AJAX to the TopCluck
-server and authenticate the user by looking up the ``coopUserId`` associated
+After success, we'll send the new `access_token` via AJAX to the TopCluck
+server and authenticate the user by looking up the `coopUserId` associated
 with the token.
 
 Now, what if some other site also allows you to authorize your COOP account
 with them. They now also have an access token for your COOP account. If they're
-nasty, or if your ``access_token`` gets stolen, someone could pass it directly
+nasty, or if your `access_token` gets stolen, someone could pass it directly
 to our AJAX endpoint and become authenticated on TopCluck in your account.
 
 That's right - any site that has an access token to your Coop or Facebook
@@ -210,8 +204,7 @@ to be extra careful when you do this. Most importantly, stay away from
 the implicit grant type for authenticating users, as we have done in this
 tutorial.
 
-The End
--------
+## The End
 
 Our hero Brent's life is a lot better than when we started. Thanks to his
 CRON script, his chickens are getting fed everyday. And with the TopCluck
