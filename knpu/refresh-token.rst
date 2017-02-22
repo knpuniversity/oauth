@@ -26,43 +26,47 @@ to make it harder for attackers to compromise a system.
 
 Fortunately, COOP *does* support refresh tokens. Open up the `CoopOAuthController`
 where we make the API request to `/token`. Let's dump this response and
-go through the process::
+go through the process:
 
-    // src/OAuth2Demo/Client/Controllers/CoopOAuthController.php
-    public function receiveAuthorizationCode(Application $app, Request $request)
-    {
+```php
+// src/OAuth2Demo/Client/Controllers/CoopOAuthController.php
+public function receiveAuthorizationCode(Application $app, Request $request)
+{
+    // ...
+
+    $request = $http->post('/token', null, array(
         // ...
+    ));
 
-        $request = $http->post('/token', null, array(
-            // ...
-        ));
+    $response = $request->send();
+    $responseBody = $response->getBody(true);
+    $responseArr = json_decode($responseBody, true);
 
-        $response = $request->send();
-        $responseBody = $response->getBody(true);
-        $responseArr = json_decode($responseBody, true);
-
-        var_dump($responseArr);die;
-        // ...
-    }
+    var_dump($responseArr);die;
+    // ...
+}
+```
 
 Ah hah! The response has an `access_token` *and* a `refresh_token`. Let's
-store the refresh token to a column on the user so we can re-use it later::
+store the refresh token to a column on the user so we can re-use it later:
 
-    public function receiveAuthorizationCode(Application $app, Request $request)
-    {
-        // ...
+```php
+public function receiveAuthorizationCode(Application $app, Request $request)
+{
+    // ...
 
-        // after the /token request
-        $accessToken = $responseArr['access_token'];
-        $expiresIn = $responseArr['expires_in'];
-        $expiresAt = new \DateTime('+'.$expiresIn.' seconds');
-        $refreshToken = $responseArr['refresh_token'];
+    // after the /token request
+    $accessToken = $responseArr['access_token'];
+    $expiresIn = $responseArr['expires_in'];
+    $expiresAt = new \DateTime('+'.$expiresIn.' seconds');
+    $refreshToken = $responseArr['refresh_token'];
 
-        // ...
-        $user->coopRefreshToken = $refreshToken;
-        $this->saveUser($user);
-        // ...
-    }
+    // ...
+    $user->coopRefreshToken = $refreshToken;
+    $this->saveUser($user);
+    // ...
+}
+```
 
 ***TIP
 In order to get a refresh token, you *may* need to pass an extra parameter
@@ -74,27 +78,29 @@ In order to get a refresh token, you *may* need to pass an extra parameter
 Even if an OAuth server supports refresh tokens, you won't be given one if
 you use the implicit flow. To see what I mean, change the `response_type`
 parameter on our COOP authorize URL to `token` and add a `die` statement
-right at the top of the code that handles the redirect::
+right at the top of the code that handles the redirect:
 
-    public function redirectToAuthorization(Request $request)
-    {
-        $redirectUrl = $this->generateUrl('coop_authorize_redirect', array(), true);
+```php
+public function redirectToAuthorization(Request $request)
+{
+    $redirectUrl = $this->generateUrl('coop_authorize_redirect', array(), true);
 
-        $url = 'http://coop.apps.knpuniversity.com/authorize?'.http_build_query(array(
-            'response_type' => 'token',
-            'client_id' => 'TopCluck',
-            'redirect_uri' => $redirectUrl,
-            'scope' => 'eggs-count profile'
-        ));
+    $url = 'http://coop.apps.knpuniversity.com/authorize?'.http_build_query(array(
+        'response_type' => 'token',
+        'client_id' => 'TopCluck',
+        'redirect_uri' => $redirectUrl,
+        'scope' => 'eggs-count profile'
+    ));
 
-        return $this->redirect($url);
-    }
+    return $this->redirect($url);
+}
 
-    public function receiveAuthorizationCode(Application $app, Request $request)
-    {
-        die;
-        // ...
-    }
+public function receiveAuthorizationCode(Application $app, Request $request)
+{
+    die;
+    // ...
+}
+```
 
 When we try the process again, COOP redirects us back with a URL that contains
 an access token instead of the authorization code:
@@ -123,26 +129,28 @@ at `data/refresh_tokens.php`. What we want to do here is use the COOP API
 to count and save each user's daily eggs.
 
 But first, we need to make sure that everyone has a non-expired access token.
-Let's use a method called `getExpiringTokens` that I've already prepared.
+Let's use a method called `getExpiringTokens()` that I've already prepared.
 This queries the database and returns details for all users whose `coopAccessExpiresAt`
-value is today or earlier::
+value is today or earlier:
 
-    // data/refresh_tokens.php
-    $app = require __DIR__.'/../bootstrap.php';
-    use Guzzle\Http\Client;
+```php
+// data/refresh_tokens.php
+$app = require __DIR__.'/../bootstrap.php';
+use Guzzle\Http\Client;
 
-    // create our http client (Guzzle)
-    $http = new Client('http://coop.apps.knpuniversity.com', array(
-        'request.options' => array(
-            'exceptions' => false,
-        )
-    ));
+// create our http client (Guzzle)
+$http = new Client('http://coop.apps.knpuniversity.com', array(
+    'request.options' => array(
+        'exceptions' => false,
+    )
+));
 
-    // refresh all tokens expiring today or earlier
-    /** @var \OAuth2Demo\Client\Storage\Connection $conn */
-    $conn = $app['connection'];
+// refresh all tokens expiring today or earlier
+/** @var \OAuth2Demo\Client\Storage\Connection $conn */
+$conn = $app['connection'];
 
-    $expiringTokens = $conn->getExpiringTokens();
+$expiringTokens = $conn->getExpiringTokens();
+```
 
 ***TIP
 In the background, this is just running a query similar to this:
@@ -154,62 +162,68 @@ In the background, this is just running a query similar to this:
 
 Next, let's iterate over each expiring token. To get a refresh token, we'll
 make an API request to the very-familiar `/token` endpoint. In fact, I'll
-start by copying the Guzzle API call from `CoopOAuthController`::
+start by copying the Guzzle API call from `CoopOAuthController`:
 
-    // data/refresh_tokens.php
-    // ...
+```php
+// data/refresh_tokens.php
+// ...
 
-    $expiringTokens = $conn->getExpiringTokens();
+$expiringTokens = $conn->getExpiringTokens();
 
-    foreach ($expiringTokens as $userInfo) {
-
-        $request = $http->post('/token', null, array(
-            'client_id'     => 'TopCluck',
-            'client_secret' => '2e2dfd645da38940b1ff694733cc6be6',
-            'grant_type'    => 'authorization_code',
-            'code'          => $code,
-            'redirect_uri'  => $this->generateUrl('coop_authorize_redirect', array(), true),
-        ));
-
-        // make a request to the token url
-        $response = $request->send();
-        $responseBody = $response->getBody(true);
-        var_dump($responseBody);die;
-        $responseArr = json_decode($responseBody, true);
-
-    }
-
-
-Of course, we don't have a `$code` variable, but we *do* have the user's
-refresh token. Change `grant_type` to be `refresh_token` and replace
-the `code` parameter with the `refresh_token`. We can also remove the `redirect_uri`,
-which isn't needed with this grant type::
+foreach ($expiringTokens as $userInfo) {
 
     $request = $http->post('/token', null, array(
         'client_id'     => 'TopCluck',
         'client_secret' => '2e2dfd645da38940b1ff694733cc6be6',
-        'grant_type'    => 'refresh_token',
-        'refresh_token' => $userInfo['coopRefreshToken'],
+        'grant_type'    => 'authorization_code',
+        'code'          => $code,
+        'redirect_uri'  => $this->generateUrl('coop_authorize_redirect', array(), true),
     ));
+
+    // make a request to the token url
+    $response = $request->send();
+    $responseBody = $response->getBody(true);
+    var_dump($responseBody);die;
+    $responseArr = json_decode($responseBody, true);
+
+}
+
+```
+
+Of course, we don't have a `$code` variable, but we *do* have the user's
+refresh token. Change `grant_type` to be `refresh_token` and replace
+the `code` parameter with the `refresh_token`. We can also remove the `redirect_uri`,
+which isn't needed with this grant type:
+
+```php
+$request = $http->post('/token', null, array(
+    'client_id'     => 'TopCluck',
+    'client_secret' => '2e2dfd645da38940b1ff694733cc6be6',
+    'grant_type'    => 'refresh_token',
+    'refresh_token' => $userInfo['coopRefreshToken'],
+));
+```
 
 Let's try out the API call! Tweak the `getExpiringTokens()` method temporarily.
 We don't actually have any users with expiring tokens, but this change will
-return any tokens expiring in the next month, which should be everyone::
+return any tokens expiring in the next month, which should be everyone:
 
-    $expiringTokens = $conn->getExpiringTokens(new \DateTime('+1 month'));
+```php
+$expiringTokens = $conn->getExpiringTokens(new \DateTime('+1 month'));
 
-    foreach ($expiringTokens as $userInfo) {
-        // ...
+foreach ($expiringTokens as $userInfo) {
+    // ...
 
-        $response = $request->send();
-        $responseBody = $response->getBody(true);
-        var_dump($responseBody);die;
-        $responseArr = json_decode($responseBody, true);
-    }
+    $response = $request->send();
+    $responseBody = $response->getBody(true);
+    var_dump($responseBody);die;
+    $responseArr = json_decode($responseBody, true);
+}
+```
 
 Now, try it by executing the script from the command line:
 
-```bash
+```terminal
 $ php data/refresh_token.php
 ```
 
@@ -228,34 +242,20 @@ With any luck, we should see a familiar-looking JSON response:
 Perfect! Now we just need to update the user with the new `coopAccessToken`,
 `coopExpiresAt` and `coopRefreshToken`. Again, we can copy or re-use
 some code from `CoopOAuthController`, since this is the same response
-from there. The `saveNewTokens` method is a shortcut to update the user
-record with this data::
+from there. The `saveNewTokens()` method is a shortcut to update the user
+record with this data:
 
-    // data/refresh_tokens.php
+```php
+// data/refresh_tokens.php
+// ...
+
+foreach ($expiringTokens as $userInfo) {
     // ...
 
-    foreach ($expiringTokens as $userInfo) {
-        // ...
-
-        $accessToken = $responseArr['access_token'];
-        $expiresIn = $responseArr['expires_in'];
-        $expiresAt = new \DateTime('+'.$expiresIn.' seconds');
-        $refreshToken = $responseArr['refresh_token'];
-
-        $conn->saveNewTokens(
-            $userInfo['email'],
-            $accessToken,
-            $expiresAt,
-            $refreshToken
-        );
-    }
-
-***TIP
-In the background, this is just running an UPDATE query against this
-user to update the access token, expiration and refresh token columns.
-***
-
-Let's add a little message so we can see what's going on::
+    $accessToken = $responseArr['access_token'];
+    $expiresIn = $responseArr['expires_in'];
+    $expiresAt = new \DateTime('+'.$expiresIn.' seconds');
+    $refreshToken = $responseArr['refresh_token'];
 
     $conn->saveNewTokens(
         $userInfo['email'],
@@ -263,13 +263,31 @@ Let's add a little message so we can see what's going on::
         $expiresAt,
         $refreshToken
     );
-    // ...
+}
+```
 
-    echo sprintf(
-        "Refreshing token for user %s: now expires %s\n\n",
-        $userInfo['email'],
-        $expiresAt->format('Y-m-d H:i:s')
-    );
+***TIP
+In the background, this is just running an UPDATE query against this
+user to update the access token, expiration and refresh token columns.
+***
+
+Let's add a little message so we can see what's going on:
+
+```php
+$conn->saveNewTokens(
+    $userInfo['email'],
+    $accessToken,
+    $expiresAt,
+    $refreshToken
+);
+// ...
+
+echo sprintf(
+    "Refreshing token for user %s: now expires %s\n\n",
+    $userInfo['email'],
+    $expiresAt->format('Y-m-d H:i:s')
+);
+```
 
 But when we try it now, the script blows up! Since we're still dumping the
 raw response, above the exception we can see the message "Invalid refresh token".
