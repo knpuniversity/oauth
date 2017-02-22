@@ -24,7 +24,7 @@ like Authorization Code, but simpler.
 ## JavaScript OAuth with Google+
 
 To integrate with Google+, let's start by finding their [JavaScript Quick Start][JavaScript Quick Start],
-which is a little example app. If we follow the `Google+ Sign-In button`_,
+which is a little example app. If we follow the [Google+ Sign-In button][Google+ Sign-In button],
 we can get some actual details on how Google+ sign in works.
 
 Now that we know a lot about OAuth, the "Choosing a sign-in flow" is really
