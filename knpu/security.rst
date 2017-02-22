@@ -13,56 +13,62 @@ for a hacker to be listening to the requests or doing some other clever thing.
 Open up `CoopOAuthController` so that we can squash a really common attack.
 In the authorize redirect URL, add a `state` parameter and set its value
 to something that's only known to the session for *this user*. We can do
-that by generating a random string and storing it in the session::
+that by generating a random string and storing it in the session:
 
-    // src/OAuth2Demo/Client/Controllers/CoopOAuthController.php
-    public function redirectToAuthorization(Request $request)
-    {
-        $redirectUrl = $this->generateUrl('coop_authorize_redirect', array(), true);
+```php
+// src/OAuth2Demo/Client/Controllers/CoopOAuthController.php
+public function redirectToAuthorization(Request $request)
+{
+    $redirectUrl = $this->generateUrl('coop_authorize_redirect', array(), true);
 
-        $state = md5(uniqid(mt_rand(), true));
-        $request->getSession()->set('oauth.state', $state);
-        $url = 'http://coop.apps.knpuniversity.com/authorize?'.http_build_query(array(
-            'response_type' => 'code',
-            'client_id' => 'TopCluck',
-            'redirect_uri' => $redirectUrl,
-            'scope' => 'eggs-count profile',
-            'state' => $state
-        ));
+    $state = md5(uniqid(mt_rand(), true));
+    $request->getSession()->set('oauth.state', $state);
+    $url = 'http://coop.apps.knpuniversity.com/authorize?'.http_build_query(array(
+        'response_type' => 'code',
+        'client_id' => 'TopCluck',
+        'redirect_uri' => $redirectUrl,
+        'scope' => 'eggs-count profile',
+        'state' => $state
+    ));
 
-        return $this->redirect($url);
-    }
+    return $this->redirect($url);
+}
+```
 
-Let's also add a `die` statement in the `receiveAuthorizationCode` function
-that's executed after COOP redirects back to us::
+Let's also add a `die` statement in the `receiveAuthorizationCode()` function
+that's executed after COOP redirects back to us:
 
-    public function receiveAuthorizationCode(Application $app, Request $request)
-    {
-        die;
-        // ...
-    }
+```php
+public function receiveAuthorizationCode(Application $app, Request $request)
+{
+    die;
+    // ...
+}
+```
 
 Log out and click to login via COOP. Of course, when we redirect to COOP,
 the new `state` parameter is there. Interestingly, after we authorize, COOP
 redirects back to us and *also* includes that exact `state` parameter.
 
-In `receiveAuthorizationCode`, we just need to make sure that `state`
+In `receiveAuthorizationCode()`, we just need to make sure that `state`
 matches the string that we set in the session exactly. If it doesn't, let's
-render an error page: this could be an attack::
+render an error page: this could be an attack:
 
-    public function receiveAuthorizationCode(Application $app, Request $request)
-    {
-        if ($request->get('state') !== $request->getSession()->get('oauth.state')) {
-            return $this->render(
-                'failed_authorization.twig',
-                array('response' => array(
-                    'error_description' => 'Your session has expired. Please try again.'
-                ))
-            );
-        }
-
-        // ...
+```php
+public function receiveAuthorizationCode(Application $app, Request $request)
+{
+    if ($request->get('state') !== $request->getSession()->get('oauth.state')) {
+        return $this->render(
+            'failed_authorization.twig',
+            array('response' => array(
+                'error_description' => 'Your session has expired. Please try again.'
+            ))
+        );
     }
+
+    // ...
+}
+```
 
 Using the `state` parameter is just like using a CSRF token with a form:
 it prevents XSS attacks.
