@@ -57,23 +57,25 @@ bit on Google, we can see this is `/dialog/oauth`. We could start building
 this by hand, but the Facebook SDK can help us out.
 
 If we look at their [simple usage example][simple usage example] of the PHP SDK, we can see how to
-create the Facebook object. Copy this into the code for our page::
+create the Facebook object. Copy this into the code for our page:
 
-    // src/OAuth2Demo/Client/Controllers/FacebookOAuthController.php
-    // ...
+```php
+// src/OAuth2Demo/Client/Controllers/FacebookOAuthController.php
+// ...
 
-    public function redirectToAuthorization()
-    {
-        $config = array(
-          'appId' => 'YOUR_APP_ID',
-          'secret' => 'YOUR_APP_SECRET',
-          'allowSignedRequest' => false
-        );
+public function redirectToAuthorization()
+{
+    $config = array(
+      'appId' => 'YOUR_APP_ID',
+      'secret' => 'YOUR_APP_SECRET',
+      'allowSignedRequest' => false
+    );
 
-        $facebook = new \Facebook($config);
+    $facebook = new \Facebook($config);
 
-        die('Todo: Redirect to Facebook');
-    }
+    die('Todo: Redirect to Facebook');
+}
+```
 
 We don't need the `require` part because we're using Composer, which takes
 care of this for us.
@@ -85,46 +87,50 @@ get our client id and secret.
 
 Head over to [developers.facebook.com][developers.facebook.com] and create a new application. Give
 it a name and choose your favorite category. Immediately, we have a App ID
-and App Secret. Let's paste these into our code::
+and App Secret. Let's paste these into our code:
 
-    public function redirectToAuthorization()
-    {
-        $config = array(
-          'appId' => '1386038978283XXX',
-          'secret' => '9ec32a48f1ad1988e0d4b9e80a17dXXX',
-          'allowSignedRequest' => false
-        );
+```php
+public function redirectToAuthorization()
+{
+    $config = array(
+      'appId' => '1386038978283XXX',
+      'secret' => '9ec32a48f1ad1988e0d4b9e80a17dXXX',
+      'allowSignedRequest' => false
+    );
 
-        $facebook = new \Facebook($config);
+    $facebook = new \Facebook($config);
 
-        die('Todo: Redirect to Facebook');
-    }
+    die('Todo: Redirect to Facebook');
+}
+```
 
 ## Redirecting the User
 
-Now, to get the authorize URL, we can use the `getLoginUrl()`_ function on
+Now, to get the authorize URL, we can use the [getLoginUrl()][getLoginUrl] function on
 the SDK. Remember that this URL always has 3 important things on it: the
 client ID, the redirect URI back to our site and the list of scopes we need.
 The object already has our client ID, so lets pass the redirect URI and scopes
-here. For Facebook, these are called `redirect_uri` and `scope`::
+here. For Facebook, these are called `redirect_uri` and `scope`:
 
-    public function redirectToAuthorization()
-    {
-        // ...
+```php
+public function redirectToAuthorization()
+{
+    // ...
 
-        $redirectUrl = $this->generateUrl(
-            'facebook_authorize_redirect',
-            array(),
-            true
-        );
+    $redirectUrl = $this->generateUrl(
+        'facebook_authorize_redirect',
+        array(),
+        true
+    );
 
-        $url = $facebook->getLoginUrl(array(
-            'redirect_uri' => $redirectUrl,
-            'scope' => array('publish_actions', 'email')
-        ));
+    $url = $facebook->getLoginUrl(array(
+        'redirect_uri' => $redirectUrl,
+        'scope' => array('publish_actions', 'email')
+    ));
 
-        die('Todo: Redirect to Facebook');
-    }
+    die('Todo: Redirect to Facebook');
+}
+```
 
 To know which scopes you need, you have to check with the API you're using.
 If we google about Facebook API scopes, we [find a page][find a page] that explains all
@@ -132,18 +138,20 @@ of them. We'll ultimately want to be able to get basic user information *and*
 post to a user's timeline. These are `email` and `publish_actions`.
 
 Finally, let's redirect the user to this URL. The flow should feel completely
-familiar by now::
+familiar by now:
 
-    public function redirectToAuthorization()
-    {
-        // ...
-        $url = $facebook->getLoginUrl(array(
-            'redirect_uri' => $redirectUrl,
-            'scope' => array('publish_actions', 'email')
-        ));
+```php
+public function redirectToAuthorization()
+{
+    // ...
+    $url = $facebook->getLoginUrl(array(
+        'redirect_uri' => $redirectUrl,
+        'scope' => array('publish_actions', 'email')
+    ));
 
-        return $this->redirect($url);
-    }
+    return $this->redirect($url);
+}
+```
 
 ## Registering the Redirect URI
 
@@ -184,50 +192,54 @@ the original todo message. But we have a `code` query parameter, and we
 know that it can be exchanged for an access token.
 
 Start by creating a private function that creates the Facebook object, and
-use it in both functions::
+use it in both functions:
 
-    public function redirectToAuthorization()
-    {
-        $facebook = $this->createFacebook();
-        // ... the rest of the original function
-    }
+```php
+public function redirectToAuthorization()
+{
+    $facebook = $this->createFacebook();
+    // ... the rest of the original function
+}
 
-    public function receiveAuthorizationCode(Application $app, Request $request)
-    {
-        $facebook = $this->createFacebook();
+public function receiveAuthorizationCode(Application $app, Request $request)
+{
+    $facebook = $this->createFacebook();
 
-        die('Todo: Handle after Facebook redirects to us');
-    }
+    die('Todo: Handle after Facebook redirects to us');
+}
 
-    private function createFacebook()
-    {
-        $config = array(
-          'appId' => '1386038978283XXX',
-          'secret' => '9ec32a48f1ad1988e0d4b9e80a17dXXX',
-          'allowSignedRequest' => false
-        );
+private function createFacebook()
+{
+    $config = array(
+      'appId' => '1386038978283XXX',
+      'secret' => '9ec32a48f1ad1988e0d4b9e80a17dXXX',
+      'allowSignedRequest' => false
+    );
 
-        return new \Facebook($config);
-    }
+    return new \Facebook($config);
+}
+```
 
 OAuth tells us that our next step is to make an API request to the token
 endpoint to exchange our authorization code for an access token. That's absolutely
-right, and it can be done with the help of the SDK::
+right, and it can be done with the help of the SDK:
 
-    public function receiveAuthorizationCode(Application $app, Request $request)
-    {
-        $facebook = $this->createFacebook();
+```php
+public function receiveAuthorizationCode(Application $app, Request $request)
+{
+    $facebook = $this->createFacebook();
 
-        $userId = $facebook->getUser();
-        var_dump($userId);die;
+    $userId = $facebook->getUser();
+    var_dump($userId);die;
 
-        die('Todo: Handle after Facebook redirects to us');
-    }
+    die('Todo: Handle after Facebook redirects to us');
+}
+```
 
 When we try the process again, we get a valid-looking user id. So, what just
 happened?
 
-The `getUser` method does a whole lot more than it looks like. It actually
+The `getUser()` method does a whole lot more than it looks like. It actually
 looks for the `code` query parameter and makes the API request to get the 
 access token automatically! This is awesome, but it's also magic! If you
 can keep in mind how OAuth works and what's happening behind the scenes at
@@ -236,21 +248,23 @@ each step, you'll be in great shape when something goes wrong.
 ## Handling Failure
 
 Just like with COOP, we need to handle failure. If we're missing the authorization
-code or something else goes wrong behind the scenes, the `getUser` method
-will return 0. Let's use that to render the error template::
+code or something else goes wrong behind the scenes, the `getUser()` method
+will return 0. Let's use that to render the error template:
 
-    public function receiveAuthorizationCode(Application $app, Request $request)
-    {
-        // ...
-        $userId = $facebook->getUser();
+```php
+public function receiveAuthorizationCode(Application $app, Request $request)
+{
+    // ...
+    $userId = $facebook->getUser();
 
-        if (!$userId) {
-            return $this->render('failed_authorization.twig', array(
-                'response' => $request->query->all()
-            ));
-        }
-        // ...
+    if (!$userId) {
+        return $this->render('failed_authorization.twig', array(
+            'response' => $request->query->all()
+        ));
     }
+    // ...
+}
+```
 
 When something *does* go wrong, Facebook will redirect back to us with information
 about what went wrong on the standard `error` and `error_description`
@@ -272,7 +286,7 @@ our valid userId is printed out as if it were successful. What just happened?
 Our OAuth flow *did* fail. But even still, the Facebook object looks and
 finds a valid access token that it stored in the session from the last, successful
 authorization. That's nice, but it's unexpected. Just remember that
-`getUser` tries many things: like exchanging the authorization code for
+`getUser()` tries many things: like exchanging the authorization code for
 an access token or simply finding an access token that it already stored
 in the session.
 
@@ -290,20 +304,22 @@ access token and expiration date.
 
 For Facebook, I want to do something similar, but let's *only* store the
 Facebook user id. We can do this without any more work because the `getUser()`
-function gives us that id::
+function gives us that id:
 
-    public function receiveAuthorizationCode(Application $app, Request $request)
-    {
-        $facebook = $this->createFacebook();
-        $userId = $facebook->getUser();
-        // ...
+```php
+public function receiveAuthorizationCode(Application $app, Request $request)
+{
+    $facebook = $this->createFacebook();
+    $userId = $facebook->getUser();
+    // ...
 
-        $user = $this->getLoggedInUser();
-        $user->facebookUserId = $userId;
-        $this->saveUser($user);
+    $user = $this->getLoggedInUser();
+    $user->facebookUserId = $userId;
+    $this->saveUser($user);
 
-        return $this->redirect($this->generateUrl('home'));
-    }
+    return $this->redirect($this->generateUrl('home'));
+}
+```
 
 And of course, let's redirect back to the homepage after finishing. Try
 the whole cycle out - this time approving our application's authorization
@@ -330,5 +346,5 @@ the topic of an upcoming chapter!
 [dig a little]: https://developers.facebook.com/docs/facebook-login/manually-build-a-login-flow/
 [simple usage example]: https://developers.facebook.com/docs/php/howto/profilewithgraphapi/
 [developers.facebook.com]: https://developers.facebook.com
-[getLoginUrl()]: https://developers.facebook.com/docs/reference/php/facebook-getLoginUrl/
+[getLoginUrl]: https://developers.facebook.com/docs/reference/php/facebook-getLoginUrl/
 [find a page]: https://developers.facebook.com/docs/reference/login/
