@@ -16,7 +16,7 @@ an API request on his behalf, he could run it on a CRON job daily and sleep
 in!
 
 So COOP is real, sort of. You can find this make-believe website by going
-to `http://coop.apps.knpuniversity.com`_. Go ahead and create an account,
+to [http://coop.apps.knpuniversity.com][http://coop.apps.knpuniversity.com]. Go ahead and create an account,
 and start controlling your virtual farm. It's the future!
 
 ## Starting our Command-line Script
@@ -25,18 +25,20 @@ COOP's API is simple, with just a few endpoints, including the one we
 want for our little command-line script: eggs-collect.
 
 I've already made a `cron/` directory with a script called `collect_eggs.php`
-that'll get us started::
+that'll get us started:
 
-    // collect_eggs.php
-    include __DIR__.'/vendor/autoload.php';
-    use Guzzle\Http\Client;
+```php
+// collect_eggs.php
+include __DIR__.'/vendor/autoload.php';
+use Guzzle\Http\Client;
 
-    // create our http client (Guzzle)
-    $http = new Client('http://coop.apps.knpuniversity.com', array(
-        'request.options' => array(
-            'exceptions' => false,
-        )
-    ));
+// create our http client (Guzzle)
+$http = new Client('http://coop.apps.knpuniversity.com', array(
+    'request.options' => array(
+        'exceptions' => false,
+    )
+));
+```
 
 ***TIP
 Code along with us! Click the Download button on this page to get the starting
@@ -51,7 +53,7 @@ never used it, it's really easy.
 Before we start, we need to use [Composer][Composer] to download Guzzle. [Download Composer][Download Composer]
 into the `cron/` directory and then install the vendor libraries:
 
-```bash
+```terminal
 php composer.phar install
 ```
 
@@ -62,20 +64,22 @@ New to Composer? Do yourself a favor and master it for free:
 
 Let's try making our first API request to `/api/2/eggs-collect`. The `2`
 is our COOP user ID, since we want to collect eggs from *our* farm. Your
-number will be different::
+number will be different:
 
-    // collect_eggs.php
-    // ...
+```php
+// collect_eggs.php
+// ...
 
-    $request = $http->post('/api/2/eggs-collect');
-    $response = $request->send();
-    echo $response->getBody();
+$request = $http->post('/api/2/eggs-collect');
+$response = $request->send();
+echo $response->getBody();
 
-    echo "\n\n";
+echo "\n\n";
+```
 
 Try it by executing the script from the command line:
 
-```bash
+```terminal
 php collect_eggs.php
 ```
 
@@ -146,19 +150,21 @@ Host: coop.apps.knpuniversity.com
 Authorization: Bearer ACCESSTOKENHERE
 ```
 
-Update the script to send this header::
+Update the script to send this header:
 
-    // collect-eggs.php
-    // ...
+```php
+// collect-eggs.php
+// ...
 
-    $accessToken = 'abcd1234def67890';
+$accessToken = 'abcd1234def67890';
 
-    $request = $http->post('/api/2/eggs-collect');
-    $request->addHeader('Authorization', 'Bearer '.$accessToken);
-    $response = $request->send();
-    echo $response->getBody();
+$request = $http->post('/api/2/eggs-collect');
+$request->addHeader('Authorization', 'Bearer '.$accessToken);
+$response = $request->send();
+echo $response->getBody();
 
-    echo "\n\n";
+echo "\n\n";
+```
 
 When we run the script again, start celebrating, because it works!
 And now we have enough eggs to make an omlette :)
@@ -216,23 +222,25 @@ docs, we can see the URL and the POST parameters it needs:
         grant_type
 
 Let's update our script to first make *this* API request. Fill in the `client_id`,
-`client_secret` and `grant_type` POST parameters::
+`client_secret` and `grant_type` POST parameters:
 
-    // collect-eggs.php
-    // ...
+```php
+// collect-eggs.php
+// ...
 
-    // run this code *before* requesting the eggs-collect endpoint
-    $request = $http->post('/token', null, array(
-        'client_id'     => 'Brent\'s Lazy CRON Job',
-        'client_secret' => 'a2e7f02def711095f83f2fb04ecbc0d3',
-        'grant_type'    => 'client_credentials',
-    ));
+// run this code *before* requesting the eggs-collect endpoint
+$request = $http->post('/token', null, array(
+    'client_id'     => 'Brent\'s Lazy CRON Job',
+    'client_secret' => 'a2e7f02def711095f83f2fb04ecbc0d3',
+    'grant_type'    => 'client_credentials',
+));
 
-    // make a request to the token url
-    $response = $request->send();
-    $responseBody = $response->getBody(true);
-    var_dump($responseBody);die;
-    // ...
+// make a request to the token url
+$response = $request->send();
+$responseBody = $response->getBody(true);
+var_dump($responseBody);die;
+// ...
+```
 
 With any luck, when you run it, you should see a JSON response with an access
 token and a few other details:
@@ -246,31 +254,33 @@ token and a few other details:
 }
 ```
 
-Let's use *this* access token instead of the one we pasted in there::
+Let's use *this* access token instead of the one we pasted in there:
 
-    // collect-eggs.php
-    // ...
+```php
+// collect-eggs.php
+// ...
 
-    // step1: request an access token
-    $request = $http->post('/token', null, array(
-        'client_id'     => 'Brent\'s Lazy CRON Job',
-        'client_secret' => 'a2e7f02def711095f83f2fb04ecbc0d3',
-        'grant_type'    => 'client_credentials',
-    ));
+// step1: request an access token
+$request = $http->post('/token', null, array(
+    'client_id'     => 'Brent\'s Lazy CRON Job',
+    'client_secret' => 'a2e7f02def711095f83f2fb04ecbc0d3',
+    'grant_type'    => 'client_credentials',
+));
 
-    // make a request to the token url
-    $response = $request->send();
-    $responseBody = $response->getBody(true);
-    $responseArr = json_decode($responseBody, true);
-    $accessToken = $responseArr['access_token'];
+// make a request to the token url
+$response = $request->send();
+$responseBody = $response->getBody(true);
+$responseArr = json_decode($responseBody, true);
+$accessToken = $responseArr['access_token'];
 
-    // step2: use the token to make an API request
-    $request = $http->post('/api/2/eggs-collect');
-    $request->addHeader('Authorization', 'Bearer '.$accessToken);
-    $response = $request->send();
-    echo $response->getBody();
+// step2: use the token to make an API request
+$request = $http->post('/api/2/eggs-collect');
+$request->addHeader('Authorization', 'Bearer '.$accessToken);
+$response = $request->send();
+echo $response->getBody();
 
-    echo "\n\n";
+echo "\n\n";
+```
 
 Now, it still works *and* since we're getting a fresh token each time, we'll
 never have an expiration problem. Once Brent sets up a CRON job to run our
