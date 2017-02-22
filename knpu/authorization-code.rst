@@ -58,7 +58,7 @@ just prints a message right now.
 
 The code behind this URL lives in the `src/OAuth2Demo/Client/Controllers/CoopOAuthController.php`
 file. You don't even need to understand how this works, just know that whatever
-we do here, shows up::
+we do here, shows up:
 
     // src/OAuth2Demo/Client/Controllers/CoopOAuthController.php
     // ...
@@ -73,7 +73,7 @@ to a specific URL on COOP. From here the user will authorize our app.
 According to [COOP's API Authentication page][COOP's API Authentication page], we need to redirect
 the user to `/authorize` and send several query parameters.
 
-In our code, let's start building the URL::
+In our code, let's start building the URL:
 
     // src/OAuth2Demo/Client/Controllers/CoopOAuthController.php
     // ...
@@ -114,7 +114,7 @@ things once that happens.
 
 Let's set that URL to be `/coop/oauth/handle`, which is just another page
 that's printing a message. The code for this is right inside the same file,
-a little further down::
+a little further down:
 
     // src/OAuth2Demo/Client/Controllers/CoopOAuthController.php
     // ...
@@ -124,11 +124,11 @@ a little further down::
         // equivalent to $_GET['code']
         $code = $request->get('code');
 
-        die('Implement this in CoopOAuthController::receiveAuthorizationCode');
+        die('Implement this in CoopOAuthController:receiveAuthorizationCode');
     }
 
 Instead of hardcoding the URL, I'll use the URL generator that's part of
-Silex::
+Silex:
 
     public function redirectToAuthorization(Request $request)
     {
@@ -144,7 +144,7 @@ Silex::
     }
 
 However you make your URL, just make sure it's absolute. Ok, we've built our
-authorize URL to COOP, let's redirect the user to it::
+authorize URL to COOP, let's redirect the user to it:
 
     public function redirectToAuthorization(Request $request)
     {
@@ -182,7 +182,7 @@ proof that the user said that our application can have an access token.
 
 Let's start by copying the code from the `collect_eggs.php` script and 
 pasting it here. Go ahead and change the `client_id` and `client_secret` 
-to be from the new client or application we created for TopCluck::
+to be from the new client or application we created for TopCluck:
 
     // src/OAuth2Demo/Client/Controllers/CoopOAuthController.php
     // ...
@@ -215,7 +215,7 @@ has 2 other parameters that are used with the authorization grant type: `code`
 and `redirect_uri`. I'm already retrieving the `code` query parameter, so 
 let's fill these in. Make sure to also change the `grant_type` to 
 `authorization_code` like it describes in the docs. Finally, dump the
-`$responseBody` to see if this request works::
+`$responseBody` to see if this request works:
 
     public function receiveAuthorizationCode(Application $app, Request $request)
     {
@@ -265,7 +265,7 @@ only to make things easier to understand.
 
 This time, the API request to `/token` returns an `access_token`. Woot!
 Let's also set `expires_in` to a variable, which is the number of seconds
-until this access token expires::
+until this access token expires:
 
     public function receiveAuthorizationCode(Application $app, Request $request)
     {
@@ -294,7 +294,7 @@ Just like in our CRON script, let's use the access token to make an API request!
 One of the endpoints is `/api/me`, which returns information about the user
 that is tied to the access token. Let's make a GET request to this endpoint,
 setting the access token on the `Authorization` header, just like we did
-before::
+before:
 
     public function receiveAuthorizationCode(Application $app, Request $request)
     {
