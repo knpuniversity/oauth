@@ -60,6 +60,7 @@ The code behind this URL lives in the `src/OAuth2Demo/Client/Controllers/CoopOAu
 file. You don't even need to understand how this works, just know that whatever
 we do here, shows up:
 
+```php
     // src/OAuth2Demo/Client/Controllers/CoopOAuthController.php
     // ...
 
@@ -67,6 +68,7 @@ we do here, shows up:
     {
         die('Hallo world!');
     }
+```
 
 The first step of the authorization code grant type is to redirect the user
 to a specific URL on COOP. From here the user will authorize our app. 
@@ -75,6 +77,7 @@ the user to `/authorize` and send several query parameters.
 
 In our code, let's start building the URL:
 
+```php
     // src/OAuth2Demo/Client/Controllers/CoopOAuthController.php
     // ...
 
@@ -89,6 +92,7 @@ In our code, let's start building the URL:
 
         var_dump($url);die;
     }
+```
 
 The `response_type` type is `code` because we're using the Authorization
 Code flow. The other valid value is `token`, which is for a grant type
@@ -116,6 +120,7 @@ Let's set that URL to be `/coop/oauth/handle`, which is just another page
 that's printing a message. The code for this is right inside the same file,
 a little further down:
 
+```php
     // src/OAuth2Demo/Client/Controllers/CoopOAuthController.php
     // ...
 
@@ -126,10 +131,12 @@ a little further down:
 
         die('Implement this in CoopOAuthController:receiveAuthorizationCode');
     }
+```
 
 Instead of hardcoding the URL, I'll use the URL generator that's part of
 Silex:
 
+```php
     public function redirectToAuthorization(Request $request)
     {
         $redirectUrl = $this->generateUrl('coop_authorize_redirect', array(), true);
@@ -142,16 +149,19 @@ Silex:
         ));
         // ...
     }
+```
 
 However you make your URL, just make sure it's absolute. Ok, we've built our
 authorize URL to COOP, let's redirect the user to it:
 
+```php
     public function redirectToAuthorization(Request $request)
     {
         // ...
 
         return $this->redirect($url);
     }
+```
 
 That `redirect` function is special to my app, so your code may differ. As
 long as you somehow redirect the user, you're good.
@@ -184,6 +194,7 @@ Let's start by copying the code from the `collect_eggs.php` script and
 pasting it here. Go ahead and change the `client_id` and `client_secret` 
 to be from the new client or application we created for TopCluck:
 
+```php
     // src/OAuth2Demo/Client/Controllers/CoopOAuthController.php
     // ...
 
@@ -209,6 +220,7 @@ to be from the new client or application we created for TopCluck:
         $responseBody = $response->getBody(true);
         var_dump($responseBody);die;
     }
+```
 
 If we look back at the COOP API Authentication docs, we'll see that `/token`
 has 2 other parameters that are used with the authorization grant type: `code`
@@ -217,6 +229,7 @@ let's fill these in. Make sure to also change the `grant_type` to
 `authorization_code` like it describes in the docs. Finally, dump the
 `$responseBody` to see if this request works:
 
+```php
     public function receiveAuthorizationCode(Application $app, Request $request)
     {
         // equivalent to $_GET['code']
@@ -233,6 +246,7 @@ let's fill these in. Make sure to also change the `grant_type` to
 
         // ...
     }
+```
 
 The key to this flow is the `code` parameter. When COOP receives our request,
 it will check that the authorization code is valid. It also knows which user
@@ -267,6 +281,7 @@ This time, the API request to `/token` returns an `access_token`. Woot!
 Let's also set `expires_in` to a variable, which is the number of seconds
 until this access token expires:
 
+```php
     public function receiveAuthorizationCode(Application $app, Request $request)
     {
         // ...
@@ -287,6 +302,7 @@ until this access token expires:
         $accessToken = $responseArr['access_token'];
         $expiresIn = $responseArr['expires_in'];
     }
+```
 
 ## Using the Access Token
 
@@ -296,6 +312,7 @@ that is tied to the access token. Let's make a GET request to this endpoint,
 setting the access token on the `Authorization` header, just like we did
 before:
 
+```php
     public function receiveAuthorizationCode(Application $app, Request $request)
     {
         // ...
@@ -308,6 +325,7 @@ before:
         $response = $request->send();
         echo ($response->getBody(true));die;
     }
+```
 
 Try it by going back to the homepage and clicking "Authorize". Simply refreshing
 the page won't work here, as the authorization code will have already expired.
