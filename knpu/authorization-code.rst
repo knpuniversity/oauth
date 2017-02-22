@@ -21,7 +21,7 @@ Let's check out the FCL app, which Brent has already started building. It
 lives in the  `client/` directory of the code download. I'll use the built-in
 PHP web server to run this site:
 
-```bash
+```terminal
 cd client/web
 php -S localhost:9000
 ```
