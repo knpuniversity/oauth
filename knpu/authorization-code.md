@@ -336,10 +336,10 @@ With any luck, you'll see a JSON response with information about the user:
 
 ```json
 {
-    id: "2",
-    email: "brent@knpuniversity.com",
-    firstName: "Brent",
-    lastName: "Shaffer"
+    "id": 2,
+    "email": "brent@knpuniversity.com",
+    "firstName": "Brent",
+    "lastName": "Shaffer"
 }
 ```
 

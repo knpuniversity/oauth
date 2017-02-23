@@ -235,7 +235,7 @@ With any luck, we should see a familiar-looking JSON response:
     "expires_in": 86400,
     "token_type": "Bearer",
     "scope": "eggs-count profile",
-    "refresh_token":"f6ecef2bf0d16d7c13a983616b30d72ca915ab65"
+    "refresh_token": "f6ecef2bf0d16d7c13a983616b30d72ca915ab65"
 }
 ```
 
