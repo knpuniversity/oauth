@@ -340,11 +340,13 @@ But on the user's next session, the access token will be gone and we'll need
 to re-ask the user to authorize. If you want to avoid this, you could store
 the Facebook access token in the database. In a second, I'll show you how
 you'd use that access token. Of course, these tokens don't last forever, so 
-eventually you'll need to re-authorize them or use a :doc:`refresh token <refresh-token>`,
+eventually you'll need to re-authorize them or use a [Using Refresh Tokens][refresh_token],
 the topic of an upcoming chapter!
+
 
 [dig a little]: https://developers.facebook.com/docs/facebook-login/manually-build-a-login-flow/
 [simple usage example]: https://developers.facebook.com/docs/php/howto/profilewithgraphapi/
 [developers.facebook.com]: https://developers.facebook.com
 [getLoginUrl]: https://developers.facebook.com/docs/reference/php/facebook-getLoginUrl/
 [find a page]: https://developers.facebook.com/docs/reference/login/
+[refresh_token]: https://knpuniversity.com/screencast/oauth/refresh-token#refresh-tokens
