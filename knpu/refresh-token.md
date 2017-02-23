@@ -157,7 +157,7 @@ In the background, this is just running a query similar to this:
 ***
 
 ```text
-    SELECT * FROM users WHERE coopAccessExpiresAt < '2014-XX-YY';
+SELECT * FROM users WHERE coopAccessExpiresAt < '2014-XX-YY';
 ```
 
 Next, let's iterate over each expiring token. To get a refresh token, we'll
@@ -267,7 +267,7 @@ foreach ($expiringTokens as $userInfo) {
 ```
 
 ***TIP
-In the background, this is just running an UPDATE query against this
+In the background, this is just running an `UPDATE` query against this
 user to update the access token, expiration and refresh token columns.
 ***
 

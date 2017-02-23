@@ -96,19 +96,19 @@ Regardless of why this happens, we could of course avoid the double-calls
 by using a simple variable:
 
 ```javascript
-    var isSignedIn = false;
-    function mySignInCallback(authResult) {
-        if (authResult['status']['signed_in']) {
-            if (isSignedIn) {
-                return;
-            }
-            isSignedIn = true;
-
-            // ...
-        } else {
-            // ...
+var isSignedIn = false;
+function mySignInCallback(authResult) {
+    if (authResult['status']['signed_in']) {
+        if (isSignedIn) {
+            return;
         }
+        isSignedIn = true;
+
+        // ...
+    } else {
+        // ...
     }
+}
 ```
 
 But the reason this is happening is more interesting. Rememember how the

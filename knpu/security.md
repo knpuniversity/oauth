@@ -99,7 +99,7 @@ blank was the Redirect URI. Let's fill it in now with a made-up URL.
 
 Try logging in again. This time, we immediately get an error from COOP:
 
-    The redirect URI provided is missing or does not match
+> The redirect URI provided is missing or does not match
 
 The redirect URI is a security measure that guarantees that nobody can use
 your client ID, which is public, to authorize users and redirect with the
@@ -140,7 +140,7 @@ an access token.
 One interesting thing about the implicit grant type is that the access token
 is passed back as a URL fragment instead of a query parameter:
 
-```text
+```
 http://localhost:9000/coop/oauth/handle?code=abcd123
 http://localhost:9000/coop/oauth/handle#access_token=wxyz5678
 ```
@@ -167,7 +167,7 @@ certificate. Your HTTP library will do this for you, but it will also give you
 the option to skip verification. This is tempting when developing locally or if
 you get an error like:
 
-    Peer certificate cannot be authenticated with known CA certificates
+> Peer certificate cannot be authenticated with known CA certificates
 
 But don't disable verification! That's like keeping the door open on your chicken
 coop! Turning off SSL Verification is the same as sending the access token
