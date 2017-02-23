@@ -50,8 +50,14 @@ at the COOP website. Since we'll need to make HTTP requests to the COOP API,
 we'll use a really nice PHP library called [Guzzle][Guzzle]. Don't worry if you've
 never used it, it's really easy.
 
-Before we start, we need to use [Composer][Composer] to download Guzzle. [Download Composer][Download Composer]
-into the `cron/` directory and then install the vendor libraries:
+Before we start, we need to use [Composer][Composer] to download Guzzle.
+
+> This tutorial uses an old (version 3) version of Guzzle! It doesn't
+> affect the tutorial, but if you decide to install it manually, be
+> sure to install `guzzle/guzzle`.
+
+[Download Composer][Download Composer] into the `cron/` directory and then install
+the vendor libraries:
 
 ```terminal
 php composer.phar install
