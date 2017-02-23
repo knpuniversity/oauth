@@ -166,12 +166,12 @@ In our application, this code simply redirects us to the homepage. And just
 like that, we're done! This is the authorization grant type, which has 2
 distinct steps to it:
 
-#. First, redirect the user to the OAuth server using its `/authorize`
+1. First, redirect the user to the OAuth server using its `/authorize`
    endpoint, your application's `client_id`, a `redirect_uri` and the
    scopes you want permission for. The URL and how the parameters look may
    be different on other OAuth servers, but the idea will be the same.
 
-#. After authorizing our app, the OAuth server redirects back to a URL on
+2. After authorizing our app, the OAuth server redirects back to a URL on
    our site with a `code` query parameter. We can use this, along with our
    `client_id` and `client_secret` to make an API request to the `/token`
    endpoint. Now, we have an access token.
