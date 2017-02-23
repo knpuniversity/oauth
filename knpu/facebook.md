@@ -158,7 +158,7 @@ public function redirectToAuthorization()
 When we try it out, we *do* go to Facebook's `/dialog/oauth` with the `client_id`,
 `redirect_uri` and `scope` parameters. But we get an error:
 
-    Given URL is not allowed by the Application configuration.: One or more
+    Given URL is not allowed by the Application configuration. One or more
     of the given URLs is not allowed by the App's settings. It must match
     the Website URL or Canvas URL, or the domain must be a subdomain of one
     of the App's domains.

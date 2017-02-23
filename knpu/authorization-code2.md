@@ -220,7 +220,7 @@ code behind this new page.
 ### Making the eggs-count API Request
 
 Start by copying the `/api/me` code from `CoopOAuthController`, and changing
-the method from `get` to `post`, since the `eggs-count` endpoint requires
+the method from `get()` to `post()`, since the `eggs-count` endpoint requires
 POST:
 
 ```php
@@ -389,7 +389,7 @@ expired. What, I thought we just checked for that? Well, in the real world,
 there's no guarantee that the token won't expire before its scheduled time.
 Plus, the user may have decided to revoke your token -- what a bully. Be aware, 
 and handle accordingly. Once again, the OAuth Server should provide information on the
-error in the "error" and "error_description" querystring parameters.
+error in the `error` and `error_description` query string parameters.
 
 You're now dangerous, so lets move on to let our farmers actualy log into
 FCL via COOP.
