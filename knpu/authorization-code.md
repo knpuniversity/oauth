@@ -1,9 +1,12 @@
 # Authorization Code Grant Type
 
 Suddenly, Brent is jolted awake at noon to the sound of farmer Scott driving
-his eggs to the market and screaming "Haha, Brent! My chickens lay way more
-eggs than yours!" But in reality, Brent *knows* that his chickens are way
-better egg-making hens than Scott's... but how to prove it?
+his eggs to the market and screaming:
+
+> Haha, Brent! My chickens lay way more eggs than yours!
+
+But in reality, Brent *knows* that his chickens are way better egg-making hens
+than Scott's... but how to prove it?
 
 Then it hits him! The COOP API has an endpoint to see how many eggs have
 been collected from a user's farm each day. Brent decides to create a new
