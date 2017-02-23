@@ -5,14 +5,14 @@ an app with some complex and real-life features, like Facebook authentication,
 dealing with refresh tokens and more. We'll need about 8 steps to turn
 a barebones starting app into a complex, OAuth machine:
 
-1) Client Credentials: making API requests for our own account
-2) Authorization Code: Getting a token for another user's account
-3) Logging in via OAuth
-4) OAuth with Facebook
-5) OAuth in JavaScript with Google+
-6) Handling Expired Tokens
-7) Using Refresh Tokens
-8) Tightening up Security
+1. Client Credentials: making API requests for our own account
+2. Authorization Code: Getting a token for another user's account
+3. Logging in via OAuth
+4. OAuth with Facebook
+5. OAuth in JavaScript with Google+
+6. Handling Expired Tokens
+7. Using Refresh Tokens
+8. Tightening up Security
 
 As we go through these, we'll give you any theory and background you need.
 
