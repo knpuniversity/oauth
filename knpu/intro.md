@@ -42,7 +42,7 @@ access_token=ABCD1234&message=Hello
 ```
 
 Exactly *how* you pass the access token in an API request is different between
-Facebook, Twitter, or any other API. But it's always there 
+Facebook, Twitter, or any other API. But it's always there. 
 
 I *could* just give you my username and password, but a token is much better.
 If I give 10 apps access to my account, each app will have its own token,
