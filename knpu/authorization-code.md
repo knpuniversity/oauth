@@ -64,13 +64,13 @@ file. You don't even need to understand how this works, just know that whatever
 we do here, shows up:
 
 ```php
-    // src/OAuth2Demo/Client/Controllers/CoopOAuthController.php
-    // ...
+// src/OAuth2Demo/Client/Controllers/CoopOAuthController.php
+// ...
 
-    public function redirectToAuthorization(Request $request)
-    {
-        die('Hallo world!');
-    }
+public function redirectToAuthorization(Request $request)
+{
+    die('Hallo world!');
+}
 ```
 
 The first step of the authorization code grant type is to redirect the user
@@ -81,20 +81,20 @@ the user to `/authorize` and send several query parameters.
 In our code, let's start building the URL:
 
 ```php
-    // src/OAuth2Demo/Client/Controllers/CoopOAuthController.php
-    // ...
+// src/OAuth2Demo/Client/Controllers/CoopOAuthController.php
+// ...
 
-    public function redirectToAuthorization(Request $request)
-    {
-        $url = 'http://coop.apps.knpuniversity.com/authorize?'.http_build_query(array(
-            'response_type' => 'code',
-            'client_id' => '?',
-            'redirect_uri' => '?',
-            'scope' => 'eggs-count profile'
-        ));
+public function redirectToAuthorization(Request $request)
+{
+    $url = 'http://coop.apps.knpuniversity.com/authorize?'.http_build_query(array(
+        'response_type' => 'code',
+        'client_id' => '?',
+        'redirect_uri' => '?',
+        'scope' => 'eggs-count profile'
+    ));
 
-        var_dump($url);die;
-    }
+    var_dump($url);die;
+}
 ```
 
 The `response_type` type is `code` because we're using the Authorization
@@ -124,53 +124,53 @@ that's printing a message. The code for this is right inside the same file,
 a little further down:
 
 ```php
-    // src/OAuth2Demo/Client/Controllers/CoopOAuthController.php
-    // ...
+// src/OAuth2Demo/Client/Controllers/CoopOAuthController.php
+// ...
 
-    public function receiveAuthorizationCode(Application $app, Request $request)
-    {
-        // equivalent to $_GET['code']
-        $code = $request->get('code');
+public function receiveAuthorizationCode(Application $app, Request $request)
+{
+    // equivalent to $_GET['code']
+    $code = $request->get('code');
 
-        die('Implement this in CoopOAuthController::receiveAuthorizationCode()');
-    }
+    die('Implement this in CoopOAuthController::receiveAuthorizationCode()');
+}
 ```
 
 Instead of hardcoding the URL, I'll use the URL generator that's part of
 Silex:
 
 ```php
-    public function redirectToAuthorization(Request $request)
-    {
-        $redirectUrl = $this->generateUrl('coop_authorize_redirect', array(), true);
+public function redirectToAuthorization(Request $request)
+{
+    $redirectUrl = $this->generateUrl('coop_authorize_redirect', array(), true);
 
-        $url = 'http://coop.apps.knpuniversity.com/authorize?'.http_build_query(array(
-            'response_type' => 'code',
-            'client_id' => 'TopCluck',
-            'redirect_uri' => $redirectUrl,
-            'scope' => 'eggs-count profile'
-        ));
-        // ...
-    }
+    $url = 'http://coop.apps.knpuniversity.com/authorize?'.http_build_query(array(
+        'response_type' => 'code',
+        'client_id' => 'TopCluck',
+        'redirect_uri' => $redirectUrl,
+        'scope' => 'eggs-count profile'
+    ));
+    // ...
+}
 ```
 
 However you make your URL, just make sure it's absolute. Ok, we've built our
 authorize URL to COOP, let's redirect the user to it:
 
 ```php
-    public function redirectToAuthorization(Request $request)
-    {
-        // ...
+public function redirectToAuthorization(Request $request)
+{
+    // ...
 
-        return $this->redirect($url);
-    }
+    return $this->redirect($url);
+}
 ```
 
-That `redirect` function is special to my app, so your code may differ. As
+That `redirect()` function is special to my app, so your code may differ. As
 long as you somehow redirect the user, you're good.
 
 ***TIP
-Since we're using Silex, the `redirect` function is actually a shortcut
+Since we're using Silex, the `redirect()` function is actually a shortcut
 I created to create a new `RedirectResponse` object.
 ***
 
@@ -198,31 +198,31 @@ pasting it here. Go ahead and change the `client_id` and `client_secret`
 to be from the new client or application we created for TopCluck:
 
 ```php
-    // src/OAuth2Demo/Client/Controllers/CoopOAuthController.php
-    // ...
+// src/OAuth2Demo/Client/Controllers/CoopOAuthController.php
+// ...
 
-    public function receiveAuthorizationCode(Application $app, Request $request)
-    {
-        // equivalent to $_GET['code']
-        $code = $request->get('code');
+public function receiveAuthorizationCode(Application $app, Request $request)
+{
+    // equivalent to $_GET['code']
+    $code = $request->get('code');
 
-        $http = new Client('http://coop.apps.knpuniversity.com', array(
-            'request.options' => array(
-                'exceptions' => false,
-            )
-        ));
+    $http = new Client('http://coop.apps.knpuniversity.com', array(
+        'request.options' => array(
+            'exceptions' => false,
+        )
+    ));
 
-        $request = $http->post('/token', null, array(
-            'client_id'     => 'TopCluck',
-            'client_secret' => '2e2dfd645da38940b1ff694733cc6be6',
-            'grant_type'    => 'authorization_code',
-        ));
+    $request = $http->post('/token', null, array(
+        'client_id'     => 'TopCluck',
+        'client_secret' => '2e2dfd645da38940b1ff694733cc6be6',
+        'grant_type'    => 'authorization_code',
+    ));
 
-        // make a request to the token url
-        $response = $request->send();
-        $responseBody = $response->getBody(true);
-        var_dump($responseBody);die;
-    }
+    // make a request to the token url
+    $response = $request->send();
+    $responseBody = $response->getBody(true);
+    var_dump($responseBody);die;
+}
 ```
 
 If we look back at the COOP API Authentication docs, we'll see that `/token`
@@ -233,22 +233,22 @@ let's fill these in. Make sure to also change the `grant_type` to
 `$responseBody` to see if this request works:
 
 ```php
-    public function receiveAuthorizationCode(Application $app, Request $request)
-    {
-        // equivalent to $_GET['code']
-        $code = $request->get('code');
-        // ...
+public function receiveAuthorizationCode(Application $app, Request $request)
+{
+    // equivalent to $_GET['code']
+    $code = $request->get('code');
+    // ...
 
-        $request = $http->post('/token', null, array(
-            'client_id'     => 'TopCluck',
-            'client_secret' => '2e2dfd645da38940b1ff694733cc6be6',
-            'grant_type'    => 'authorization_code',
-            'code'          => $code,
-            'redirect_uri'  => $this->generateUrl('coop_authorize_redirect', array(), true),
-        ));
+    $request = $http->post('/token', null, array(
+        'client_id'     => 'TopCluck',
+        'client_secret' => '2e2dfd645da38940b1ff694733cc6be6',
+        'grant_type'    => 'authorization_code',
+        'code'          => $code,
+        'redirect_uri'  => $this->generateUrl('coop_authorize_redirect', array(), true),
+    ));
 
-        // ...
-    }
+    // ...
+}
 ```
 
 The key to this flow is the `code` parameter. When COOP receives our request,
@@ -285,26 +285,26 @@ Let's also set `expires_in` to a variable, which is the number of seconds
 until this access token expires:
 
 ```php
-    public function receiveAuthorizationCode(Application $app, Request $request)
-    {
-        // ...
+public function receiveAuthorizationCode(Application $app, Request $request)
+{
+    // ...
 
-        $request = $http->post('/token', null, array(
-            'client_id'     => 'TopCluck',
-            'client_secret' => '2e2dfd645da38940b1ff694733cc6be6',
-            'grant_type'    => 'authorization_code',
-            'code'          => $code,
-            'redirect_uri'  => $this->generateUrl('coop_authorize_redirect', array(), true),
-        ));
+    $request = $http->post('/token', null, array(
+        'client_id'     => 'TopCluck',
+        'client_secret' => '2e2dfd645da38940b1ff694733cc6be6',
+        'grant_type'    => 'authorization_code',
+        'code'          => $code,
+        'redirect_uri'  => $this->generateUrl('coop_authorize_redirect', array(), true),
+    ));
 
-        // make a request to the token url
-        $response = $request->send();
-        $responseBody = $response->getBody(true);
-        $responseArr = json_decode($responseBody, true);
+    // make a request to the token url
+    $response = $request->send();
+    $responseBody = $response->getBody(true);
+    $responseArr = json_decode($responseBody, true);
 
-        $accessToken = $responseArr['access_token'];
-        $expiresIn = $responseArr['expires_in'];
-    }
+    $accessToken = $responseArr['access_token'];
+    $expiresIn = $responseArr['expires_in'];
+}
 ```
 
 ## Using the Access Token
@@ -316,18 +316,18 @@ setting the access token on the `Authorization` header, just like we did
 before:
 
 ```php
-    public function receiveAuthorizationCode(Application $app, Request $request)
-    {
-        // ...
+public function receiveAuthorizationCode(Application $app, Request $request)
+{
+    // ...
 
-        $accessToken = $responseArr['access_token'];
-        $expiresIn = $responseArr['expires_in'];
+    $accessToken = $responseArr['access_token'];
+    $expiresIn = $responseArr['expires_in'];
 
-        $request = $http->get('/api/me');
-        $request->addHeader('Authorization', 'Bearer '.$accessToken);
-        $response = $request->send();
-        echo ($response->getBody(true));die;
-    }
+    $request = $http->get('/api/me');
+    $request->addHeader('Authorization', 'Bearer '.$accessToken);
+    $response = $request->send();
+    echo ($response->getBody(true));die;
+}
 ```
 
 Try it by going back to the homepage and clicking "Authorize". Simply refreshing
