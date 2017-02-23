@@ -129,7 +129,7 @@ a little further down:
         // equivalent to $_GET['code']
         $code = $request->get('code');
 
-        die('Implement this in CoopOAuthController:receiveAuthorizationCode');
+        die('Implement this in CoopOAuthController::receiveAuthorizationCode()');
     }
 ```
 
