@@ -42,7 +42,10 @@ $http = new Client('http://coop.apps.knpuniversity.com', array(
 
 ***TIP
 Code along with us! Click the Download button on this page to get the starting
-point of the project, and follow the readme to get things setup.
+point of the project, and follow the readme to get things setup. If you don't see a 
+download button you can also clone the [github repo](https://github.com/knpuniversity/oauth).
+Also be sure to check the comments section for troubleshooting tips and code variations
+which might be necessary for your environment.
 ***
 
 It doesn't do anything except create a `Client` object that's pointing
