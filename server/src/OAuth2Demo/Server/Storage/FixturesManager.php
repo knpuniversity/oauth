@@ -42,7 +42,7 @@ class FixturesManager
             '2e2dfd645da38940b1ff694733cc6be6',
             null,
             null,
-            'eggs-collect profile',
+            'eggs-collect eggs-count profile',
             null
         );
 
