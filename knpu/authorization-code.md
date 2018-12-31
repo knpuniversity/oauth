@@ -189,7 +189,7 @@ or anything else. But the URL *does* include a `code` query parameter.
 ## Exchanging the Authorization Code for an Access Token
 
 This query parameter is called the authorization code, and it's unique
-to this grant type. It's not an access token, which is really want we want,
+to this grant type. It's not an access token, which is really what we want,
 but it's the key to getting that. The authorization code is our temporary
 proof that the user said that our application can have an access token.
 
