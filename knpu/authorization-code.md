@@ -78,6 +78,12 @@ to a specific URL on COOP. From here the user will authorize our app.
 According to [COOP's API Authentication page][COOP's API Authentication page], we need to redirect
 the user to `/authorize` and send several query parameters.
 
+***TIP
+If you're using Symfony, check out [knpuniversity/oauth2-client-bundle](https://github.com/knpuniversity/oauth2-client-bundle).
+This library helps you interact with an OAuth2 server using the "authorization code"
+grant type.
+***
+
 In our code, let's start building the URL:
 
 ```php
